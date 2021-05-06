@@ -42,7 +42,7 @@ usethis::use_news_md( open = FALSE )
 golem::use_recommended_tests()
 
 ## Use Recommended Packages ----
-golem::use_recommended_deps(recommended = c("shiny", "golem", "shinyjs", "waiter", "rlang"))
+golem::use_recommended_deps(recommended = c("shiny", "golem", "shinyjs", "waiter", "rlang", "shinybm"))
 
 ## Favicon ----
 # If you want to change the favicon (default is golem's one)

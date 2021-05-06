@@ -4,16 +4,15 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @importFrom shinyjs useShinyjs
+#' @importFrom shinybm waiter_logoDatalab navbarPage_logoDatalab
 #' @noRd
 app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     shinyjs::useShinyjs(),
-    waiter_fun(golem::app_prod()),
-    navbarPage(title = div(img(src = "www/LogoDataLab.png", height = "35px", width = "35px"), "Kanot",
-      style = "position:absolute;left:0%; top:20%;"
-    )),
+    waiter_logoDatalab(golem::app_prod()),
+    navbarPage_logoDatalab(title = "Kanot"),
     tabPanel(
       title = "Acc\u00e8s aux donn\u00e9es",
       tabPanel(
@@ -46,13 +45,4 @@ golem_add_external_resources <- function() {
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()
   )
-}
-
-waiter_fun <- function(isinProd) {
-  if (isinProd) {
-    shiny::tagList(
-      waiter::use_waiter(),
-      waiter::waiter_show_on_load(html = img(src = "www/LogoDataLab.png"))
-    )
-  }
 }
