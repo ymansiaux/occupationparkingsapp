@@ -9,7 +9,7 @@ app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
-    useShinyjs(),
+    shinyjs::useShinyjs(),
     waiter_fun(golem::app_prod()),
     navbarPage(title = div(img(src = "www/LogoDataLab.png", height = "35px", width = "35px"), "Kanot",
       style = "position:absolute;left:0%; top:20%;"
@@ -17,8 +17,7 @@ app_ui <- function(request) {
     tabPanel(
       title = "Acc\u00e8s aux donn\u00e9es",
       tabPanel(
-        "Visualisation",
-        mod_filter_display_data_ui("filter_display_data_ui_1")
+        "Visualisation"
       )
     )
   )
