@@ -9,3 +9,4 @@ docs_projet
 ^README\.Rmd$
 ^CODE_OF_CONDUCT\.md$
 deploy_to_RSPM.R
+^deploy_to_RSPM\.R$
