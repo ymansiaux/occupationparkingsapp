@@ -38,17 +38,17 @@ parkings_relais <- xtradata_requete_features(
 )
 
 parkings <- rbind(
-  data.table("localisation" = "hypercentre", 
+  data.table("localisation_parking" = "hypercentre", 
              "ident" = c("CUBPK02", "CUBPK03", "CUBPK07", "CUBPK24", "CUBPK30", "CUBPK28", "CUBPK34", "CUBPK26", "CUBPK29", "CUBPK16"),
-             "relais" = FALSE),
-  data.table("localisation" = "centre",
+             "parc_relais" = FALSE),
+  data.table("localisation_parking" = "centre",
              "ident" = c("CUBPK27", "CUBPK35", "CUBPK04", "CUBPK05", "CUBPK78"),
-             "relais" = FALSE),
-  data.table("localisation" = "peripherie",
+             "parc_relais" = FALSE),
+  data.table("localisation_parking" = "peripherie",
              "ident" = c("CUBPK72", "CUBPK40", "CUBPK39", "CUBPK38"),
-             "relais" = FALSE),
+             "parc_relais" = FALSE),
   data.table("ident" = parkings_relais$ident,
-             relais = TRUE),
+             "parc_relais" = TRUE),
   fill =  TRUE
 )
 
