@@ -17,12 +17,12 @@ app_ui <- function(request) {
     waiter_logoDatalab(golem::app_prod()),
     fluidPage(
       navbarPage(title = title_with_logoDatalab(main_title = "Coucou"),
-                 id = "bob",
+                 id = "navbarpage",
                  collapsible = TRUE,
-                 tabPanel("Empty"),
-                 tabPanel("Taux occupation horaires"),
-                 tabPanel("Taux journaliers"
-                 )
+                 tabPanel("Tab1",
+                          mod_occupation_ui("occupation_ui_1")),
+                 tabPanel("Tab2"),
+                 tabPanel("Tab3")
       )
     )
     

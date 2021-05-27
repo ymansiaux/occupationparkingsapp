@@ -15,12 +15,14 @@
 
 ## Dependencies ----
 ## Add one line by package you want to add as dependency
-usethis::use_package( "thinkr" )
+usethis::use_package( "R6" )
+usethis::use_package( "xtradata" )
+
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module( name = "name_of_module1" ) # Name of the module
-golem::add_module( name = "name_of_module2" ) # Name of the module
+golem::add_module( name = "occupation" ) # Name of the module
+golem::add_module( name = "occupation_appel_WS" ) # Name of the module
 
 ## Add helper functions ----
 ## Creates ftc_* and utils_*
