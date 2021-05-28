@@ -4,15 +4,17 @@ Occupation <- R6Class("Occupation",
                         rangeEnd = "",
                         localisation_parking = "",
                         parc_relais = "",
-                        data_xtradata = data.frame(),
+                        data_xtradata = NULL,
+                        
                         initialize = function(rangeStart, rangeEnd, localisation_parking, parc_relais, data_xtradata) {
                           self$rangeStart <- rangeStart
                           self$rangeEnd <- rangeEnd
                           self$localisation_parking <- localisation_parking
                           self$parc_relais <- parc_relais
+                          self$data_xtradata <- NULL
                         },
                         download_data = function() {
-                          self$data_xtradata <- xtradata_requete_aggregate(
+                          toto <- try(xtradata_requete_aggregate(
                             key = "DATAZBOUBB",
                             typename = "ST_PARK_P",
                             rangeStart = self$rangeStart,
@@ -27,7 +29,13 @@ Occupation <- R6Class("Occupation",
                                 )
                             ),
                             showURL = TRUE
-                          )
+                          ))
+                          # print("coucou")
+                          self$data_xtradata <- toto
+                          print(toto)
+                          return(self$data_xtradata)
+                          # print("coucou2")
+                          
                         }
                       )
 )
