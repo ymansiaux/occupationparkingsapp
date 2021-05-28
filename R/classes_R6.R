@@ -1,4 +1,5 @@
 Occupation <- R6Class("Occupation",
+                      
                       public = list(
                         rangeStart = "",
                         rangeEnd = "",
@@ -13,8 +14,9 @@ Occupation <- R6Class("Occupation",
                           self$parc_relais <- parc_relais
                           self$data_xtradata <- NULL
                         },
+                        
                         download_data = function() {
-                          toto <- try(xtradata_requete_aggregate(
+                          try(xtradata_requete_aggregate(
                             key = "DATAZBOUBB",
                             typename = "ST_PARK_P",
                             rangeStart = self$rangeStart,
@@ -30,7 +32,6 @@ Occupation <- R6Class("Occupation",
                             ),
                             showURL = TRUE
                           ))
-                          self$data_xtradata <- toto
                         }
                       )
 )
