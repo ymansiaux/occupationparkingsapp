@@ -28,12 +28,11 @@ mod_occupation_appel_WS_server <- function(id, r6){
       # browser()
       r6$download_data()
       r6$data_xtradata
-      print(head(r6$data_xtradata))
     })
     
-    output$table <- renderTable({
+    output$table <- renderText({
       r6$data_xtradata <- r6$download_data()
-      (head(r6$data_xtradata))
+      dim(r6$data_xtradata)
     })
     # 
     output$number <- renderTable(

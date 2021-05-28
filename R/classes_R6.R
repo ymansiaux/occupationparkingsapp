@@ -30,12 +30,7 @@ Occupation <- R6Class("Occupation",
                             ),
                             showURL = TRUE
                           ))
-                          # print("coucou")
                           self$data_xtradata <- toto
-                          print(toto)
-                          return(self$data_xtradata)
-                          # print("coucou2")
-                          
                         }
                       )
 )
