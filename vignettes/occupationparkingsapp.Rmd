@@ -1,0 +1,33 @@
+---
+title: "occupationparkingsapp"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{occupationparkingsapp}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+# library(occupationparkingsapp)
+```
+
+# Classes R6
+
+## Occupation 
+
+On va définir une classe R6, qui va permettre d'effecteur les opérations suivantes sur les différents types de parkings (relais ou non) et secteurs d'intéret (hypercentre, centre, périphérie).
+
+Cette classe va devoir réaliser les opérations suivantes :
+
+- Récupération des données sur le WS d'intéret
+- Nettoyage et aggregation eventuelle selon le pas de temps
+- Realisation d'un graphique
+- Sortie d'un tableau
+- Operation de telechargement

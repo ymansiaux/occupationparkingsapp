@@ -6,7 +6,7 @@ Occupation <- R6Class("Occupation",
                         localisation_parking = "",
                         parc_relais = "",
                         data_xtradata = NULL,
-                        
+
                         initialize = function(rangeStart, rangeEnd, localisation_parking, parc_relais, data_xtradata) {
                           self$rangeStart <- rangeStart
                           self$rangeEnd <- rangeEnd

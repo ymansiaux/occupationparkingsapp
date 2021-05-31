@@ -17,6 +17,10 @@
 ## Add one line by package you want to add as dependency
 usethis::use_package( "R6" )
 usethis::use_package( "xtradata" )
+usethis::use_package( "data.table" )
+usethis::use_package( "DT" )
+usethis::use_package( "lubridate" )
+
 
 
 ## Add modules ----

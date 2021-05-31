@@ -9,11 +9,11 @@
 #' @import shiny
 #' @import R6
 #' @import data.table
-#' @import DT
+#' @importFrom DT DTOutput renderDT
 mod_occupation_appel_WS_ui <- function(id){
   ns <- NS(id)
   tagList(
-    dataTableOutput(ns("table"))
+    DTOutput(ns("table"))
   )
 }
 
@@ -25,9 +25,9 @@ mod_occupation_appel_WS_server <- function(id, r6){
     # ns <- session$ns
     # observe(browser())
     
-    output$table <- renderDataTable({
-      head(r6$download_data())
-      head(r6$data_xtradata)
+    output$table <- renderDT({
+      r6$download_data()
+      r6$data_xtradata[1:5,]
     })
 
   })

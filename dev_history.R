@@ -3,6 +3,8 @@ usethis::use_build_ignore("deploy_to_RSPM.R")
 
 usethis::use_data_raw("parkings")
 
+usethis::use_vignette("occupationparkingsapp")
+
 devtools::check(document = TRUE)
 devtools::build(vignettes = TRUE)
 devtools::install(build_vignettes = TRUE)

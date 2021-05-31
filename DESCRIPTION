@@ -1,13 +1,16 @@
 Package: occupationparkingsapp
-Title: Occupations des parkings - projet PMNSI 3264
+Title: Occupations des parkings projet PMNSI 3264
 Version: 0.0.0.9000
 Authors@R: person('Yohann', 'Mansiaux', email = 'y.mansiaux@bordeaux-metropole.fr', role = c('cre', 'aut'))
 Description: Consultation des donnees parkings - appli + rapport.
 License: MIT + file LICENSE
 Imports: 
     config,
+    data.table,
+    DT,
     golem,
     htmltools,
+    lubridate,
     processx,
     R6,
     rlang,
@@ -22,7 +25,11 @@ RoxygenNote: 7.1.1
 URL: https://git.scnbdx.fr/UVD/datalab/mobilite/occupationparkingspp.git
 BugReports: https://git.scnbdx.fr/UVD/datalab/mobilite/occupationparkingspp.git/issues
 Suggests: 
+    rmarkdown,
+    knitr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Depends: 
     R (>= 2.10)
+VignetteBuilder: knitr
+Roxygen: list(r6 = FALSE)
