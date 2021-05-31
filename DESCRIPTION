@@ -11,12 +11,14 @@ Imports:
     golem,
     htmltools,
     lubridate,
+    magrittr,
     processx,
     R6,
     rlang,
     shiny,
     shinybm,
     shinyjs,
+    timetk,
     waiter,
     xtradata
 Encoding: UTF-8
@@ -32,4 +34,3 @@ Config/testthat/edition: 3
 Depends: 
     R (>= 2.10)
 VignetteBuilder: knitr
-Roxygen: list(r6 = FALSE)

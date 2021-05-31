@@ -20,6 +20,9 @@ usethis::use_package( "xtradata" )
 usethis::use_package( "data.table" )
 usethis::use_package( "DT" )
 usethis::use_package( "lubridate" )
+usethis::use_package( "timetk" )
+usethis::use_pipe()
+
 
 
 

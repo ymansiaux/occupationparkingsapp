@@ -15,7 +15,12 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-# library(occupationparkingsapp)
+library(occupationparkingsapp)
+library(R6)
+library(xtradata)
+library(data.table)
+library(lubridate)
+library(timetk)
 ```
 
 # Classes R6
@@ -31,3 +36,64 @@ Cette classe va devoir réaliser les opérations suivantes :
 - Realisation d'un graphique
 - Sortie d'un tableau
 - Operation de telechargement
+
+
+### Création d'une nouvelle instance
+
+```{r}
+source("../R/Occupation.R")
+parc_relais <- Occupation$new(rangeStart = Sys.Date() - 3, rangeEnd = Sys.Date() - 1, localisation_parking = NA, parc_relais = TRUE)
+```
+
+### Appel du WS de récupération des données
+
+```{r}
+parc_relais$download_data(rangeStep = "hour")
+```
+Le choix du rangeStep est des opérations qui vont en découler vont dépendre du choix de l'utilisateur.
+
+-> données horaires
+rangeStep = hour
+dataviz = moyenne horaire sur la plage de temps complète
+
+-> données journalières
+rangeStep = day
+dataviz = données rendues par xtradata jour par jour
+
+-> données hebdo
+rangeStep = day
+dataviz = données à agreger à la semaine (moyenne)
+
+-> données mensuelle
+rangeStep = day
+dataviz = données à agreger au mois (moyenne)
+
+-> données annuelle
+rangeStep = day
+dataviz = données à agreger à l'année (moyenne)
+
+
+```{r}
+head(parc_relais$data_xtradata)
+# on souhaite garder dans l'output final
+# ident
+# time 
+# libres
+# total
+```
+
+### Nettoyage
+
+```{r}
+parc_relais$clean_output()
+head(parc_relais$data_xtradata)
+```
+
+### Aggregation temporelle
+
+```{r}
+parc_relais$temporal_aggregate(aggregate_step = "week")
+head(parc_relais$data_xtradata)
+```
+
+

@@ -26,7 +26,9 @@ mod_occupation_appel_WS_server <- function(id, r6){
     # observe(browser())
     
     output$table <- renderDT({
-      r6$download_data()
+      r6$download_data(rangeStep = "hour")
+      r6$clean_output()
+      r6$temporal_aggregate(aggregate_step = "day")
       r6$data_xtradata[1:5,]
     })
 
