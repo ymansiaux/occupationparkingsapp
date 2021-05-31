@@ -13,8 +13,7 @@
 mod_occupation_appel_WS_ui <- function(id){
   ns <- NS(id)
   tagList(
-    dataTableOutput(ns("table")),
-    tableOutput(ns("tableNotOK"))
+    dataTableOutput(ns("table"))
   )
 }
 
@@ -27,19 +26,10 @@ mod_occupation_appel_WS_server <- function(id, r6){
     # observe(browser())
     
     output$table <- renderDataTable({
-      
-      r6$data_xtradata <- r6$download_data()
+      head(r6$download_data())
       head(r6$data_xtradata)
-      
     })
-    
-    output$tableNotOK <- renderTable({
-      
-      r6$data_xtradata <- r6$download_data()
-      head(r6$data_xtradata)
-      
-    })
-    
+
   })
 }
 

@@ -16,7 +16,7 @@ Occupation <- R6Class("Occupation",
                         },
                         
                         download_data = function() {
-                          try(xtradata_requete_aggregate(
+                          self$data_xtradata <- try(xtradata_requete_aggregate(
                             key = "DATAZBOUBB",
                             typename = "ST_PARK_P",
                             rangeStart = self$rangeStart,
