@@ -27,7 +27,7 @@
 # -centre: Cité mondiale, Porte de Bordeaux, Meunier, Salinières, Saint Jean, Paludate
 # -périphérie: Bègles Sècheries, Pessac centre, Mérignac centre, Bouscat Libération
 
-library(data.table)
+library(dplyr)
 
 parkings_relais <- xtradata_requete_features(
   key = "DATAZBOUBB",
@@ -37,19 +37,18 @@ parkings_relais <- xtradata_requete_features(
   attributes = list("ident")
 )
 
-parkings <- rbind(
-  data.table("localisation_parking" = "hypercentre", 
+parkings <- bind_rows(
+  data.frame("localisation_parking" = "hypercentre", 
              "ident" = c("CUBPK02", "CUBPK03", "CUBPK07", "CUBPK24", "CUBPK30", "CUBPK28", "CUBPK34", "CUBPK26", "CUBPK29", "CUBPK16"),
              "parc_relais" = FALSE),
-  data.table("localisation_parking" = "centre",
+  data.frame("localisation_parking" = "centre",
              "ident" = c("CUBPK27", "CUBPK35", "CUBPK04", "CUBPK05", "CUBPK78"),
              "parc_relais" = FALSE),
-  data.table("localisation_parking" = "peripherie",
+  data.frame("localisation_parking" = "peripherie",
              "ident" = c("CUBPK72", "CUBPK40", "CUBPK39", "CUBPK38"),
              "parc_relais" = FALSE),
-  data.table("ident" = parkings_relais$ident,
-             "parc_relais" = TRUE),
-  fill =  TRUE
+  data.frame("ident" = parkings_relais$ident,
+             "parc_relais" = TRUE)
 )
 
 usethis::use_data(parkings, overwrite = TRUE)
