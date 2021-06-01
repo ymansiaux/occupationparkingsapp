@@ -24,6 +24,13 @@ parc_relais$data_xtradata }
 
 \dontrun{ clean_output()
 }
+
+## ------------------------------------------------
+## Method `Occupation$mean_by_some_time_unit`
+## ------------------------------------------------
+
+\dontrun{ temporal_aggregate("day")
+} 
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -46,7 +53,7 @@ parc_relais$data_xtradata }
 \item \href{#method-new}{\code{Occupation$new()}}
 \item \href{#method-download_data}{\code{Occupation$download_data()}}
 \item \href{#method-clean_output}{\code{Occupation$clean_output()}}
-\item \href{#method-temporal_aggregate}{\code{Occupation$temporal_aggregate()}}
+\item \href{#method-mean_by_some_time_unit}{\code{Occupation$mean_by_some_time_unit()}}
 \item \href{#method-clone}{\code{Occupation$clone()}}
 }
 }
@@ -134,22 +141,31 @@ Nettoyage de la sortie xtradata
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-temporal_aggregate"></a>}}
-\if{latex}{\out{\hypertarget{method-temporal_aggregate}{}}}
-\subsection{Method \code{temporal_aggregate()}}{
+\if{html}{\out{<a id="method-mean_by_some_time_unit"></a>}}
+\if{latex}{\out{\hypertarget{method-mean_by_some_time_unit}{}}}
+\subsection{Method \code{mean_by_some_time_unit()}}{
 Aggregation des données selon une fenetre temporelle
 (application de la fonction summarise_by_time de timetk)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$temporal_aggregate(aggregate_step)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$mean_by_some_time_unit(time_unit)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{aggregate_step}}{pas d'aggreg (voir timetk)}
+\item{\code{time_unit}}{pas d'aggreg (voir timetk)}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{ temporal_aggregate("day")
+} 
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

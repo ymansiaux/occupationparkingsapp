@@ -7,7 +7,9 @@ License: MIT + file LICENSE
 Imports: 
     config,
     data.table,
+    dplyr,
     DT,
+    ggplot2,
     golem,
     htmltools,
     lubridate,
@@ -18,6 +20,7 @@ Imports:
     shiny,
     shinybm,
     shinyjs,
+    tidytable,
     timetk,
     waiter,
     xtradata
