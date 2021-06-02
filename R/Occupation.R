@@ -113,7 +113,6 @@ Occupation <- R6::R6Class(
                               taux_occupation = mean(taux_occupation, na.rm = TRUE))
         )
     }
-    
   )
 )
 #https://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html
