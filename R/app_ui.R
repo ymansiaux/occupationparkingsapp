@@ -4,22 +4,33 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @importFrom shinyjs useShinyjs
-#' @importFrom shinybm waiter_logoDatalab navbarPage_logoDatalab
+#' @importFrom shinybm waiter_logoDatalab title_with_logoDatalab 
 #' @noRd
+#' 
+
 app_ui <- function(request) {
+  
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     shinyjs::useShinyjs(),
     waiter_logoDatalab(golem::app_prod()),
-    navbarPage_logoDatalab(title = "Kanot"),
-    tabPanel(
-      title = "Acc\u00e8s aux donn\u00e9es",
-      tabPanel(
-        "Visualisation"
+    fluidPage(
+      navbarPage(title = title_with_logoDatalab(main_title = "Coucou"),
+                 id = "navbarpage",
+                 collapsible = TRUE,
+                 tabPanel("Tab1",
+                          mod_occupation_ui("occupation_ui_1")),
+                 tabPanel("Tab2"),
+                 tabPanel("Tab3")
       )
     )
+    
   )
+  
+
+  
+  
 }
 
 
@@ -35,12 +46,12 @@ golem_add_external_resources <- function() {
   add_resource_path(
     "www", app_sys("app/www")
   )
-
+  
   tags$head(
     favicon(),
     bundle_resources(
       path = app_sys("app/www"),
-      app_title = "kanotapp"
+      app_title = "occupationsparkingsapp"
     )
     # Add here other external resources
     # for example, you can add shinyalert::useShinyalert()

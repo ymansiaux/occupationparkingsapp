@@ -1,0 +1,123 @@
+---
+title: "occupationparkingsapp"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{occupationparkingsapp}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(occupationparkingsapp)
+library(R6)
+library(xtradata)
+library(tidytable)
+library(lubridate)
+library(timetk)
+library(ggplot2)
+library(dplyr)
+```
+
+# Classes R6
+
+## Occupation 
+
+On va définir une classe R6, qui va permettre d'effecteur les opérations suivantes sur les différents types de parkings (relais ou non) et secteurs d'intéret (hypercentre, centre, périphérie).
+
+Cette classe va devoir réaliser les opérations suivantes :
+
+- Récupération des données sur le WS d'intéret
+- Nettoyage et aggregation eventuelle selon le pas de temps
+- Realisation d'un graphique
+- Sortie d'un tableau
+- Operation de telechargement
+
+
+### Création d'une nouvelle instance
+
+```{r}
+source("../R/Occupation.R")
+parc_relais_hour <- Occupation$new(rangeStart = Sys.Date() - 3, rangeEnd = Sys.Date() - 1, localisation_parking = NA, parc_relais = TRUE)
+centre_day <- Occupation$new(rangeStart = Sys.Date() - 3, rangeEnd = Sys.Date() - 1, localisation_parking = "centre", parc_relais = FALSE)
+```
+
+### Appel du WS de récupération des données
+
+```{r}
+parc_relais_hour$download_data(rangeStep = "hour")
+centre_day$download_data(rangeStep = "day")
+
+```
+Le choix du rangeStep est des opérations qui vont en découler vont dépendre du choix de l'utilisateur.
+
+-> données horaires
+rangeStep = hour
+dataviz = moyenne horaire sur la plage de temps complète
+
+-> données journalières
+rangeStep = day
+dataviz = données rendues par xtradata jour par jour
+
+-> données hebdo
+rangeStep = day
+dataviz = données à agreger à la semaine (moyenne)
+
+-> données mensuelle
+rangeStep = day
+dataviz = données à agreger au mois (moyenne)
+
+-> données annuelle
+rangeStep = day
+dataviz = données à agreger à l'année (moyenne)
+
+
+```{r}
+head(parc_relais_hour$data_xtradata)
+# on souhaite garder dans l'output final
+# ident
+# time 
+# libres
+# total
+```
+
+### Nettoyage
+
+```{r}
+parc_relais_hour$clean_output()
+head(parc_relais_hour$data_xtradata)
+
+centre_day$clean_output()
+head(centre_day$data_xtradata)
+
+```
+
+### Aggregation temporelle
+
+```{r}
+parc_relais_hour$mean_by_some_time_unit(time_unit = "hour")
+head(parc_relais_hour$data_xtradata)
+
+centre_day$mean_by_some_time_unit(time_unit = "week")
+head(centre_day$data_xtradata)
+
+```
+
+
+
+
+```{r}
+ggplot(data = centre_day$data_xtradata, mapping = aes(x = time, y = taux_occupation, color = ident)) + 
+  geom_line()
+
+ggplot(data = parc_relais_hour$data_xtradata, mapping = aes(x = time, y = taux_occupation, color = ident)) + 
+  geom_line()
+
+```
+

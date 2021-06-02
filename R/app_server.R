@@ -1,12 +1,19 @@
 #' The application server-side
-#' 
-#' @param input,output,session Internal parameters for {shiny}. 
+#'
+#' @param input,output,session Internal parameters for {shiny}.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import tidytable
+#' @import R6
 #' @importFrom shinybm closeWaiter_logoDatalab
 #' @importFrom golem app_prod
+#' @importFrom data.table :=
+
+
 #' @noRd
-app_server <- function( input, output, session ) {
+app_server <- function(input, output, session) {
   observe(closeWaiter_logoDatalab(golem::app_prod()))
-  
+
+  mod_occupation_server("occupation_ui_1")
 }
+
