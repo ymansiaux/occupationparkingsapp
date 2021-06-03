@@ -8,12 +8,12 @@
 #'
 #' @import shiny
 #' @import R6
-#' @importFrom DT DTOutput renderDT
+#' @importFrom ggiraph renderggiraph ggiraphOutput
 mod_saturation_graphe_ui <- function(id){
   ns <- NS(id)
   tagList(
     h3("Graphique"),
-    plotOutput(ns("plot"))
+    ggiraphOutput(ns("plot"))
   )
 }
 
@@ -22,7 +22,7 @@ mod_saturation_graphe_ui <- function(id){
 #' @noRd 
 mod_saturation_graphe_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
-    output$plot <- renderPlot({
+    output$plot <- renderggiraph({
       r6$calendar_heatmap() 
     })
     

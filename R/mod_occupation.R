@@ -32,8 +32,6 @@ mod_occupation_ui <- function(id){
           label = "Lancer la requ\u00eate"
         )
         
-        
-        
       ),
       mainPanel(width = 10,
                 fluidRow(

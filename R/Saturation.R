@@ -128,6 +128,7 @@ Saturation <- R6::R6Class(
     #' @importFrom data.table :=
     #' @importFrom ggplot2 ggplot aes geom_tile scale_fill_distiller scale_x_continuous facet_grid theme_minimal theme unit element_blank coord_equal
     #' @importFrom lubridate hour wday
+    #' @importFrom ggiraph girafe opts_sizing opts_tooltip opts_hover geom_tile_interactive
     #' @examples \dontrun{ temporal_aggregate("day")
     #' } 
     calendar_heatmap = function() {
@@ -136,8 +137,8 @@ Saturation <- R6::R6Class(
         inner_join.(self$parkings_satures, by = "ident") %>% 
         mutate.(hours = hour(time), days = wday(time, label = TRUE), taux = taux_occupation * 100) 
       
-      ggplot(data_parkings_heatmap, aes(hours, days)) +
-        geom_tile(aes(fill = taux), colour = "white") +
+      gg <- ggplot(data_parkings_heatmap, aes(x = hours, y = days, tooltip = taux)) +
+        geom_tile_interactive(aes(fill = taux), colour = "white") +
         scale_fill_distiller(palette = "Spectral", direction = -1) +
         scale_x_continuous(breaks = 0:23) +
         facet_grid(ident ~ .) + 
@@ -149,7 +150,20 @@ Saturation <- R6::R6Class(
         ) +
         coord_equal()
       
+      girafe(
+        ggobj = gg, width_svg = 6, height_svg = 6,
+        options = list(
+          opts_sizing(rescale = FALSE),
+          opts_tooltip(
+            opacity = .8,
+            css = "background-color:gray;color:white;padding:2px;border-radius:2px;"
+          ),
+          opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
+        )
+      )
+      
     }
   )
 )
+
 #https://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html
