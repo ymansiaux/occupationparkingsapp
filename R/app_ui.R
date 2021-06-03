@@ -19,9 +19,10 @@ app_ui <- function(request) {
       navbarPage(title = title_with_logoDatalab(main_title = "Coucou"),
                  id = "navbarpage",
                  collapsible = TRUE,
-                 tabPanel("Tab1",
+                 tabPanel("Occupation",
                           mod_occupation_ui("occupation_ui_1")),
-                 tabPanel("Tab2"),
+                 tabPanel("Saturation",
+                          mod_saturation_ui("saturation_ui_1")),
                  tabPanel("Tab3")
       )
     )
