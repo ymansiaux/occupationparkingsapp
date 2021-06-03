@@ -11,9 +11,24 @@ mod_saturation_ui <- function(id){
   ns <- NS(id)
   tagList(
     mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_1")),
+    mod_saturation_clean_ui(ns("saturation_clean_ui_1")),
+    mod_saturation_graphe_ui(ns("saturation_graphe_ui_1")),
+    mod_saturation_table_ui(ns("saturation_table_ui_1")),
+    
     mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_2")),
+    mod_saturation_clean_ui(ns("saturation_clean_ui_2")),
+    mod_saturation_graphe_ui(ns("saturation_graphe_ui_2")),
+    mod_saturation_table_ui(ns("saturation_table_ui_2")),
+    
     mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_3")),
-    mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_4"))
+    mod_saturation_clean_ui(ns("saturation_clean_ui_3")),
+    mod_saturation_graphe_ui(ns("saturation_graphe_ui_3")),
+    mod_saturation_table_ui(ns("saturation_table_ui_3")),
+    
+    mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_4")),
+    mod_saturation_clean_ui(ns("saturation_clean_ui_4")),
+    mod_saturation_graphe_ui(ns("saturation_graphe_ui_4")),
+    mod_saturation_table_ui(ns("saturation_table_ui_4")),
   )
 }
 
@@ -32,9 +47,24 @@ mod_saturation_server <- function(id){
     # observe(    browser())
     
     mod_saturation_appel_WS_server("saturation_appel_WS_ui_1", r6 = parc_relais)
+    mod_saturation_clean_server("saturation_clean_ui_1", r6 = parc_relais)
+    mod_saturation_graphe_server("saturation_graphe_ui_1", r6 = parc_relais)
+    mod_saturation_table_server("saturation_table_ui_1", r6 = parc_relais)
+    
     mod_saturation_appel_WS_server("saturation_appel_WS_ui_2", r6 = hypercentre)
+    mod_saturation_clean_server("saturation_clean_ui_2", r6 = hypercentre)
+    mod_saturation_graphe_server("saturation_graphe_ui_2", r6 = hypercentre)
+    mod_saturation_table_server("saturation_table_ui_2", r6 = hypercentre)
+    
     mod_saturation_appel_WS_server("saturation_appel_WS_ui_3", r6 = centre)
+    mod_saturation_clean_server("saturation_clean_ui_3", r6 = centre)
+    mod_saturation_graphe_server("saturation_graphe_ui_3", r6 = centre)
+    mod_saturation_table_server("saturation_table_ui_3", r6 = centre)
+    
     mod_saturation_appel_WS_server("saturation_appel_WS_ui_4", r6 = peripherie)
+    mod_saturation_clean_server("saturation_clean_ui_4", r6 = peripherie)
+    mod_saturation_graphe_server("saturation_graphe_ui_4", r6 = peripherie)
+    mod_saturation_table_server("saturation_table_ui_4", r6 = peripherie)
     
   })
 }

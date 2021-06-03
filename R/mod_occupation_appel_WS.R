@@ -13,7 +13,7 @@ mod_occupation_appel_WS_ui <- function(id){
   ns <- NS(id)
   tagList(
     # DTOutput(ns("table"))
-    plotOutput(ns("plot"))
+    # plotOutput(ns("plot"))
   )
 }
 
@@ -32,16 +32,21 @@ mod_occupation_appel_WS_server <- function(id, r6){
     #   r6$data_xtradata[1:5,]
     # })
     
-    output$plot <- renderPlot({
-      # browser()
+    # output$plot <- renderPlot({
+    #   # browser()
+    #   r6$download_data(rangeStep = "hour")
+    #   r6$clean_output()
+    #   r6$mean_by_some_time_unit(time_unit = "hour")
+    #   r6$timeseries_plot()
+    #   # r6$data_xtradata[1:5,]
+    # })
+  
+    observe(
       r6$download_data(rangeStep = "hour")
-      r6$clean_output()
-      r6$mean_by_some_time_unit(time_unit = "hour")
-      r6$timeseries_plot()
-      # r6$data_xtradata[1:5,]
-    })
-    
+    )
+      
   })
+  
 }
 
 # parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
