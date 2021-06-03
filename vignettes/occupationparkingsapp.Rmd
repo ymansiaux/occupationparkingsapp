@@ -78,6 +78,7 @@ dataviz = données à agreger au mois (moyenne)
 rangeStep = day
 dataviz = données à agreger à l'année (moyenne)
 
+-> faire du cache là dessus
 
 ```{r}
 head(parc_relais_hour$data_xtradata)
@@ -156,43 +157,6 @@ parc_relais_hour$clean_output()
 parc_relais_hour$data_xtradata
 parc_relais_hour$filter_full_capacity_parkings()
 parc_relais_hour$calendar_heatmap()
-
-n_hour_per_day_full <- parc_relais_hour$data_xtradata %>% 
-  mutate.(date = as_date(time)) %>% 
-  summarise.(n_hour_per_day_full = sum(taux_occupation >= .9), .by = c(ident, date)) 
-
-n_days_per_week_full <- n_hour_per_day_full %>% 
-  mutate.(week = floor_date(date, unit = "week", week_start = 1)) %>%
-  summarise.(n_day_per_week_full = sum(n_hour_per_day_full >= 3), .by = c(ident, week)) 
-
-parkings_satures <- n_days_per_week_full %>% 
-  filter.(n_day_per_week_full >= 2)
-
-
-# remonter à la source
-
-data_parkings_heatmap <- parc_relais_hour$data_xtradata %>% 
-  inner_join.(parkings_satures, by = "ident") %>% 
-  mutate.(hours = hour(time), days = wday(time, label = TRUE), taux = taux_occupation * 100) 
-
-
-
-# parking_test_heatmap <- parkings_satures %>% 
-  # mutate.(hours = hour(time), days = wday(time, label = TRUE), taux = taux_occupation * 100) 
-
-
-gg <- ggplot(data_parkings_heatmap, aes(hours, days)) +
-  geom_tile(aes(fill = taux), colour = "white") +
-  scale_fill_distiller(palette = "Spectral", direction = -1) +
-  scale_x_continuous(breaks = 0:23) +
-  facet_grid(ident ~ .) + 
-  theme_minimal() + 
-  theme(
-    legend.position = "bottom",
-    legend.key.width = unit(2, "cm"),
-    panel.grid = element_blank()
-  ) +
-  coord_equal()
 
 ggiraph::girafe(ggobj = gg)
 
