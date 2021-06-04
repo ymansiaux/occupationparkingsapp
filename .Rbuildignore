@@ -10,3 +10,5 @@ docs_projet
 ^CODE_OF_CONDUCT\.md$
 deploy_to_RSPM.R
 ^deploy_to_RSPM\.R$
+^app\.R$
+^rsconnect$

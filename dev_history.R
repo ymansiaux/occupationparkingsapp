@@ -6,6 +6,8 @@ usethis::use_data_raw("parkings")
 usethis::use_vignette("occupationparkingsapp")
 usethis::use_vignette("questions")
 
+usethis::use_r("_disable_autoload")
+
 devtools::check(document = TRUE)
 devtools::build(vignettes = TRUE)
 devtools::install(build_vignettes = TRUE)

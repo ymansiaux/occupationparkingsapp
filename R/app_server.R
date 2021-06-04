@@ -12,6 +12,10 @@
 
 #' @noRd
 app_server <- function(input, output, session) {
+  
+  options(datatable.print.class = TRUE)
+  options(bitmapType='cairo')
+  
   observe(closeWaiter_logoDatalab(golem::app_prod()))
 
   mod_occupation_server("occupation_ui_1")
