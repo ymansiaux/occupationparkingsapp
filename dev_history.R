@@ -5,6 +5,8 @@ usethis::use_data_raw("parkings")
 
 usethis::use_vignette("occupationparkingsapp")
 usethis::use_vignette("questions")
+usethis::use_vignette("designApp")
+
 
 usethis::use_r("_disable_autoload")
 

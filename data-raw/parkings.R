@@ -30,6 +30,7 @@
 # -périphérie: Bègles Sècheries, Pessac centre, Mérignac centre, Bouscat Libération
 
 library(dplyr)
+library(xtradata)
 
 parkings_relais <- xtradata_requete_features(
   key = "DATAZBOUBB",
