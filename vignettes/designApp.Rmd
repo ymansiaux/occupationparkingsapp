@@ -1,0 +1,74 @@
+---
+title: "designApp"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{designApp}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(occupationparkingsapp)
+```
+
+# Classes R6
+
+## Super classe parkings
+
+## Occupation
+
+## Saturation
+
+
+# Design 
+
+## Onglet Saturation
+
+### Panneau Lateral
+
+Sélection d'une niveau d'aggrégation d'intéret
+
+-> données horaires
+rangeStep = hour
+dataviz = moyenne horaire sur la plage de temps complète
+on peut représenter les données / parkings en ligne et la moyenne en barplot en arriere plan
+le calendar ne permet de choisir qu'une journée
+
+-> données à la semaine
+rangeStep = day
+dataviz = données rendues par xtradata jour par jour
+on peut représenter les données / parkings en ligne et la moyenne en barplot en arriere plan
+le calendar ne permet de choisir qu'une semaine
+
+-> données mensuelle
+rangeStep = day
+dataviz = données à agreger à la journée (moyenne)
+on peut représenter les données / parkings en ligne et la moyenne en barplot en arriere plan
+le calendar ne permet de choisir qu'une mois
+
+-> données annuelle
+rangeStep = month
+dataviz = données à agreger au mois
+on peut représenter les données / parkings en ligne et la moyenne en barplot en arriere plan
+le calendar ne permet de choisir qu'une annee
+
+-> faire du cache là dessus
+
+
+#### Selecteurs
+Niveau de rendu des data : jour / semaine / mois / annee
+Calendar
+Plage horaire : jour (8h - 20h) / nuit / personnalisée
+
+### Panneau de droite
+
+Options à ajouter : télécharger le graphe / le tableau
+Menu déroulant pour affiner la sélection des parkings
+

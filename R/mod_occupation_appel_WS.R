@@ -12,7 +12,8 @@
 mod_occupation_appel_WS_ui <- function(id){
   ns <- NS(id)
   tagList(
-    DTOutput(ns("table"))
+    # DTOutput(ns("table"))
+    # plotOutput(ns("plot"))
   )
 }
 
@@ -22,37 +23,30 @@ mod_occupation_appel_WS_ui <- function(id){
 mod_occupation_appel_WS_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
     # ns <- session$ns
-     # observe(browser())
+    # observe(browser())
     
-    output$table <- renderDT({
+    # output$table <- renderDT({
+    #   r6$download_data(rangeStep = "hour")
+    #   r6$clean_output()
+    #   r6$mean_by_some_time_unit(time_unit = "day")
+    #   r6$data_xtradata[1:5,]
+    # })
+    
+    # output$plot <- renderPlot({
+    #   # browser()
+    #   r6$download_data(rangeStep = "hour")
+    #   r6$clean_output()
+    #   r6$mean_by_some_time_unit(time_unit = "hour")
+    #   r6$timeseries_plot()
+    #   # r6$data_xtradata[1:5,]
+    # })
+  
+    observe(
       r6$download_data(rangeStep = "hour")
-      r6$clean_output()
-      r6$mean_by_some_time_unit(time_unit = "day")
-      r6$data_xtradata[1:5,]
-    })
-
-    # download_data = function(rangeStep) {
-    #   # self$data_xtradata <- 
-    #     
-    #     try(xtradata_requete_aggregate(
-    #     key = "DATAZBOUBB",
-    #     typename = "ST_PARK_P",
-    #     rangeStart = r6$rangeStart,
-    #     rangeEnd = r6$rangeEnd,
-    #     rangeStep = "hour",
-    #     rangeFilter = list(hours = 0:23, days = 1:7, publicHolidays = FALSE),
-    #     filter = list(
-    #       "ident" =
-    #         list(
-    #           "$in" =
-    #             parkings %>% filter.(parc_relais == r6$parc_relais & localisation_parking %in% r6$localisation_parking) %>% select.(ident) %>% dplyr::pull()
-    #           )
-    #     ),
-    #     attributes = list("gid", "time", "libres", "total", "etat", "ident"),
-    #     showURL = TRUE
-    #   ))
-    # 
+    )
+      
   })
+  
 }
 
 # parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)

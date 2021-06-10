@@ -1,9 +1,9 @@
-#' R6 Class pour donnees occupations des parkings
+#' R6 Super Class pour donnees occupations et saturation des parkings
 #'
 #' @description
-#' va gérer la routine API / clean / plot / table / download
-Occupation <- R6::R6Class(
-  "Occupation",
+#' utilisee ensuite par classe Occupation et Saturation
+Parkings <- R6::R6Class(
+  "Parkings",
   
   public = list(
     #' @field rangeStart Debut de la periode d'observation
@@ -30,7 +30,7 @@ Occupation <- R6::R6Class(
     #' @param data_xtradata data_xtradata
     #' @return A new `Occupation` object.
     
-    initialize = function(rangeStart, rangeEnd, localisation_parking, parc_relais, data_xtradata) {
+    initialize = function(rangeStart, rangeEnd, localisation_parking, parc_relais) {
       self$rangeStart <- rangeStart
       self$rangeEnd <- rangeEnd
       self$localisation_parking <- localisation_parking
@@ -42,6 +42,7 @@ Occupation <- R6::R6Class(
     #' Interroge le WS aggregate
     #' @param rangeStep rangeStep xtradata aggregate
     #' @import tidytable
+    #' @importFrom data.table :=
     #' @importFrom dplyr pull
     #' @importFrom xtradata xtradata_requete_aggregate
     #' @examples \dontrun{
@@ -62,7 +63,7 @@ Occupation <- R6::R6Class(
             list(
               "$in" =
                 parkings %>% filter.(localisation_parking %in% self$localisation_parking & parc_relais == self$parc_relais) %>% select.(ident) %>% pull()
-              )
+            )
         ),
         attributes = list("gid", "time", "libres", "total", "etat", "ident"),
         showURL = TRUE
@@ -73,9 +74,9 @@ Occupation <- R6::R6Class(
     #' Nettoyage de la sortie xtradata
     #' (application de lubridate et calcul du taux d'occup)
     #' @import tidytable
+    #' @importFrom data.table :=
     #' @importFrom lubridate as_datetime
     #' @examples \dontrun{ clean_output()
-
     #' }
     clean_output = function() {
       ## rajouter du defensive programming
@@ -83,35 +84,7 @@ Occupation <- R6::R6Class(
         select.(-type) %>%
         mutate.(time = as_datetime(time),
                 libres = ceiling(libres),
-                taux_occupation = (libres / total))
-    },
-    
-    #' @description
-    #' Aggregation des données selon une fenetre temporelle
-    #' (application de la fonction summarise_by_time de timetk)
-    #' @param time_unit pas d'aggreg (voir timetk)
-    #' @import tidytable
-    #' @importFrom timetk summarise_by_time
-    #' @importFrom dplyr bind_rows group_by
-    #' @examples \dontrun{ temporal_aggregate("day")
-    #' } 
-    mean_by_some_time_unit = function(time_unit) {
-      self$data_xtradata <- 
-        # on bind_rows : la moyenne globale et la moyenne par ident
-        bind_rows(
-          self$data_xtradata %>% 
-            summarise_by_time(.date_var = time, 
-                              .by = time_unit,
-                              taux_occupation = mean(taux_occupation, na.rm = TRUE)) %>% 
-            mutate.(ident = "moyenne")
-          ,
-          
-          self$data_xtradata %>% 
-            group_by(ident) %>% 
-            summarise_by_time(.date_var = time, 
-                              .by = time_unit,
-                              taux_occupation = mean(taux_occupation, na.rm = TRUE))
-        )
+                taux_occupation = pmax(0, 1-(libres / total)))
     }
   )
 )

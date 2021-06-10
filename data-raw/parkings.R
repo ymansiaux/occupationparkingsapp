@@ -16,7 +16,9 @@
 # Meunier CUBPK04
 # Salinières CUBPK05
 # Paludate CUBPK78
-# Saint Jean : https://opendata.bordeaux-metropole.fr/explore/dataset/st_park_p/table/?q=Saint+Jean&sort=-ta_titul
+# Saint Jean CUBPK33
+# St Jean Arret Minute CUBPK102
+
 # 
 # Bègles Sècheries CUBPK72
 # Pessac centre CUBPK40
@@ -28,6 +30,7 @@
 # -périphérie: Bègles Sècheries, Pessac centre, Mérignac centre, Bouscat Libération
 
 library(dplyr)
+library(xtradata)
 
 parkings_relais <- xtradata_requete_features(
   key = "DATAZBOUBB",
@@ -42,7 +45,7 @@ parkings <- bind_rows(
              "ident" = c("CUBPK02", "CUBPK03", "CUBPK07", "CUBPK24", "CUBPK30", "CUBPK28", "CUBPK34", "CUBPK26", "CUBPK29", "CUBPK16"),
              "parc_relais" = FALSE),
   data.frame("localisation_parking" = "centre",
-             "ident" = c("CUBPK27", "CUBPK35", "CUBPK04", "CUBPK05", "CUBPK78"),
+             "ident" = c("CUBPK27", "CUBPK35", "CUBPK04", "CUBPK05", "CUBPK78", "CUBPK33", "CUBPK102"),
              "parc_relais" = FALSE),
   data.frame("localisation_parking" = "peripherie",
              "ident" = c("CUBPK72", "CUBPK40", "CUBPK39", "CUBPK38"),

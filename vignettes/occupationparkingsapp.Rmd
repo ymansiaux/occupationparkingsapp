@@ -23,6 +23,7 @@ library(lubridate)
 library(timetk)
 library(ggplot2)
 library(dplyr)
+library(ggiraph)
 ```
 
 # Classes R6
@@ -77,6 +78,7 @@ dataviz = données à agreger au mois (moyenne)
 rangeStep = day
 dataviz = données à agreger à l'année (moyenne)
 
+-> faire du cache là dessus
 
 ```{r}
 head(parc_relais_hour$data_xtradata)
@@ -104,7 +106,7 @@ head(centre_day$data_xtradata)
 parc_relais_hour$mean_by_some_time_unit(time_unit = "hour")
 head(parc_relais_hour$data_xtradata)
 
-centre_day$mean_by_some_time_unit(time_unit = "week")
+centre_day$mean_by_some_time_unit(time_unit = "day")
 head(centre_day$data_xtradata)
 
 ```
@@ -113,11 +115,51 @@ head(centre_day$data_xtradata)
 
 
 ```{r}
-ggplot(data = centre_day$data_xtradata, mapping = aes(x = time, y = taux_occupation, color = ident)) + 
-  geom_line()
+# ggplot(data = centre_day$data_xtradata, mapping = aes(x = time, y = taux_occupation, color = ident)) + 
+#   geom_line()
+# 
+# ggplot(data = parc_relais_hour$data_xtradata, mapping = aes(x = time, y = taux_occupation, color = ident)) + 
+#   geom_line()
 
-ggplot(data = parc_relais_hour$data_xtradata, mapping = aes(x = time, y = taux_occupation, color = ident)) + 
-  geom_line()
+centre_day$timeseries_plot()
+parc_relais_hour$timeseries_plot()
 
+```
+
+
+# Saturation
+
+De manière identique on va créer une classe R6 dediée.
+Récupération de données, nettoyage et graphe.
+
+En l'état on ne peut récupérer qu'une semaine via le WS. On reste là dessus.
+
+
+
+### Création d'une nouvelle instance
+
+```{r}
+source("../R/Saturation.R")
+parc_relais_hour <- Saturation$new(rangeStart = as.Date("2021-05-24"), rangeEnd = as.Date("2021-05-31"), localisation_parking = NA, parc_relais = TRUE)
+```
+
+### Appel du WS de récupération des données
+
+```{r}
+parc_relais_hour$download_data(rangeStep = "hour")
+```
+
+```{r}
+parc_relais_hour$clean_output()
+```
+
+```{r}
+parc_relais_hour$data_xtradata
+parc_relais_hour$filter_full_capacity_parkings()
+parc_relais_hour$calendar_heatmap()
+
+ggiraph::girafe(ggobj = gg)
+
+# nb heures / j ooù saturation >= 90%, et nb jours >= 2 / semaine
 ```
 
