@@ -14,11 +14,47 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Réu 20210610 P. Mercé
+
 ## Questions
 
-Parkings "St Jean"
+Parkings "St Jean" -> OK
 
-Taux occupations négatifs
+---
 
+Taux occupations négatifs -> voir pour rajouter un onglet qualité de données avec les données incohérentes
+Nb de fois par jour où on a libres > total
+
+---
+
+"En donnant aux destinataires la possibilité de cocher la temporalité du reporting: à la semaine, au mois, trimestre, année"
+C'est l'axe des x qui va etre impacté; ex si sélection au mois, les données sont journalières ? avec la moyenne sur la journée ?
+Si c'est au trimestre c'est quoi ?
+
+
+Occupation : nom du parking dans la légende plutot que l'identifiant
+Style de ligne différent pour la moyenne (plus gros par ex)
+Menu pour sélectionner uniquement un sous ensemble de pkgs à afficher
+
+Cache jour (8h-20h) / nuit (20-8h) / ou plage horaire au choix
+
+Calendrier s'adapte à la temporalité choisie par l'utilisateur.
+
+-----
+Si on sélectionne une journée : on affiche à l'heure ?
+Journée resittuée à la maille horaire
+
+Si on sélectionne une semaine : axe des x : jour
+
+Si on sélectionne un mois : axe des x : jour
+
+Si on selectionne une année : axe des x : mois
+
+
+----
 Pour la saturation, on autorise que la sélection d'une semaine ? si sélection supérieur à 1 semaine on propose la sélection d'une semaine donnée via un sélecteur ?
+
+Au max sélection d'un mois, on garde un parking si le critère est rempli pour 1 semaine au moins
+Voir pour inverser les axes du graphique
+
 
