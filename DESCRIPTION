@@ -5,6 +5,7 @@ Authors@R: person('Yohann', 'Mansiaux', email = 'y.mansiaux@bordeaux-metropole.f
 Description: Consultation des donnees parkings - appli + rapport.
 License: MIT + file LICENSE
 Imports: 
+    clock,
     config,
     data.table,
     dplyr,
