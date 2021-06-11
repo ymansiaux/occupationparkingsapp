@@ -23,13 +23,13 @@ Occupation <- R6::R6Class(
         # on bind_rows : la moyenne globale et la moyenne par ident
         bind_rows.(
           self$data_xtradata %>% 
-            mutate.(time = floor_date(time, by = time_unit, ...)) %>% 
+            mutate.(time = floor_date(time, unit = time_unit, ...)) %>% 
             summarise.(taux_occupation = mean(taux_occupation, na.rm = TRUE), .by = c(time)) %>% 
             mutate.(ident = "moyenne")
           ,
           
           self$data_xtradata %>% 
-            mutate.(time = floor_date(time, by = time_unit, ...)) %>% 
+            mutate.(time = floor_date(time, unit = time_unit, ...)) %>% 
             summarise.(taux_occupation = mean(taux_occupation, na.rm = TRUE), .by = c(ident, time))
         )
         # bind_rows.(

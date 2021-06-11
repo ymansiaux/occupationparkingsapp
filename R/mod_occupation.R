@@ -130,31 +130,30 @@ mod_occupation_server <- function(id){
                "Mois" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_month),
                "Ann\u00e9e" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_year)
         )
-      print(xtradata_parameters)
- 
+
       parc_relais <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
                                     rangeEnd = xtradata_parameters$rangeEnd,
                                     rangeStep = xtradata_parameters$rangeStep,
                                     localisation_parking = NA,
                                     parc_relais = TRUE)
 
-      hypercentre <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
-                                    rangeEnd = xtradata_parameters$rangeEnd,
-                                    rangeStep = xtradata_parameters$rangeStep,
-                                    localisation_parking = "hypercentre",
-                                    parc_relais = FALSE)
-
-      centre <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
-                               rangeEnd = xtradata_parameters$rangeEnd,
-                               rangeStep = xtradata_parameters$rangeStep,
-                               localisation_parking = "centre",
-                               parc_relais = FALSE)
-
-      peripherie  <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
-                                    rangeEnd = xtradata_parameters$rangeEnd,
-                                    rangeStep = xtradata_parameters$rangeStep,
-                                    localisation_parking = "peripherie",
-                                    parc_relais = FALSE)
+      # hypercentre <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
+      #                               rangeEnd = xtradata_parameters$rangeEnd,
+      #                               rangeStep = xtradata_parameters$rangeStep,
+      #                               localisation_parking = "hypercentre",
+      #                               parc_relais = FALSE)
+      # 
+      # centre <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
+      #                          rangeEnd = xtradata_parameters$rangeEnd,
+      #                          rangeStep = xtradata_parameters$rangeStep,
+      #                          localisation_parking = "centre",
+      #                          parc_relais = FALSE)
+      # 
+      # peripherie  <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
+      #                               rangeEnd = xtradata_parameters$rangeEnd,
+      #                               rangeStep = xtradata_parameters$rangeStep,
+      #                               localisation_parking = "peripherie",
+      #                               parc_relais = FALSE)
 
 
       mod_occupation_appel_WS_server("occupation_appel_WS_ui_1", r6 = parc_relais)
@@ -162,20 +161,20 @@ mod_occupation_server <- function(id){
       mod_occupation_graphe_server("occupation_graphe_ui_1", r6 = parc_relais)
       mod_occupation_table_server("occupation_table_ui_1", r6 = parc_relais)
 
-      mod_occupation_appel_WS_server("occupation_appel_WS_ui_2", r6 = hypercentre)
-      mod_occupation_clean_server("occupation_clean_ui_2", r6 = hypercentre)
-      mod_occupation_graphe_server("occupation_graphe_ui_2", r6 = hypercentre)
-      mod_occupation_table_server("occupation_table_ui_2", r6 = hypercentre)
-
-      mod_occupation_appel_WS_server("occupation_appel_WS_ui_3", r6 = centre)
-      mod_occupation_clean_server("occupation_clean_ui_3", r6 = centre)
-      mod_occupation_graphe_server("occupation_graphe_ui_3", r6 = centre)
-      mod_occupation_table_server("occupation_table_ui_3", r6 = centre)
-
-      mod_occupation_appel_WS_server("occupation_appel_WS_ui_4", r6 = peripherie)
-      mod_occupation_clean_server("occupation_clean_ui_4", r6 = peripherie)
-      mod_occupation_graphe_server("occupation_graphe_ui_4", r6 = peripherie)
-      mod_occupation_table_server("occupation_table_ui_4", r6 = peripherie)
+      # mod_occupation_appel_WS_server("occupation_appel_WS_ui_2", r6 = hypercentre)
+      # mod_occupation_clean_server("occupation_clean_ui_2", r6 = hypercentre)
+      # mod_occupation_graphe_server("occupation_graphe_ui_2", r6 = hypercentre)
+      # mod_occupation_table_server("occupation_table_ui_2", r6 = hypercentre)
+      # 
+      # mod_occupation_appel_WS_server("occupation_appel_WS_ui_3", r6 = centre)
+      # mod_occupation_clean_server("occupation_clean_ui_3", r6 = centre)
+      # mod_occupation_graphe_server("occupation_graphe_ui_3", r6 = centre)
+      # mod_occupation_table_server("occupation_table_ui_3", r6 = centre)
+      # 
+      # mod_occupation_appel_WS_server("occupation_appel_WS_ui_4", r6 = peripherie)
+      # mod_occupation_clean_server("occupation_clean_ui_4", r6 = peripherie)
+      # mod_occupation_graphe_server("occupation_graphe_ui_4", r6 = peripherie)
+      # mod_occupation_table_server("occupation_table_ui_4", r6 = peripherie)
 
     })
     
