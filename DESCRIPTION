@@ -7,7 +7,6 @@ License: MIT + file LICENSE
 Imports: 
     config,
     data.table,
-    dplyr,
     DT,
     ggiraph,
     ggplot2,
@@ -22,10 +21,7 @@ Imports:
     shiny,
     shinybm,
     shinyjs,
-    shinyWidgets,
     tidytable,
-    timetk,
-    waiter,
     xtradata
 Encoding: UTF-8
 LazyData: true
