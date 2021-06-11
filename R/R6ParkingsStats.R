@@ -2,8 +2,8 @@
 #'
 #' @description
 #' utilisee ensuite par classe Occupation et Saturation
-Parkings <- R6::R6Class(
-  "Parkings",
+ParkingsStats <- R6::R6Class(
+  "ParkingsStats",
   
   public = list(
     #' @field rangeStart Debut de la periode d'observation
@@ -27,7 +27,8 @@ Parkings <- R6::R6Class(
     #' @description
     #' Create a new occupation object.
     #' @param rangeStart rangeStart
-    #' @param rangeEnd rangeEnd.
+    #' @param rangeEnd rangeEnd
+    #' @param rangeStep rangeStep
     #' @param localisation_parking localisation_parking
     #' @param parc_relais parc_relais
     #' @param data_xtradata data_xtradata
@@ -47,7 +48,6 @@ Parkings <- R6::R6Class(
     #' @param rangeStep rangeStep xtradata aggregate
     #' @import tidytable
     #' @importFrom data.table :=
-    #' @importFrom dplyr pull
     #' @importFrom xtradata xtradata_requete_aggregate
     #' @examples \dontrun{
     #' parc_relais <- Occupation(rangeStart = Sys.Date() - 2, 
@@ -66,7 +66,7 @@ Parkings <- R6::R6Class(
           "ident" =
             list(
               "$in" =
-                parkings %>% filter.(localisation_parking %in% self$localisation_parking & parc_relais == self$parc_relais) %>% select.(ident) %>% pull()
+                parkings %>% filter.(localisation_parking %in% self$localisation_parking & parc_relais == self$parc_relais) %>% select.(ident) %>% pull.()
             )
         ),
         attributes = list("gid", "time", "libres", "total", "etat", "ident"),

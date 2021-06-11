@@ -4,7 +4,7 @@
 #' va gérer la routine API / clean / plot / table / download
 Saturation <- R6::R6Class(
   "Saturation",
-  inherit = Parkings,
+  inherit = ParkingsStats,
   
   public = list(
     
