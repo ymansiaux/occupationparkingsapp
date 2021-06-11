@@ -24,7 +24,7 @@ mod_occupation_clean_server <- function(id, r6){
     # observe(browser())
     observe({
       r6$clean_output()
-      r6$mean_by_some_time_unit(time_unit = "day")
+      r6$mean_by_some_time_unit(time_unit = r6$rangeStep)
     })
     
   })

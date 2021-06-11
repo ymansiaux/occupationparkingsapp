@@ -23,26 +23,8 @@ mod_occupation_appel_WS_ui <- function(id){
 mod_occupation_appel_WS_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
     # ns <- session$ns
-    # observe(browser())
-    
-    # output$table <- renderDT({
-    #   r6$download_data(rangeStep = "hour")
-    #   r6$clean_output()
-    #   r6$mean_by_some_time_unit(time_unit = "day")
-    #   r6$data_xtradata[1:5,]
-    # })
-    
-    # output$plot <- renderPlot({
-    #   # browser()
-    #   r6$download_data(rangeStep = "hour")
-    #   r6$clean_output()
-    #   r6$mean_by_some_time_unit(time_unit = "hour")
-    #   r6$timeseries_plot()
-    #   # r6$data_xtradata[1:5,]
-    # })
-  
     observe(
-      r6$download_data(rangeStep = "hour")
+      r6$download_data(rangeStep = r6$rangeStep)
     )
       
   })

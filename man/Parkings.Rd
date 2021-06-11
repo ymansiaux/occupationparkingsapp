@@ -32,6 +32,8 @@ parc_relais$data_xtradata }
 
 \item{\code{rangeEnd}}{Fin de la periode d'observation}
 
+\item{\code{rangeStep}}{Pas d'aggregation pour requete xtradata}
+
 \item{\code{localisation_parking}}{Secteur de localisation du parking (hypercentre, centre, peripherie, NA pour les parc relais)}
 
 \item{\code{parc_relais}}{Parc relais ou non (boolean)}
@@ -55,7 +57,13 @@ parc_relais$data_xtradata }
 \subsection{Method \code{new()}}{
 Create a new occupation object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Parkings$new(rangeStart, rangeEnd, localisation_parking, parc_relais)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Parkings$new(
+  rangeStart,
+  rangeEnd,
+  rangeStep,
+  localisation_parking,
+  parc_relais
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

@@ -7,10 +7,11 @@
 #' @noRd 
 #'
 #' @import shiny
-#' @importFrom lubridate year
-#' @importFrom shinybm hidden_div
+#' @importFrom shinybm hidden_div show_some_ids hide_some_ids
 #' @importFrom purrr walk pluck
-#' @importFrom shinyjs show hide
+#' @importFrom shinyjs show hide 
+#' @importFrom clock as_date add_days add_weeks add_months date_build add_years get_year date_group
+
 mod_occupation_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -18,12 +19,12 @@ mod_occupation_ui <- function(id){
       sidebarPanel(
         width = 2,
         
-        radioButtons(ns("timestep_data"), "Unité de temps",
+        radioButtons(ns("timestep"), "Unité de temps",
                      choices = c("Jour", "Semaine", "Mois", "Année"),
                      inline = TRUE),
         
         # Sélection d'un jour
-        hidden_div(id_div = ns("selection_timestep_data_day"), 
+        hidden_div(id_div = ns("selection_timestep_day"), 
                    contenu_div = tagList(
                      dateInput(inputId = ns("selected_day"), label = "Sélectionner une journée", 
                                value = Sys.Date()-1, 
@@ -33,7 +34,7 @@ mod_occupation_ui <- function(id){
         ),
         
         # Sélection d'une semaine
-        hidden_div(id_div = ns("selection_timestep_data_week"), 
+        hidden_div(id_div = ns("selection_timestep_week"), 
                    contenu_div = tagList(
                      dateInput(inputId = ns("selected_week"), label = "Sélectionner une semaine (lundi)", 
                                daysofweekdisabled = c(0,2:6),
@@ -43,20 +44,21 @@ mod_occupation_ui <- function(id){
         ),
         
         # Sélection d'un mois
-        hidden_div(id_div = ns("selection_timestep_data_month"), 
+        hidden_div(id_div = ns("selection_timestep_month"), 
                    contenu_div = tagList(
                      sliderInput(inputId = ns("selected_month"), label = "Sélectionner un mois",
-                                 min = debut_donnees, max = Sys.Date()-1,
+                                 min = date_group(debut_donnees, precision = "month"),
+                                 max = date_group(Sys.Date()-1, precision = "month"),
                                  value = debut_donnees, timeFormat = "%Y-%m"
                      )
                    )
         ),
         
         # Sélection d'une année
-        hidden_div(id_div = ns("selection_timestep_data_year"), 
+        hidden_div(id_div = ns("selection_timestep_year"), 
                    contenu_div = tagList(
                      radioButtons(inputId = ns("selected_year"), label = "Sélectionner une année",
-                                  choices = year(debut_donnees):year(Sys.Date()))
+                                  choices = get_year(debut_donnees):get_year(Sys.Date()))
                    )
         ),
         
@@ -106,73 +108,75 @@ mod_occupation_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     
-    ids_list <- list("Jour" = "selection_timestep_data_day", 
-                     "Semaine" = "selection_timestep_data_week", 
-                     "Mois" = "selection_timestep_data_month", 
-                     "Année" = "selection_timestep_data_year")
+    ids_list <- list("Jour" = "selection_timestep_day", 
+                     "Semaine" = "selection_timestep_week", 
+                     "Mois" = "selection_timestep_month", 
+                     "Année" = "selection_timestep_year")
     
     # En fonction de la fenetre temporelle selectionnee, on affiche le selecteur de date approprié et on masque les autres
-    observeEvent(input$timestep_data, { 
+    observeEvent(input$timestep, { 
       # On recupere l'id à afficher
-      show(pluck(ids_list, input$timestep_data))
+      show_some_ids(ids = ids_list[[input$timestep]])
       # On recupere les id à masquer
-      walk(ids_list[!names(ids_list) == input$timestep_data], ~hide(.))
+      hide_some_ids(ids = ids_list[!names(ids_list) == input$timestep])
       
     })
     
-
-    
-    # parc_relais <- Occupation$new(rangeStart = Sys.Date() - 2, rangeEnd = Sys.Date() - 1, localisation_parking = NA, parc_relais = TRUE)
-    # hypercentre <- Occupation$new(rangeStart = Sys.Date() - 2, rangeEnd = Sys.Date() - 1, localisation_parking = "hypercentre", parc_relais = FALSE)
-    # centre <- Occupation$new(rangeStart = Sys.Date() - 2, rangeEnd = Sys.Date() - 1, localisation_parking = "centre", parc_relais = FALSE)
-    # peripherie  <- Occupation$new(rangeStart = Sys.Date() - 2, rangeEnd = Sys.Date() - 1, localisation_parking = "peripherie", parc_relais = FALSE)
     
     observeEvent(input$run_query,{
-      
-      if(!is.null(input$rangePeriod) & length(input$rangePeriod) == 2)
-        
-        parc_relais <- Occupation$new(rangeStart = input$rangePeriod[1],
-                                      rangeEnd = input$rangePeriod[2],
-                                      localisation_parking = NA,
-                                      parc_relais = TRUE)
-      
-      hypercentre <- Occupation$new(rangeStart = input$rangePeriod[1],
-                                    rangeEnd = input$rangePeriod[2],
+      xtradata_parameters <-
+        switch(input$timestep,
+               "Jour" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_day),
+               "Semaine" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_week),
+               "Mois" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_month),
+               "Année" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_year)
+        )
+ 
+      parc_relais <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
+                                    rangeEnd = xtradata_parameters$rangeEnd,
+                                    rangeStep = xtradata_parameters$rangeStep,
+                                    localisation_parking = NA,
+                                    parc_relais = TRUE)
+
+      hypercentre <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
+                                    rangeEnd = xtradata_parameters$rangeEnd,
+                                    rangeStep = xtradata_parameters$rangeStep,
                                     localisation_parking = "hypercentre",
                                     parc_relais = FALSE)
-      
-      centre <- Occupation$new(rangeStart = input$rangePeriod[1],
-                               rangeEnd = input$rangePeriod[2],
+
+      centre <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
+                               rangeEnd = xtradata_parameters$rangeEnd,
+                               rangeStep = xtradata_parameters$rangeStep,
                                localisation_parking = "centre",
                                parc_relais = FALSE)
-      
-      peripherie  <- Occupation$new(rangeStart = input$rangePeriod[1],
-                                    rangeEnd = input$rangePeriod[2],
+
+      peripherie  <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
+                                    rangeEnd = xtradata_parameters$rangeEnd,
+                                    rangeStep = xtradata_parameters$rangeStep,
                                     localisation_parking = "peripherie",
                                     parc_relais = FALSE)
-      
-      # observe(print(input$rangePeriod))
-      
+
+
       mod_occupation_appel_WS_server("occupation_appel_WS_ui_1", r6 = parc_relais)
       mod_occupation_clean_server("occupation_clean_ui_1", r6 = parc_relais)
       mod_occupation_graphe_server("occupation_graphe_ui_1", r6 = parc_relais)
       mod_occupation_table_server("occupation_table_ui_1", r6 = parc_relais)
-      
+
       mod_occupation_appel_WS_server("occupation_appel_WS_ui_2", r6 = hypercentre)
       mod_occupation_clean_server("occupation_clean_ui_2", r6 = hypercentre)
       mod_occupation_graphe_server("occupation_graphe_ui_2", r6 = hypercentre)
       mod_occupation_table_server("occupation_table_ui_2", r6 = hypercentre)
-      
+
       mod_occupation_appel_WS_server("occupation_appel_WS_ui_3", r6 = centre)
       mod_occupation_clean_server("occupation_clean_ui_3", r6 = centre)
       mod_occupation_graphe_server("occupation_graphe_ui_3", r6 = centre)
       mod_occupation_table_server("occupation_table_ui_3", r6 = centre)
-      
+
       mod_occupation_appel_WS_server("occupation_appel_WS_ui_4", r6 = peripherie)
       mod_occupation_clean_server("occupation_clean_ui_4", r6 = peripherie)
       mod_occupation_graphe_server("occupation_graphe_ui_4", r6 = peripherie)
       mod_occupation_table_server("occupation_table_ui_4", r6 = peripherie)
-      
+
     })
     
   })

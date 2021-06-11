@@ -12,6 +12,9 @@ Parkings <- R6::R6Class(
     #' @field rangeEnd Fin de la periode d'observation
     rangeEnd = "",
     
+    #' @field rangeStep Pas d'aggregation pour requete xtradata
+    rangeStep = "",
+    
     #' @field localisation_parking Secteur de localisation du parking (hypercentre, centre, peripherie, NA pour les parc relais)
     localisation_parking = "",
     
@@ -30,9 +33,10 @@ Parkings <- R6::R6Class(
     #' @param data_xtradata data_xtradata
     #' @return A new `Occupation` object.
     
-    initialize = function(rangeStart, rangeEnd, localisation_parking, parc_relais) {
+    initialize = function(rangeStart, rangeEnd, rangeStep, localisation_parking, parc_relais) {
       self$rangeStart <- rangeStart
       self$rangeEnd <- rangeEnd
+      self$rangeStep <- rangeStep
       self$localisation_parking <- localisation_parking
       self$parc_relais <- parc_relais
       self$data_xtradata <- NULL

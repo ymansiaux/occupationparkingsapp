@@ -22,6 +22,5 @@ app_server <- function(input, output, session) {
 
   mod_occupation_server("occupation_ui_1")
   # mod_saturation_server("saturation_ui_1")
-  
 }
 
