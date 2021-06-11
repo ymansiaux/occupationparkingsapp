@@ -32,20 +32,6 @@ Occupation <- R6::R6Class(
             mutate.(time = floor_date(time, unit = time_unit, ...)) %>% 
             summarise.(taux_occupation = mean(taux_occupation, na.rm = TRUE), .by = c(ident, time))
         )
-        # bind_rows.(
-        #   self$data_xtradata %>% 
-        #     summarise_by_time(.date_var = time, 
-        #                       .by = time_unit,
-        #                       taux_occupation = mean(taux_occupation, na.rm = TRUE)) %>% 
-        #     mutate.(ident = "moyenne")
-        #   ,
-        #   
-        #   self$data_xtradata %>% 
-        #     group_by(ident) %>% 
-        #     summarise_by_time(.date_var = time, 
-        #                       .by = time_unit,
-        #                       taux_occupation = mean(taux_occupation, na.rm = TRUE))
-        # )
     },
     
     #' @description

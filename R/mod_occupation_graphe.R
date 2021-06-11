@@ -23,7 +23,14 @@ mod_occupation_graphe_ui <- function(id){
 mod_occupation_graphe_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
       output$plot <- renderPlot({
+        browser()
       r6$timeseries_plot()
+      
+      a <- r6$data_xtradata
+      
+      ggplot(data = a, mapping = aes(x = time, y = taux_occupation, color = ident)) + 
+        geom_line()
+      
     })
     
   })

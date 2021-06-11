@@ -44,7 +44,7 @@ Cette classe va devoir réaliser les opérations suivantes :
 ### Création d'une nouvelle instance
 
 ```{r}
-source("../R/Occupation.R")
+pkgload::load_all()
 parc_relais_hour <- Occupation$new(rangeStart = Sys.Date() - 3, rangeEnd = Sys.Date() - 1, localisation_parking = NA, parc_relais = TRUE)
 centre_day <- Occupation$new(rangeStart = Sys.Date() - 3, rangeEnd = Sys.Date() - 1, localisation_parking = "centre", parc_relais = FALSE)
 ```
