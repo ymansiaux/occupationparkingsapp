@@ -24,8 +24,6 @@ usethis::use_package( "lubridate" )
 usethis::use_package( "timetk" )
 usethis::use_package( "dplyr" )
 usethis::use_package( "ggplot2" )
-usethis::use_package( "shinyWidgets")
-usethis::use_package( "clock")
 usethis::use_package( "ggiraph")
 
 

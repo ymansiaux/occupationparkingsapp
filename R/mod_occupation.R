@@ -8,9 +8,8 @@
 #'
 #' @import shiny
 #' @importFrom shinybm hidden_div show_some_ids hide_some_ids
-#' @importFrom purrr walk pluck
 #' @importFrom shinyjs show hide 
-#' @importFrom clock as_date add_days add_weeks add_months date_build add_years get_year date_group
+#' @importFrom lubridate year floor_date as_date
 
 mod_occupation_ui <- function(id){
   ns <- NS(id)
@@ -19,14 +18,14 @@ mod_occupation_ui <- function(id){
       sidebarPanel(
         width = 2,
         
-        radioButtons(ns("timestep"), "Unité de temps",
-                     choices = c("Jour", "Semaine", "Mois", "Année"),
+        radioButtons(ns("timestep"), "Unit\u00e9 de temps",
+                     choices = c("Jour", "Semaine", "Mois", "Ann\u00e9e"),
                      inline = TRUE),
         
         # Sélection d'un jour
         hidden_div(id_div = ns("selection_timestep_day"), 
                    contenu_div = tagList(
-                     dateInput(inputId = ns("selected_day"), label = "Sélectionner une journée", 
+                     dateInput(inputId = ns("selected_day"), label = "S\u00e9lectionner une journ\u00e9e", 
                                value = Sys.Date()-1, 
                                autoclose = TRUE, weekstart = 1, 
                                min = debut_donnees, max = Sys.Date()-1)
@@ -36,7 +35,7 @@ mod_occupation_ui <- function(id){
         # Sélection d'une semaine
         hidden_div(id_div = ns("selection_timestep_week"), 
                    contenu_div = tagList(
-                     dateInput(inputId = ns("selected_week"), label = "Sélectionner une semaine (lundi)", 
+                     dateInput(inputId = ns("selected_week"), label = "S\u00e9lectionner une semaine (lundi)", 
                                daysofweekdisabled = c(0,2:6),
                                autoclose = TRUE, weekstart = 1,
                                min = debut_donnees, max = Sys.Date()-1),
@@ -46,9 +45,9 @@ mod_occupation_ui <- function(id){
         # Sélection d'un mois
         hidden_div(id_div = ns("selection_timestep_month"), 
                    contenu_div = tagList(
-                     sliderInput(inputId = ns("selected_month"), label = "Sélectionner un mois",
-                                 min = date_group(debut_donnees, precision = "month"),
-                                 max = date_group(Sys.Date()-1, precision = "month"),
+                     sliderInput(inputId = ns("selected_month"), label = "S\u00e9lectionner un mois",
+                                 min = floor_date(as_date(debut_donnees), "month"),
+                                 max = floor_date(as_date(Sys.Date()-1), "month"),
                                  value = debut_donnees, timeFormat = "%Y-%m"
                      )
                    )
@@ -57,8 +56,8 @@ mod_occupation_ui <- function(id){
         # Sélection d'une année
         hidden_div(id_div = ns("selection_timestep_year"), 
                    contenu_div = tagList(
-                     radioButtons(inputId = ns("selected_year"), label = "Sélectionner une année",
-                                  choices = get_year(debut_donnees):get_year(Sys.Date()))
+                     radioButtons(inputId = ns("selected_year"), label = "S\u00e9lectionner une ann\u00e9e",
+                                  choices = year(debut_donnees):year(Sys.Date()))
                    )
         ),
         
@@ -111,7 +110,7 @@ mod_occupation_server <- function(id){
     ids_list <- list("Jour" = "selection_timestep_day", 
                      "Semaine" = "selection_timestep_week", 
                      "Mois" = "selection_timestep_month", 
-                     "Année" = "selection_timestep_year")
+                     "Ann\u00e9e" = "selection_timestep_year")
     
     # En fonction de la fenetre temporelle selectionnee, on affiche le selecteur de date approprié et on masque les autres
     observeEvent(input$timestep, { 
@@ -129,8 +128,9 @@ mod_occupation_server <- function(id){
                "Jour" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_day),
                "Semaine" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_week),
                "Mois" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_month),
-               "Année" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_year)
+               "Ann\u00e9e" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_year)
         )
+      print(xtradata_parameters)
  
       parc_relais <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
                                     rangeEnd = xtradata_parameters$rangeEnd,

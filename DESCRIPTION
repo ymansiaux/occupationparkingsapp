@@ -5,10 +5,8 @@ Authors@R: person('Yohann', 'Mansiaux', email = 'y.mansiaux@bordeaux-metropole.f
 Description: Consultation des donnees parkings - appli + rapport.
 License: MIT + file LICENSE
 Imports: 
-    clock,
     config,
     data.table,
-    dplyr,
     DT,
     ggiraph,
     ggplot2,
@@ -23,10 +21,7 @@ Imports:
     shiny,
     shinybm,
     shinyjs,
-    shinyWidgets,
     tidytable,
-    timetk,
-    waiter,
     xtradata
 Encoding: UTF-8
 LazyData: true

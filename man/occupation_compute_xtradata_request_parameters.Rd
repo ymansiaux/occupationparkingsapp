@@ -11,6 +11,8 @@ occupation_compute_xtradata_request_parameters(
 }
 \arguments{
 \item{selected_timestep}{pas de temps choisi par l'user (jour, semaine, mois, annee)}
+
+\item{selected_date}{date selectionnee}
 }
 \value{
 une liste de parametres

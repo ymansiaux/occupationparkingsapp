@@ -23,7 +23,7 @@ va gérer la routine API / clean / plot / table / download
 } 
 }
 \section{Super class}{
-\code{\link[occupationparkingsapp:Parkings]{occupationparkingsapp::Parkings}} -> \code{Occupation}
+\code{\link[occupationparkingsapp:ParkingsStats]{occupationparkingsapp::ParkingsStats}} -> \code{Occupation}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -36,9 +36,9 @@ va gérer la routine API / clean / plot / table / download
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="Parkings" data-id="clean_output">}\href{../../occupationparkingsapp/html/Parkings.html#method-clean_output}{\code{occupationparkingsapp::Parkings$clean_output()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="Parkings" data-id="download_data">}\href{../../occupationparkingsapp/html/Parkings.html#method-download_data}{\code{occupationparkingsapp::Parkings$download_data()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="Parkings" data-id="initialize">}\href{../../occupationparkingsapp/html/Parkings.html#method-initialize}{\code{occupationparkingsapp::Parkings$initialize()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="clean_output">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-clean_output}{\code{occupationparkingsapp::ParkingsStats$clean_output()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="download_data">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-download_data}{\code{occupationparkingsapp::ParkingsStats$download_data()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="initialize">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-initialize}{\code{occupationparkingsapp::ParkingsStats$initialize()}}\out{</span>}
 }
 \out{</details>}
 }
@@ -49,13 +49,15 @@ va gérer la routine API / clean / plot / table / download
 Aggregation des données selon une fenetre temporelle
 (application de la fonction summarise_by_time de timetk)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$mean_by_some_time_unit(time_unit)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$mean_by_some_time_unit(time_unit, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{time_unit}}{pas d'aggreg (voir timetk)}
+
+\item{\code{...}}{parametres additionels de floor_date}
 }
 \if{html}{\out{</div>}}
 }
