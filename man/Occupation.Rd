@@ -19,7 +19,7 @@ va gérer la routine API / clean / plot / table / download
 ## Method `Occupation$timeseries_plot`
 ## ------------------------------------------------
 
-\dontrun{ timeseries_plot()
+\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
 } 
 }
 \section{Super class}{
@@ -77,12 +77,12 @@ Aggregation des données selon une fenetre temporelle
 \subsection{Method \code{timeseries_plot()}}{
 Graphe de série temporelle
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot(parkings_to_plot, show_average = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ timeseries_plot()
+\preformatted{\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
 } 
 }
 \if{html}{\out{</div>}}

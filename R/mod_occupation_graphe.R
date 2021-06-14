@@ -9,11 +9,32 @@
 #' @import shiny
 #' @import R6
 #' @importFrom DT DTOutput renderDT
+#' @import ggiraph
+#' @import ggplot2
 mod_occupation_graphe_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h3("Graphique"),
-    plotOutput(ns("plot"))
+    fluidRow(
+      column(width = 8,
+             h3("Graphique"),
+             girafeOutput(ns("plot")),
+             actionButton(inputId = ns("pause"), "pause")
+      ),
+      column(width = 4,
+             selectizeInput(inputId = ns("parkings_to_plot"),
+                            label = "Parkings à afficher",
+                            choices = NULL,
+                            multiple = TRUE,
+                            options = list(maxItems = 5, placeholder = "Choisir au max 10 pkgs", deselectBehavior = "top")
+             ),
+             checkboxInput(inputId = ns("show_average"),
+                           label = "Afficher la moyenne", 
+                           value = TRUE
+                            ),
+             actionButton(inputId = ns("maj"), "maj")
+             
+      )
+    )
   )
 }
 
@@ -22,19 +43,33 @@ mod_occupation_graphe_ui <- function(id){
 #' @noRd 
 mod_occupation_graphe_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
-      output$plot <- renderPlot({
-        browser()
-      r6$timeseries_plot()
+    
+    observe(updateSelectizeInput(session, 'parkings_to_plot', choices = unique(r6$data_xtradata$ident), server = TRUE))
+    observeEvent(input$pause, browser())
+    
+    output$plot <- renderGirafe({
+      # browser()
+      # r6$timeseries_plot()
       
-      a <- r6$data_xtradata
+      input$maj
       
-      ggplot(data = a, mapping = aes(x = time, y = taux_occupation, color = ident)) + 
-        geom_line()
+      gg <- r6$timeseries_plot(isolate(input$parkings_to_plot), isolate(input$show_average))
+
+      x <- girafe(ggobj = gg, width_svg = 8, height_svg = 6,
+                  options = list(
+                    opts_hover_inv(css = "opacity:0.1;"),
+                    opts_hover(css = "stroke-width:2;")
+                  ))
+      x
+      
+  
       
     })
     
   })
 }
+
+## isolate dans le graphe et bouton MAJ parking
 
 # parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
 

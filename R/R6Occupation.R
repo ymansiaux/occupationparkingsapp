@@ -36,12 +36,32 @@ Occupation <- R6::R6Class(
     
     #' @description
     #' Graphe de série temporelle
-    #' @importFrom ggplot2 ggplot aes geom_line
-    #' @examples \dontrun{ timeseries_plot()
+    #' @importFrom ggplot2 ggplot aes geom_line scale_color_viridis_d theme_minimal theme
+    #' @importFrom ggiraph geom_line_interactive
+    #' @import tidytable
+    #' @importFrom data.table :=
+    #' 
+    #' @examples \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
     #' } 
-    timeseries_plot = function() {
-      ggplot(data = self$data_xtradata, mapping = aes(x = time, y = taux_occupation, color = ident)) + 
-        geom_line()
+    timeseries_plot = function(parkings_to_plot, show_average = TRUE) {
+      
+      data_plot <-  self$data_xtradata %>% mutate.(tooltip = as.character(glue::glue("Date : {.[,time]}\nIdent : {.[,ident]}\nVal : {.[,taux_occupation]}")))
+      
+      gg <- filter.(data_plot, ident %in% parkings_to_plot & ident != "moyenne") %>%  
+        ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = ident, group=ident)) + 
+        geom_line_interactive(aes(tooltip=tooltip, data_id=ident)) + 
+        scale_color_viridis_d() +
+        theme_minimal() +
+        theme(legend.position = "bottom")
+      
+      if(show_average) {
+        gg <- gg + geom_line_interactive(data = data_plot %>% filter.(ident == "moyenne"), mapping = 
+         aes(x = time, y = taux_occupation, tooltip=taux_occupation, data_id = ident),  color = "black", lwd = 1.5, linetype = "dotted") +
+          scale_color_viridis_d()
+      }
+      
+   gg
+
     }
   )
   
