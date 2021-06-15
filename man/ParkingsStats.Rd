@@ -24,6 +24,13 @@ parc_relais$data_xtradata }
 
 \dontrun{ clean_output()
 }
+
+## ------------------------------------------------
+## Method `ParkingsStats$add_parkings_names`
+## ------------------------------------------------
+
+\dontrun{ add_parkings_names()
+}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -33,6 +40,8 @@ parc_relais$data_xtradata }
 \item{\code{rangeEnd}}{Fin de la periode d'observation}
 
 \item{\code{rangeStep}}{Pas d'aggregation pour requete xtradata}
+
+\item{\code{plageHoraire}}{plage horaire des donnees à recup}
 
 \item{\code{localisation_parking}}{Secteur de localisation du parking (hypercentre, centre, peripherie, NA pour les parc relais)}
 
@@ -48,6 +57,7 @@ parc_relais$data_xtradata }
 \item \href{#method-new}{\code{ParkingsStats$new()}}
 \item \href{#method-download_data}{\code{ParkingsStats$download_data()}}
 \item \href{#method-clean_output}{\code{ParkingsStats$clean_output()}}
+\item \href{#method-add_parkings_names}{\code{ParkingsStats$add_parkings_names()}}
 \item \href{#method-clone}{\code{ParkingsStats$clone()}}
 }
 }
@@ -61,6 +71,7 @@ Create a new occupation object.
   rangeStart,
   rangeEnd,
   rangeStep,
+  plageHoraire,
   localisation_parking,
   parc_relais
 )}\if{html}{\out{</div>}}
@@ -129,6 +140,25 @@ Nettoyage de la sortie xtradata
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{ clean_output()
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-add_parkings_names"></a>}}
+\if{latex}{\out{\hypertarget{method-add_parkings_names}{}}}
+\subsection{Method \code{add_parkings_names()}}{
+Ajout les noms des parkings
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$add_parkings_names()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{ add_parkings_names()
 }
 }
 \if{html}{\out{</div>}}

@@ -15,6 +15,9 @@ ParkingsStats <- R6::R6Class(
     #' @field rangeStep Pas d'aggregation pour requete xtradata
     rangeStep = "",
     
+    #' @field plageHoraire plage horaire des donnees à recup
+    plageHoraire = 0:23,
+    
     #' @field localisation_parking Secteur de localisation du parking (hypercentre, centre, peripherie, NA pour les parc relais)
     localisation_parking = "",
     
@@ -29,15 +32,17 @@ ParkingsStats <- R6::R6Class(
     #' @param rangeStart rangeStart
     #' @param rangeEnd rangeEnd
     #' @param rangeStep rangeStep
+    #' @param plageHoraire plageHoraire
     #' @param localisation_parking localisation_parking
     #' @param parc_relais parc_relais
     #' @param data_xtradata data_xtradata
     #' @return A new `Occupation` object.
     
-    initialize = function(rangeStart, rangeEnd, rangeStep, localisation_parking, parc_relais) {
+    initialize = function(rangeStart, rangeEnd, rangeStep, plageHoraire, localisation_parking, parc_relais) {
       self$rangeStart <- rangeStart
       self$rangeEnd <- rangeEnd
       self$rangeStep <- rangeStep
+      self$plageHoraire <- plageHoraire
       self$localisation_parking <- localisation_parking
       self$parc_relais <- parc_relais
       self$data_xtradata <- NULL
@@ -61,7 +66,7 @@ ParkingsStats <- R6::R6Class(
         rangeStart = self$rangeStart,
         rangeEnd = self$rangeEnd,
         rangeStep = rangeStep,
-        rangeFilter = list(hours = 0:23, days = 1:7, publicHolidays = FALSE),
+        rangeFilter = list(hours = self$plageHoraire, days = 1:7, publicHolidays = FALSE),
         filter = list(
           "ident" =
             list(
@@ -86,9 +91,20 @@ ParkingsStats <- R6::R6Class(
       ## rajouter du defensive programming
       self$data_xtradata <- self$data_xtradata %>%
         select.(-type) %>%
-        mutate.(time = as_datetime(time),
+        mutate.(time = as_datetime(time, tz = mytimezone),
                 libres = ceiling(libres),
-                taux_occupation = pmax(0, 1-(libres / total)))
+                taux_occupation = 100 * pmax(0, 1-(libres / total)))
+    },
+    
+    #' @description
+    #' Ajout les noms des parkings
+    #' @import tidytable
+    #' @importFrom data.table :=
+    #' @examples \dontrun{ add_parkings_names()
+    #' }
+    add_parkings_names = function() {
+      self$data_xtradata <- self$data_xtradata %>% 
+        left_join.(.,  select.(parkings, ident, nom), by = "ident")
     }
   )
 )

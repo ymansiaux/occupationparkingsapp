@@ -25,6 +25,8 @@ usethis::use_package( "timetk" )
 usethis::use_package( "dplyr" )
 usethis::use_package( "ggplot2" )
 usethis::use_package( "ggiraph")
+usethis::use_package( "glue")
+
 
 
 usethis::use_pipe()

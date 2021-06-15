@@ -32,30 +32,58 @@ Occupation <- R6::R6Class(
             mutate.(time = floor_date(time, unit = time_unit, ...)) %>% 
             summarise.(taux_occupation = mean(taux_occupation, na.rm = TRUE), .by = c(ident, time))
         )
-        # bind_rows.(
-        #   self$data_xtradata %>% 
-        #     summarise_by_time(.date_var = time, 
-        #                       .by = time_unit,
-        #                       taux_occupation = mean(taux_occupation, na.rm = TRUE)) %>% 
-        #     mutate.(ident = "moyenne")
-        #   ,
-        #   
-        #   self$data_xtradata %>% 
-        #     group_by(ident) %>% 
-        #     summarise_by_time(.date_var = time, 
-        #                       .by = time_unit,
-        #                       taux_occupation = mean(taux_occupation, na.rm = TRUE))
-        # )
     },
     
     #' @description
     #' Graphe de série temporelle
-    #' @importFrom ggplot2 ggplot aes geom_line
-    #' @examples \dontrun{ timeseries_plot()
+    #' @param parkings_to_plot liste des parkings à afficher (parametre input shiny)
+    #' @param show_average affichage de la moyenne (boolean)
+    #' @param horaires horaires d'interet
+    #' @importFrom ggplot2 ggplot aes geom_line scale_linetype_manual theme_minimal theme scale_color_manual
+    #' @importFrom ggiraph geom_line_interactive geom_point_interactive
+    #' @importFrom glue glue_data
+    #' @import tidytable
+    #' @importFrom data.table :=
+    #' @importFrom lubridate hour
+    #'  
+    #' @examples \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
     #' } 
-    timeseries_plot = function() {
-      ggplot(data = self$data_xtradata, mapping = aes(x = time, y = taux_occupation, color = ident)) + 
-        geom_line()
+    timeseries_plot = function(parkings_to_plot, show_average = TRUE) {
+      
+      data_plot <-  self$data_xtradata %>% 
+        # filter.(hour(time) %in% horaires) %>% 
+        mutate.(tooltip = as.character(
+          glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf('%.2f', taux_occupation)}")
+        )) %>% 
+        mutate.(linetype = ifelse(ident == "moyenne", "dotted", "solid"))
+      
+      
+      gg <- filter.(data_plot, ident %in% parkings_to_plot & ident != "moyenne") %>%  
+        ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group=nom, linetype = nom)) + 
+        geom_line_interactive(aes(data_id=ident), lwd = 1) + 
+        geom_point_interactive(aes(tooltip=tooltip, data_id=ident)) + 
+        theme_minimal() +
+        theme(legend.position = "bottom") +
+        
+        geom_line_interactive(data = data_plot %>% filter.(ident == "moyenne"), 
+                              mapping = aes(x = time, y = taux_occupation, tooltip=taux_occupation, data_id = ident, group = nom, color = nom),
+                              lwd = 1.5) +
+        scale_linetype_manual(
+          "nom",
+          values =
+            unlist(
+              with(
+                distinct.(data_plot %>% 
+                            filter.(ident %in% c("moyenne", parkings_to_plot)) %>%
+                            select.(nom, linetype)),
+                split(linetype, nom)))
+        ) +
+        # A modifier quand on aura la palette bx metro
+        scale_color_manual(values = sample(colors(distinct = TRUE), length(parkings_to_plot)+1))
+      
+
+      gg
+      
     }
   )
   

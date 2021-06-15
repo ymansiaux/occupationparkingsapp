@@ -19,7 +19,7 @@ va gérer la routine API / clean / plot / table / download
 ## Method `Occupation$timeseries_plot`
 ## ------------------------------------------------
 
-\dontrun{ timeseries_plot()
+\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
 } 
 }
 \section{Super class}{
@@ -36,6 +36,7 @@ va gérer la routine API / clean / plot / table / download
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
+\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="add_parkings_names">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-add_parkings_names}{\code{occupationparkingsapp::ParkingsStats$add_parkings_names()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="clean_output">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-clean_output}{\code{occupationparkingsapp::ParkingsStats$clean_output()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="download_data">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-download_data}{\code{occupationparkingsapp::ParkingsStats$download_data()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="initialize">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-initialize}{\code{occupationparkingsapp::ParkingsStats$initialize()}}\out{</span>}
@@ -77,12 +78,23 @@ Aggregation des données selon une fenetre temporelle
 \subsection{Method \code{timeseries_plot()}}{
 Graphe de série temporelle
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot(parkings_to_plot, show_average = TRUE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{parkings_to_plot}}{liste des parkings à afficher (parametre input shiny)}
+
+\item{\code{show_average}}{affichage de la moyenne (boolean)}
+
+\item{\code{horaires}}{horaires d'interet}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ timeseries_plot()
+\preformatted{\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
 } 
 }
 \if{html}{\out{</div>}}

@@ -37,6 +37,7 @@ Style de ligne différent pour la moyenne (plus gros par ex)
 Menu pour sélectionner uniquement un sous ensemble de pkgs à afficher
 
 Cache jour (8h-20h) / nuit (20-8h) / ou plage horaire au choix
+--> Pour le moment possible uniquement si on choisit les données à la maille horaire
 
 Calendrier s'adapte à la temporalité choisie par l'utilisateur.
 
@@ -49,8 +50,6 @@ Si on sélectionne une semaine : axe des x : jour
 Si on sélectionne un mois : axe des x : jour
 
 Si on selectionne une année : axe des x : mois
-
-
 ----
 Pour la saturation, on autorise que la sélection d'une semaine ? si sélection supérieur à 1 semaine on propose la sélection d'une semaine donnée via un sélecteur ?
 
