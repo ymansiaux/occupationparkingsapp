@@ -87,3 +87,35 @@ server <- function(input, output) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
+
+
+iris2 %>% 
+    filter(Species != "setosa") %>% 
+    ggplot(data = ., aes(Sepal.Length, Sepal.Width, group = Species, color = Species, linetype = Species)) +
+    geom_line() +
+    geom_line(data = filter(iris2, Species == "setosa"), aes(Sepal.Length, Sepal.Width, lwd = 2))  +
+    scale_color_manual(
+        "Legend",
+        values=c("setosa"="black", "virginica"="blue", "versicolor"="orange")
+    ) +
+    scale_linetype_manual(
+        "Legend",
+        values=c("setosa"="dashed", "virginica"="solid", "versicolor"="solid")
+    )
+# voir guides 
+# https://ggplot2.tidyverse.org/reference/guides.html
+
+iris %>% 
+    filter(Species != "setosa") %>% 
+    ggplot(data = ., aes(Sepal.Length, Sepal.Width, group = Species, color = Species, linetype = Species)) +
+    geom_line() +
+    geom_line(data = filter(iris, Species == "setosa"), aes(Sepal.Length, Sepal.Width), lwd = 1.1)  +
+    # scale_color_manual(
+    #     "Legend",
+    #     values=c("setosa"="black", "virginica"="blue", "versicolor"="orange")
+    # ) +
+     scale_linetype_manual(
+         "Species",
+         values=c("setosa"="dashed", "virginica"="solid", "versicolor"="solid")
+     ) +
+guides(size = "none")

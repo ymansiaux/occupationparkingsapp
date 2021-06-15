@@ -22,6 +22,23 @@ mod_occupation_ui <- function(id){
                      choices = c("Jour", "Semaine", "Mois", "Ann\u00e9e"),
                      inline = TRUE),
         
+        # Plage horaires des donnees
+        hidden_div(id_div = ns("selection_plage_horaire"),
+                   contenu_div = tagList(
+                     radioButtons(inputId = ns("plage_horaire"), 
+                                  label = "Plage horaire",
+                                  choices = c("Journée (8h-20h)", "Personnalisée")), #"Nuit (20h-8h)",
+                     hidden_div(id_div = ns("plage_horaire_personnalisee"),
+                                contenu_div = tagList(
+                                  sliderInput(inputId = ns("plage_horaire_perso"),
+                                              label = "Affiner la plage horaire",
+                                              min = 0, max = 23, value = c(12,16))
+                                )
+                     )
+                   )
+                   
+        ),
+        
         # Sélection d'un jour
         hidden_div(id_div = ns("selection_timestep_day"), 
                    contenu_div = tagList(
@@ -46,8 +63,8 @@ mod_occupation_ui <- function(id){
         hidden_div(id_div = ns("selection_timestep_month"), 
                    contenu_div = tagList(
                      sliderInput(inputId = ns("selected_month"), label = "S\u00e9lectionner un mois",
-                                 min = floor_date(as_date(debut_donnees), "month"),
-                                 max = floor_date(as_date(Sys.Date()-1), "month"),
+                                 min = floor_date(as_date(debut_donnees, tz = mytimezone), "month"),
+                                 max = floor_date(as_date(Sys.Date()-1, tz = mytimezone), "month"),
                                  value = debut_donnees, timeFormat = "%Y-%m"
                      )
                    )
@@ -121,22 +138,54 @@ mod_occupation_server <- function(id){
       
     })
     
+    observeEvent(input$timestep, {
+      if(input$timestep == "Jour") {
+        show("selection_plage_horaire") 
+      } else {
+        hide("selection_plage_horaire")
+      }
+    })
+    
+    observeEvent(input$plage_horaire, {
+      if(input$plage_horaire == "Personnalisée") {
+        show("plage_horaire_personnalisee") 
+      } else {
+        hide("plage_horaire_personnalisee")   
+      }
+      
+    })
+    
+    plageHoraire <- reactive(
+      if(input$timestep == "Jour") {
+        switch(input$plage_horaire,
+               "Journée (8h-20h)" = 8:20,
+               "Nuit (20h-8h)" = c(0:7,21:23),
+               "Personnalisée" = input$plage_horaire_perso[1]:input$plage_horaire_perso[2]
+        )
+      }  else { 0:23 }
+    )
+    
+    
+    
     
     observeEvent(input$run_query,{
-      xtradata_parameters <-
+      xtradata_parameters <- reactive(
         switch(input$timestep,
                "Jour" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_day),
                "Semaine" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_week),
                "Mois" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_month),
                "Ann\u00e9e" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_year)
         )
-
-      parc_relais <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
-                                    rangeEnd = xtradata_parameters$rangeEnd,
-                                    rangeStep = xtradata_parameters$rangeStep,
+      )
+      # print(xtradata_parameters())
+      
+      parc_relais <- Occupation$new(rangeStart = xtradata_parameters()$rangeStart,
+                                    rangeEnd = xtradata_parameters()$rangeEnd,
+                                    rangeStep = xtradata_parameters()$rangeStep,
+                                    plageHoraire = plageHoraire(),
                                     localisation_parking = NA,
                                     parc_relais = TRUE)
-
+      
       # hypercentre <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
       #                               rangeEnd = xtradata_parameters$rangeEnd,
       #                               rangeStep = xtradata_parameters$rangeStep,
@@ -154,13 +203,13 @@ mod_occupation_server <- function(id){
       #                               rangeStep = xtradata_parameters$rangeStep,
       #                               localisation_parking = "peripherie",
       #                               parc_relais = FALSE)
-
-
+      
+      
       mod_occupation_appel_WS_server("occupation_appel_WS_ui_1", r6 = parc_relais)
       mod_occupation_clean_server("occupation_clean_ui_1", r6 = parc_relais)
       mod_occupation_graphe_server("occupation_graphe_ui_1", r6 = parc_relais)
       mod_occupation_table_server("occupation_table_ui_1", r6 = parc_relais)
-
+      
       # mod_occupation_appel_WS_server("occupation_appel_WS_ui_2", r6 = hypercentre)
       # mod_occupation_clean_server("occupation_clean_ui_2", r6 = hypercentre)
       # mod_occupation_graphe_server("occupation_graphe_ui_2", r6 = hypercentre)
@@ -175,7 +224,7 @@ mod_occupation_server <- function(id){
       # mod_occupation_clean_server("occupation_clean_ui_4", r6 = peripherie)
       # mod_occupation_graphe_server("occupation_graphe_ui_4", r6 = peripherie)
       # mod_occupation_table_server("occupation_table_ui_4", r6 = peripherie)
-
+      
     })
     
   })
