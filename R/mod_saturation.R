@@ -10,25 +10,82 @@
 mod_saturation_ui <- function(id){
   ns <- NS(id)
   tagList(
-    mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_1")),
-    mod_saturation_clean_ui(ns("saturation_clean_ui_1")),
-    mod_saturation_graphe_ui(ns("saturation_graphe_ui_1")),
-    mod_saturation_table_ui(ns("saturation_table_ui_1")),
+    sidebarLayout(
+      sidebarPanel(
+        width = 2,
+        
+        radioButtons(ns("timestep"), "Unit\u00e9 de temps",
+                     choices = c("Semaine", "Mois"),
+                     inline = TRUE),
+        
+        # Sélection d'une semaine
+        hidden_div(id_div = ns("selection_timestep_week"), 
+                   contenu_div = tagList(
+                     dateInput(inputId = ns("selected_week"), label = "S\u00e9lectionner une semaine (lundi)", 
+                               daysofweekdisabled = c(0,2:6),
+                               autoclose = TRUE, weekstart = 1,
+                               min = debut_donnees, max = Sys.Date()-1),
+                   )
+        ),
+        
+        # Sélection d'un mois
+        hidden_div(id_div = ns("selection_timestep_month"), 
+                   contenu_div = tagList(
+                     sliderInput(inputId = ns("selected_month"), label = "S\u00e9lectionner un mois",
+                                 min = floor_date(as_date(debut_donnees, tz = mytimezone), "month"),
+                                 max = floor_date(as_date(Sys.Date()-1, tz = mytimezone), "month"),
+                                 value = debut_donnees, timeFormat = "%Y-%m"
+                     )
+                   )
+        ),
+        actionButton(
+          inputId = ns("run_query"),
+          label = "Lancer la requ\u00eate"
+        )
+        
+      ),
+      
+      mainPanel(width = 10,
+                fluidRow(
+                  column(
+                    width = 12,
+                    # mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_1")),
+                    # mod_saturation_clean_ui(ns("saturation_clean_ui_1")),
+                    mod_saturation_graphe_ui(ns("saturation_graphe_ui_1")),
+                    mod_saturation_table_ui(ns("saturation_table_ui_1"))
+                  )
+                ),
+                fluidRow(
+                  column(
+                    width = 12,
+                    # mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_2")),
+                    # mod_saturation_clean_ui(ns("saturation_clean_ui_2")),
+                    mod_saturation_graphe_ui(ns("saturation_graphe_ui_2")),
+                    mod_saturation_table_ui(ns("saturation_table_ui_2"))
+                  )
+                ),
+                fluidRow(
+                  column(
+                    width = 12, 
+                    # mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_3")),
+                    # mod_saturation_clean_ui(ns("saturation_clean_ui_3")),
+                    mod_saturation_graphe_ui(ns("saturation_graphe_ui_3")),
+                    mod_saturation_table_ui(ns("saturation_table_ui_3"))
+                  )
+                ),
+                
+                fluidRow(
+                  column(
+                    width = 12,
+                    # mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_4")),
+                    # mod_saturation_clean_ui(ns("saturation_clean_ui_4")),
+                    mod_saturation_graphe_ui(ns("saturation_graphe_ui_4")),
+                    mod_saturation_table_ui(ns("saturation_table_ui_4"))
+                  )
+                )
+      )
     
-    mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_2")),
-    mod_saturation_clean_ui(ns("saturation_clean_ui_2")),
-    mod_saturation_graphe_ui(ns("saturation_graphe_ui_2")),
-    mod_saturation_table_ui(ns("saturation_table_ui_2")),
-    
-    mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_3")),
-    mod_saturation_clean_ui(ns("saturation_clean_ui_3")),
-    mod_saturation_graphe_ui(ns("saturation_graphe_ui_3")),
-    mod_saturation_table_ui(ns("saturation_table_ui_3")),
-    
-    mod_saturation_appel_WS_ui(ns("saturation_appel_WS_ui_4")),
-    mod_saturation_clean_ui(ns("saturation_clean_ui_4")),
-    mod_saturation_graphe_ui(ns("saturation_graphe_ui_4")),
-    mod_saturation_table_ui(ns("saturation_table_ui_4")),
+  )
   )
 }
 
@@ -39,33 +96,74 @@ mod_saturation_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     
-    parc_relais <- Saturation$new(rangeStart = as.Date("2021-05-24"), rangeEnd = as.Date("2021-05-31"), localisation_parking = NA, parc_relais = TRUE)
-    hypercentre <- Saturation$new(rangeStart = as.Date("2021-05-24"), rangeEnd = as.Date("2021-05-31"), localisation_parking = "hypercentre", parc_relais = FALSE)
-    centre <- Saturation$new(rangeStart = as.Date("2021-05-24"), rangeEnd = as.Date("2021-05-31"), localisation_parking = "centre", parc_relais = FALSE)
-    peripherie  <- Saturation$new(rangeStart = as.Date("2021-05-24"), rangeEnd = as.Date("2021-05-31"), localisation_parking = "peripherie", parc_relais = FALSE)
+    ids_list <- list("Semaine" = "selection_timestep_week", 
+                     "Mois" = "selection_timestep_month")
     
-    # observe(    browser())
     
-    mod_saturation_appel_WS_server("saturation_appel_WS_ui_1", r6 = parc_relais)
-    mod_saturation_clean_server("saturation_clean_ui_1", r6 = parc_relais)
-    mod_saturation_graphe_server("saturation_graphe_ui_1", r6 = parc_relais)
-    mod_saturation_table_server("saturation_table_ui_1", r6 = parc_relais)
+    # En fonction de la fenetre temporelle selectionnee, on affiche le selecteur de date approprié et on masque les autres
+    observeEvent(input$timestep, { 
+      # On recupere l'id à afficher
+      show_some_ids(ids = ids_list[[input$timestep]])
+      # On recupere les id à masquer
+      hide_some_ids(ids = ids_list[!names(ids_list) == input$timestep])
+      
+    })
     
-    mod_saturation_appel_WS_server("saturation_appel_WS_ui_2", r6 = hypercentre)
-    mod_saturation_clean_server("saturation_clean_ui_2", r6 = hypercentre)
-    mod_saturation_graphe_server("saturation_graphe_ui_2", r6 = hypercentre)
-    mod_saturation_table_server("saturation_table_ui_2", r6 = hypercentre)
-    
-    mod_saturation_appel_WS_server("saturation_appel_WS_ui_3", r6 = centre)
-    mod_saturation_clean_server("saturation_clean_ui_3", r6 = centre)
-    mod_saturation_graphe_server("saturation_graphe_ui_3", r6 = centre)
-    mod_saturation_table_server("saturation_table_ui_3", r6 = centre)
-    
-    mod_saturation_appel_WS_server("saturation_appel_WS_ui_4", r6 = peripherie)
-    mod_saturation_clean_server("saturation_clean_ui_4", r6 = peripherie)
-    mod_saturation_graphe_server("saturation_graphe_ui_4", r6 = peripherie)
-    mod_saturation_table_server("saturation_table_ui_4", r6 = peripherie)
-    
+    observeEvent(input$run_query,{
+      xtradata_parameters <- reactive(
+        switch(input$timestep,
+               "Semaine" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_week),
+               "Mois" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_month))
+      )
+      
+      parc_relais <- Saturation$new(rangeStart = xtradata_parameters()$rangeStart,
+                                    rangeEnd = xtradata_parameters()$rangeEnd,
+                                    rangeStep = "hour",
+                                    plageHoraire = 0:23,
+                                    localisation_parking = NA,
+                                    parc_relais = TRUE)
+      
+      hypercentre <- Saturation$new(rangeStart = xtradata_parameters()$rangeStart,
+                                    rangeEnd = xtradata_parameters()$rangeEnd,
+                                    rangeStep = "hour",
+                                    plageHoraire = 0:23,
+                                    localisation_parking = "hypercentre",
+                                    parc_relais = FALSE)
+      
+      centre <- Saturation$new(rangeStart = xtradata_parameters()$rangeStart,
+                               rangeEnd = xtradata_parameters()$rangeEnd,
+                               rangeStep = "hour",
+                               plageHoraire = 0:23,
+                               localisation_parking = "centre",
+                               parc_relais = FALSE)
+      
+      peripherie  <- Saturation$new(rangeStart = xtradata_parameters()$rangeStart,
+                                    rangeEnd = xtradata_parameters()$rangeEnd,
+                                    rangeStep = "hour",
+                                    plageHoraire = 0:23,
+                                    localisation_parking = "peripherie",
+                                    parc_relais = FALSE)
+      
+      mod_saturation_appel_WS_server("saturation_appel_WS_ui_1", r6 = parc_relais)
+      mod_saturation_clean_server("saturation_clean_ui_1", r6 = parc_relais)
+      mod_saturation_graphe_server("saturation_graphe_ui_1", r6 = parc_relais)
+      mod_saturation_table_server("saturation_table_ui_1", r6 = parc_relais)
+      
+      # mod_saturation_appel_WS_server("saturation_appel_WS_ui_2", r6 = hypercentre)
+      # mod_saturation_clean_server("saturation_clean_ui_2", r6 = hypercentre)
+      # mod_saturation_graphe_server("saturation_graphe_ui_2", r6 = hypercentre)
+      # mod_saturation_table_server("saturation_table_ui_2", r6 = hypercentre)
+      # 
+      # mod_saturation_appel_WS_server("saturation_appel_WS_ui_3", r6 = centre)
+      # mod_saturation_clean_server("saturation_clean_ui_3", r6 = centre)
+      # mod_saturation_graphe_server("saturation_graphe_ui_3", r6 = centre)
+      # mod_saturation_table_server("saturation_table_ui_3", r6 = centre)
+      # 
+      # mod_saturation_appel_WS_server("saturation_appel_WS_ui_4", r6 = peripherie)
+      # mod_saturation_clean_server("saturation_clean_ui_4", r6 = peripherie)
+      # mod_saturation_graphe_server("saturation_graphe_ui_4", r6 = peripherie)
+      # mod_saturation_table_server("saturation_table_ui_4", r6 = peripherie)
+    })  
   })
 }
 

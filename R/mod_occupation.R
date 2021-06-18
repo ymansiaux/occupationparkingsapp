@@ -27,7 +27,7 @@ mod_occupation_ui <- function(id){
                    contenu_div = tagList(
                      radioButtons(inputId = ns("plage_horaire"), 
                                   label = "Plage horaire",
-                                  choices = c("Journée (8h-20h)", "Personnalisée")), #"Nuit (20h-8h)",
+                                  choices = c("Journ\u00e9e (8h-20h)", "Personnalis\u00e9e")), #"Nuit (20h-8h)",
                      hidden_div(id_div = ns("plage_horaire_personnalisee"),
                                 contenu_div = tagList(
                                   sliderInput(inputId = ns("plage_horaire_perso"),
@@ -147,7 +147,7 @@ mod_occupation_server <- function(id){
     })
     
     observeEvent(input$plage_horaire, {
-      if(input$plage_horaire == "Personnalisée") {
+      if(input$plage_horaire == "Personnalis\u00e9e") {
         show("plage_horaire_personnalisee") 
       } else {
         hide("plage_horaire_personnalisee")   
@@ -158,9 +158,9 @@ mod_occupation_server <- function(id){
     plageHoraire <- reactive(
       if(input$timestep == "Jour") {
         switch(input$plage_horaire,
-               "Journée (8h-20h)" = 8:20,
+               "Journ\u00e9e (8h-20h)" = 8:20,
                "Nuit (20h-8h)" = c(0:7,21:23),
-               "Personnalisée" = input$plage_horaire_perso[1]:input$plage_horaire_perso[2]
+               "Personnalis\u00e9e" = input$plage_horaire_perso[1]:input$plage_horaire_perso[2]
         )
       }  else { 0:23 }
     )

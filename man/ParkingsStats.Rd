@@ -86,6 +86,8 @@ Create a new occupation object.
 
 \item{\code{rangeStep}}{rangeStep}
 
+\item{\code{plageHoraire}}{plageHoraire}
+
 \item{\code{localisation_parking}}{localisation_parking}
 
 \item{\code{parc_relais}}{parc_relais}

@@ -8,12 +8,30 @@
 #'
 #' @import shiny
 #' @import R6
-#' @importFrom ggiraph renderggiraph ggiraphOutput
+#' @importFrom ggiraph renderGirafe girafeOutput girafe opts_sizing opts_tooltip opts_hover  
+
 mod_saturation_graphe_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h3("Graphique"),
-    ggiraphOutput(ns("plot"))
+    fluidRow(
+      column(width = 12,
+             h3("Graphique"),
+             sliderInput(ns("width"), "width", min = 3, max = 20, value = 12),
+             sliderInput(ns("height"), "height", min = 3, max = 20, value = 6),
+             sliderInput(ns("pointsize"), "pointsize", min = 3, max = 50, value = 12),
+             checkboxInput(ns("with_facet"), "with_facet", value = TRUE)
+             
+             
+      )
+    ),
+    fluidRow(
+      column(width = 6,
+             girafeOutput(ns("plot"))
+      ),
+      column(width = 6,
+             girafeOutput(ns("plot2"))
+      )
+    )
   )
 }
 
@@ -22,8 +40,32 @@ mod_saturation_graphe_ui <- function(id){
 #' @noRd 
 mod_saturation_graphe_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
-    output$plot <- renderggiraph({
-      r6$calendar_heatmap() 
+    output$plot <- renderGirafe({
+      r6$add_parkings_names()
+      # browser()
+      gg <- r6$calendar_heatmap(input$with_facet) 
+      
+      x <- girafe(ggobj = gg, width_svg = input$width, height_svg = input$height,
+                  pointsize = input$pointsize,
+                  options = list(
+                    # opts_sizing(rescale = TRUE, width = 1) ,
+                    opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
+                  ))
+      x
+    })
+    
+    output$plot2 <- renderGirafe({
+      r6$add_parkings_names()
+      # browser()
+      gg <- r6$calendar_heatmap(input$with_facet) 
+      
+      x <- girafe(ggobj = gg, width_svg = input$width, height_svg = input$height,
+                  pointsize = input$pointsize,
+                  options = list(
+                    # opts_sizing(rescale = TRUE, width = 1) ,
+                    opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
+                  ))
+      x
     })
     
   })

@@ -23,6 +23,7 @@ mod_saturation_clean_server <- function(id, r6){
     # ns <- session$ns
     # observe(browser())
     observe({
+      # browser()
       r6$clean_output()
       r6$filter_full_capacity_parkings()
     })
