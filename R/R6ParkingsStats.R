@@ -27,6 +27,9 @@ ParkingsStats <- R6::R6Class(
     #' @field data_xtradata Données issues de l'appel au WS via la fonction download_data
     data_xtradata = NULL,
     
+    #' @field cleaned_data Données nettoyées
+    cleaned_data = NULL,
+    
     #' @description
     #' Create a new occupation object.
     #' @param rangeStart rangeStart
@@ -36,6 +39,7 @@ ParkingsStats <- R6::R6Class(
     #' @param localisation_parking localisation_parking
     #' @param parc_relais parc_relais
     #' @param data_xtradata data_xtradata
+    #' @param cleaned_data cleaned_data
     #' @return A new `Occupation` object.
     
     initialize = function(rangeStart, rangeEnd, rangeStep, plageHoraire, localisation_parking, parc_relais) {
@@ -46,6 +50,7 @@ ParkingsStats <- R6::R6Class(
       self$localisation_parking <- localisation_parking
       self$parc_relais <- parc_relais
       self$data_xtradata <- NULL
+      self$cleaned_data <- NULL
     },
     
     #' @description
@@ -89,22 +94,11 @@ ParkingsStats <- R6::R6Class(
     #' }
     clean_output = function() {
       ## rajouter du defensive programming
-      self$data_xtradata <- self$data_xtradata %>%
+      self$cleaned_data <- self$data_xtradata %>%
         select.(-type) %>%
         mutate.(time = as_datetime(time, tz = mytimezone),
                 libres = ceiling(libres),
-                taux_occupation = 100 * pmax(0, 1-(libres / total))) #%>% 
-        # mutate.(taux_occupation = replace_na.(taux_occupation, 0))
-    },
-    
-    #' @description
-    #' Ajout les noms des parkings
-    #' @import tidytable
-    #' @importFrom data.table :=
-    #' @examples \dontrun{ add_parkings_names()
-    #' }
-    add_parkings_names = function() {
-      self$data_xtradata <- self$data_xtradata %>% 
+                taux_occupation = 100 * pmax(0, 1-(libres / total))) %>% 
         left_join.(.,  select.(parkings, ident, nom), by = "ident")
     }
   )

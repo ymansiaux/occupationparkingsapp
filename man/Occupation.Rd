@@ -25,9 +25,17 @@ va gérer la routine API / clean / plot / table / download
 \section{Super class}{
 \code{\link[occupationparkingsapp:ParkingsStats]{occupationparkingsapp::ParkingsStats}} -> \code{Occupation}
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{aggregated_data}}{Données sur lesquelles on applique une fonction d'aggregation par unité de temps}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-new}{\code{Occupation$new()}}
 \item \href{#method-mean_by_some_time_unit}{\code{Occupation$mean_by_some_time_unit()}}
 \item \href{#method-timeseries_plot}{\code{Occupation$timeseries_plot()}}
 \item \href{#method-clone}{\code{Occupation$clone()}}
@@ -36,12 +44,50 @@ va gérer la routine API / clean / plot / table / download
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="add_parkings_names">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-add_parkings_names}{\code{occupationparkingsapp::ParkingsStats$add_parkings_names()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="clean_output">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-clean_output}{\code{occupationparkingsapp::ParkingsStats$clean_output()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="download_data">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-download_data}{\code{occupationparkingsapp::ParkingsStats$download_data()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="initialize">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-initialize}{\code{occupationparkingsapp::ParkingsStats$initialize()}}\out{</span>}
 }
 \out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+Create a new occupation object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$new(
+  rangeStart,
+  rangeEnd,
+  rangeStep,
+  plageHoraire,
+  localisation_parking,
+  parc_relais,
+  aggregated_data
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rangeStart}}{rangeStart}
+
+\item{\code{rangeEnd}}{rangeEnd}
+
+\item{\code{rangeStep}}{rangeStep}
+
+\item{\code{plageHoraire}}{plageHoraire}
+
+\item{\code{localisation_parking}}{localisation_parking}
+
+\item{\code{parc_relais}}{parc_relais}
+
+\item{\code{data_xtradata}}{data_xtradata}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A new `Occupation` object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-mean_by_some_time_unit"></a>}}

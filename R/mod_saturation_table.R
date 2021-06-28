@@ -26,7 +26,9 @@ mod_saturation_table_server <- function(id, r6){
     # observe(browser())
     
     output$table <- renderDT({
-      r6$data_xtradata[1:5,]
+      # r6$data_xtradata[1:5,]
+      r6$cleaned_data
+      
     })
     
   })

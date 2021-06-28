@@ -24,13 +24,6 @@ parc_relais$data_xtradata }
 
 \dontrun{ clean_output()
 }
-
-## ------------------------------------------------
-## Method `ParkingsStats$add_parkings_names`
-## ------------------------------------------------
-
-\dontrun{ add_parkings_names()
-}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -48,6 +41,8 @@ parc_relais$data_xtradata }
 \item{\code{parc_relais}}{Parc relais ou non (boolean)}
 
 \item{\code{data_xtradata}}{Données issues de l'appel au WS via la fonction download_data}
+
+\item{\code{cleaned_data}}{Données nettoyées}
 }
 \if{html}{\out{</div>}}
 }
@@ -57,7 +52,6 @@ parc_relais$data_xtradata }
 \item \href{#method-new}{\code{ParkingsStats$new()}}
 \item \href{#method-download_data}{\code{ParkingsStats$download_data()}}
 \item \href{#method-clean_output}{\code{ParkingsStats$clean_output()}}
-\item \href{#method-add_parkings_names}{\code{ParkingsStats$add_parkings_names()}}
 \item \href{#method-clone}{\code{ParkingsStats$clone()}}
 }
 }
@@ -93,6 +87,8 @@ Create a new occupation object.
 \item{\code{parc_relais}}{parc_relais}
 
 \item{\code{data_xtradata}}{data_xtradata}
+
+\item{\code{cleaned_data}}{cleaned_data}
 }
 \if{html}{\out{</div>}}
 }
@@ -142,25 +138,6 @@ Nettoyage de la sortie xtradata
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{ clean_output()
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_parkings_names"></a>}}
-\if{latex}{\out{\hypertarget{method-add_parkings_names}{}}}
-\subsection{Method \code{add_parkings_names()}}{
-Ajout les noms des parkings
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$add_parkings_names()}\if{html}{\out{</div>}}
-}
-
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ add_parkings_names()
 }
 }
 \if{html}{\out{</div>}}

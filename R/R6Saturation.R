@@ -27,7 +27,7 @@ Saturation <- R6::R6Class(
     filter_full_capacity_parkings = function(seuil_taux_occupation = 90, nb_heures_par_jour_satures = 3, nb_jour_par_semaine_sature = 2) {
       
       # calcul pour chaque parking du nombre d'heure / j pdt lequel il est sature
-      n_hour_per_day_full <- self$data_xtradata %>% 
+      n_hour_per_day_full <- self$cleaned_data %>% 
         mutate.(date = as_date(time)) %>% 
         summarise.(n_hour_per_day_full = sum(taux_occupation >= seuil_taux_occupation), .by = c(ident, date)) 
       
@@ -56,7 +56,7 @@ Saturation <- R6::R6Class(
     #' } 
     calendar_heatmap = function(with_facet = FALSE, selected_parking) {
       
-      data_parkings_heatmap <- self$data_xtradata %>% 
+      data_parkings_heatmap <- self$cleaned_data %>% 
         inner_join.(self$parkings_satures, by = "ident") %>% 
         filter.(ident == selected_parking) %>% 
         mutate.(hours = hour(time), date = as_date(time)) %>% 
@@ -82,20 +82,7 @@ Saturation <- R6::R6Class(
       if(with_facet) gg <- gg + facet_wrap(~ nom, ncol = 2, strip.position = "top")
       
       gg
-      
-      # girafe(
-      #   ggobj = gg, width_svg = 6, height_svg = 6,
-      #   options = list(
-      #     opts_sizing(rescale = TRUE),
-      #     opts_tooltip(
-      #       opacity = .8,
-      #       css = "background-color:gray;color:white;padding:2px;border-radius:2px;"
-      #     ),
-      #     opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
-      #   )
-      # )
-      
-      
+
     }
   )
 )

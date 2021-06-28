@@ -53,15 +53,13 @@ mod_occupation_graphe_server <- function(id, r6){
       
       input$maj
       
-      r6$add_parkings_names()
-      r6$data_xtradata$nom[is.na(r6$data_xtradata$nom)] <- "moyenne"
+      # r6$add_parkings_names()
+      r6$aggregated_data$nom[is.na(r6$aggregated_data$nom)] <- "moyenne"
       
       gg <- r6$timeseries_plot(isolate(input$parkings_to_plot), TRUE)
       
-      x <- girafe(ggobj = gg, #width_svg = 8, height_svg = 8,
-                  # pointsize = 200,
+      x <- girafe(ggobj = gg, 
                   options = list(
-                    # opts_sizing(rescale = TRUE, width = 1) ,
                     opts_hover_inv(css = "opacity:0.1;"),
                     opts_hover(css = "stroke-width:2;")
                   ))

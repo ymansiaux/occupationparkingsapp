@@ -5,8 +5,26 @@
 Occupation <- R6::R6Class(
   "Occupation",
   inherit = ParkingsStats,
-  
+
   public = list(
+    #' @field aggregated_data Données sur lesquelles on applique une fonction d'aggregation par unité de temps
+    aggregated_data = NULL,
+    
+    #' @description
+    #' Create a new occupation object.
+    #' @param rangeStart rangeStart
+    #' @param rangeEnd rangeEnd
+    #' @param rangeStep rangeStep
+    #' @param plageHoraire plageHoraire
+    #' @param localisation_parking localisation_parking
+    #' @param parc_relais parc_relais
+    #' @param data_xtradata data_xtradata
+    #' @return A new `Occupation` object.
+    
+    initialize = function(rangeStart, rangeEnd, rangeStep, plageHoraire, localisation_parking, parc_relais, aggregated_data) {
+      super$initialize(rangeStart, rangeEnd, rangeStep, plageHoraire, localisation_parking, parc_relais)
+      self$aggregated_data <- NULL
+    },
     
     #' @description
     #' Aggregation des données selon une fenetre temporelle
@@ -19,18 +37,18 @@ Occupation <- R6::R6Class(
     #' @examples \dontrun{ temporal_aggregate("day")
     #' } 
     mean_by_some_time_unit = function(time_unit, ...) {
-      self$data_xtradata <- 
+      self$aggregated_data <- 
         # on bind_rows : la moyenne globale et la moyenne par ident
         bind_rows.(
-          self$data_xtradata %>% 
+          self$cleaned_data %>% 
             mutate.(time = floor_date(time, unit = time_unit, ...)) %>% 
             summarise.(taux_occupation = mean(taux_occupation, na.rm = TRUE), .by = c(time)) %>% 
-            mutate.(ident = "moyenne")
+            mutate.(ident = "moyenne", nom = "moyenne")
           ,
           
-          self$data_xtradata %>% 
+          self$cleaned_data %>% 
             mutate.(time = floor_date(time, unit = time_unit, ...)) %>% 
-            summarise.(taux_occupation = mean(taux_occupation, na.rm = TRUE), .by = c(ident, time))
+            summarise.(taux_occupation = mean(taux_occupation, na.rm = TRUE), .by = c(ident, nom, time))
         )
     },
     
@@ -50,7 +68,7 @@ Occupation <- R6::R6Class(
     #' } 
     timeseries_plot = function(parkings_to_plot, show_average = TRUE) {
       
-      data_plot <-  self$data_xtradata %>% 
+      data_plot <-  self$aggregated_data %>% 
         # filter.(hour(time) %in% horaires) %>% 
         mutate.(tooltip = as.character(
           glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf('%.2f', taux_occupation)}")

@@ -74,7 +74,7 @@ mod_saturation_graphe_server <- function(id, r6){
     
     
     output$plot <- renderGirafe({
-      r6$add_parkings_names()
+      # r6$add_parkings_names()
       # browser()
       
       gg <- r6$calendar_heatmap(FALSE, selected_parking = input$selected_satured_parking1) 
@@ -88,7 +88,7 @@ mod_saturation_graphe_server <- function(id, r6){
     })
     
     output$plot2 <- renderGirafe({
-      r6$add_parkings_names()
+      # r6$add_parkings_names()
       # browser()
       
       gg <- r6$calendar_heatmap(FALSE, selected_parking = input$selected_satured_parking2) 
