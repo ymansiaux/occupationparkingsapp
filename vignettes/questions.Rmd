@@ -57,3 +57,15 @@ Au max sélection d'un mois, on garde un parking si le critère est rempli pour 
 Voir pour inverser les axes du graphique
 
 
+# Réu XXXX P. Mercé
+
+## Questions
+
+Cache jour (8h-20h) / nuit (20-8h) / ou plage horaire au choix
+--> Pour le moment possible uniquement si on choisit les données à la maille horaire
+
+Proposer de mettre 2 graphes coté à coté pour la saturation avec 2 petits sélecteurs
+
+Utilise t on le même système avec 2 graphes pour la comparaison année précédente ?
+Comment on fait pour une journée ou une semaine 1 an avant ? 
+Pour la semaine on peut proposer de prendre le même numéro de semaine

@@ -93,7 +93,7 @@ par jour pendant au moins nb_jour_par_semaine_sature par semaine
 \subsection{Method \code{calendar_heatmap()}}{
 Realise une calendar heatmap des parkings les plus satures
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Saturation$calendar_heatmap(with_facet = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Saturation$calendar_heatmap(with_facet = FALSE, selected_parking)}\if{html}{\out{</div>}}
 }
 
 \subsection{Examples}{

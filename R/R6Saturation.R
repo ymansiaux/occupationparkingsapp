@@ -46,7 +46,7 @@ Saturation <- R6::R6Class(
     #' Realise une calendar heatmap des parkings les plus satures
     #' @import tidytable
     #' @importFrom data.table :=
-    #' @importFrom ggplot2 ggplot aes geom_tile scale_fill_distiller scale_y_continuous scale_x_date facet_wrap theme_minimal theme unit element_blank coord_equal element_text
+    #' @importFrom ggplot2 ggplot ggtitle aes geom_tile scale_fill_distiller scale_y_continuous scale_x_date facet_wrap theme_minimal theme unit element_blank coord_equal element_text
     #' @importFrom lubridate hour wday
     #' @importFrom ggiraph geom_tile_interactive
     #' @importFrom glue glue_data
@@ -54,10 +54,11 @@ Saturation <- R6::R6Class(
     #' @import ggplot2
     #' @examples \dontrun{ temporal_aggregate("day")
     #' } 
-    calendar_heatmap = function(with_facet = FALSE) {
+    calendar_heatmap = function(with_facet = FALSE, selected_parking) {
       
       data_parkings_heatmap <- self$data_xtradata %>% 
         inner_join.(self$parkings_satures, by = "ident") %>% 
+        filter.(ident == selected_parking) %>% 
         mutate.(hours = hour(time), date = as_date(time)) %>% 
         mutate.(tooltip = glue_data(.SD, "Date : {as.character(time)}\nTaux : {sprintf('%.2f', taux_occupation)}"))
       
@@ -65,7 +66,8 @@ Saturation <- R6::R6Class(
         geom_tile_interactive(aes(fill = taux_occupation), colour = "white") +
         scale_fill_distiller(palette = "Spectral", direction = -1) +
         scale_x_continuous(breaks = 0:23) +
-        scale_y_date(date_labels = "%d/%m", breaks = "1 day") +
+        scale_y_date(date_labels = "%d/%m", breaks = "3 days", expand = c(0,0)) +
+        ggtitle(data_parkings_heatmap$nom[1]) + 
         # facet_wrap(~ nom, ncol = 2, strip.position = "top") +
         theme_minimal() + 
         theme(
