@@ -74,9 +74,7 @@ mod_saturation_graphe_server <- function(id, r6){
     
     
     output$plot <- renderGirafe({
-      # r6$add_parkings_names()
-      # browser()
-      
+
       gg <- r6$calendar_heatmap(FALSE, selected_parking = input$selected_satured_parking1) 
       
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
@@ -88,9 +86,7 @@ mod_saturation_graphe_server <- function(id, r6){
     })
     
     output$plot2 <- renderGirafe({
-      # r6$add_parkings_names()
-      # browser()
-      
+
       gg <- r6$calendar_heatmap(FALSE, selected_parking = input$selected_satured_parking2) 
       
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
