@@ -24,7 +24,7 @@ Saturation <- R6::R6Class(
     #' @importFrom lubridate as_date floor_date
     #' @examples \dontrun{ temporal_aggregate("day")
     #' } 
-    filter_full_capacity_parkings = function(seuil_taux_occupation = .9, nb_heures_par_jour_satures = 3, nb_jour_par_semaine_sature = 2) {
+    filter_full_capacity_parkings = function(seuil_taux_occupation = 90, nb_heures_par_jour_satures = 3, nb_jour_par_semaine_sature = 2) {
       
       # calcul pour chaque parking du nombre d'heure / j pdt lequel il est sature
       n_hour_per_day_full <- self$data_xtradata %>% 
@@ -46,41 +46,55 @@ Saturation <- R6::R6Class(
     #' Realise une calendar heatmap des parkings les plus satures
     #' @import tidytable
     #' @importFrom data.table :=
-    #' @importFrom ggplot2 ggplot aes geom_tile scale_fill_distiller scale_x_continuous facet_grid theme_minimal theme unit element_blank coord_equal
+    #' @importFrom ggplot2 ggplot ggtitle aes geom_tile scale_fill_distiller scale_y_continuous scale_x_date facet_wrap theme_minimal theme unit element_blank coord_equal element_text
     #' @importFrom lubridate hour wday
-    #' @importFrom ggiraph girafe opts_sizing opts_tooltip opts_hover geom_tile_interactive
+    #' @importFrom ggiraph geom_tile_interactive
+    #' @importFrom glue glue_data
+    #' @import ggiraph
+    #' @import ggplot2
     #' @examples \dontrun{ temporal_aggregate("day")
     #' } 
-    calendar_heatmap = function() {
+    calendar_heatmap = function(with_facet = FALSE, selected_parking) {
       
       data_parkings_heatmap <- self$data_xtradata %>% 
         inner_join.(self$parkings_satures, by = "ident") %>% 
-        mutate.(hours = hour(time), days = wday(time, label = TRUE), taux = taux_occupation * 100) 
+        filter.(ident == selected_parking) %>% 
+        mutate.(hours = hour(time), date = as_date(time)) %>% 
+        mutate.(tooltip = glue_data(.SD, "Date : {as.character(time)}\nTaux : {sprintf('%.2f', taux_occupation)}"))
       
-      gg <- ggplot(data_parkings_heatmap, aes(x = hours, y = days, tooltip = taux)) +
-        geom_tile_interactive(aes(fill = taux), colour = "white") +
+      gg <- ggplot(data_parkings_heatmap, aes(y = date, x = hours, tooltip = tooltip)) +
+        geom_tile_interactive(aes(fill = taux_occupation), colour = "white") +
         scale_fill_distiller(palette = "Spectral", direction = -1) +
         scale_x_continuous(breaks = 0:23) +
-        facet_grid(ident ~ .) + 
+        scale_y_date(date_labels = "%d/%m", breaks = "3 days", expand = c(0,0)) +
+        ggtitle(data_parkings_heatmap$nom[1]) + 
+        # facet_wrap(~ nom, ncol = 2, strip.position = "top") +
         theme_minimal() + 
         theme(
           legend.position = "bottom",
-          legend.key.width = unit(2, "cm"),
-          panel.grid = element_blank()
+          # legend.key.width = unit(2, "cm"),
+          text = element_text(size=16),
+          panel.grid = element_blank(),
+          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)
         ) +
         coord_equal()
       
-      girafe(
-        ggobj = gg, width_svg = 6, height_svg = 6,
-        options = list(
-          opts_sizing(rescale = FALSE),
-          opts_tooltip(
-            opacity = .8,
-            css = "background-color:gray;color:white;padding:2px;border-radius:2px;"
-          ),
-          opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
-        )
-      )
+      if(with_facet) gg <- gg + facet_wrap(~ nom, ncol = 2, strip.position = "top")
+      
+      gg
+      
+      # girafe(
+      #   ggobj = gg, width_svg = 6, height_svg = 6,
+      #   options = list(
+      #     opts_sizing(rescale = TRUE),
+      #     opts_tooltip(
+      #       opacity = .8,
+      #       css = "background-color:gray;color:white;padding:2px;border-radius:2px;"
+      #     ),
+      #     opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
+      #   )
+      # )
+      
       
     }
   )

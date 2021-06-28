@@ -18,7 +18,7 @@ test_that("Test de la semaine suivante OK", {
   
   expect_true(all(sapply(res, class) == c("Date", "Date", "character")))
   expect_equal(res$rangeStart, as.Date("2021-05-10"))
-  expect_equal(res$rangeEnd, as.Date("2021-05-17"))
+  expect_equal(res$rangeEnd, as.Date("2021-05-16"))
   
 })
 
@@ -31,7 +31,7 @@ test_that("Test du mois suivant OK", {
   
   expect_true(all(sapply(res, class) == c("Date", "Date", "character")))
   expect_equal(res$rangeStart, as.Date("2021-05-01"))
-  expect_equal(res$rangeEnd, as.Date("2021-06-01"))
+  expect_equal(res$rangeEnd, as.Date("2021-05-31"))
   
 })
 
@@ -43,10 +43,10 @@ test_that("Test de l'année suivante OK", {
   res <- occupation_compute_xtradata_request_parameters("Année", day)
   
   expect_true(all(sapply(res, class) == c("Date", "Date", "character")))
-  expect_equal(res$rangeStart, as.Date("2021-01-01"))
+  expect_equal(res$rangeStart, as.Date("2021-12-31"))
   
   if(lubridate::year(Sys.Date()) == day)  expect_equal(res$rangeEnd, Sys.Date())
-  if(lubridate::year(Sys.Date()) != day)  expect_equal(res$rangeEnd, "2022-01-01")
+  if(lubridate::year(Sys.Date()) != day)  expect_equal(res$rangeEnd, "2021-12-31")
   
   
 })

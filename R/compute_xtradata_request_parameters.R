@@ -18,14 +18,14 @@ occupation_compute_xtradata_request_parameters <- function(selected_timestep, se
     
     # semaine
     rangeStart <- floor_date(as_date(selected_date), "week", week_start = 1)
-    rangeEnd <- floor_date(add_with_rollback(rangeStart, weeks(1)), "week", week_start = 1)
+    rangeEnd <- floor_date(add_with_rollback(rangeStart, weeks(1)), "week", week_start = 1) #-1
     rangeEnd <- as_date(ifelse(rangeEnd > Sys.Date(), Sys.Date(), rangeEnd))
     rangeStep <- "day"
     
   } else if(selected_timestep == "Mois") {
     # mois
     rangeStart <- floor_date(as_date(selected_date), "month")
-    rangeEnd <- add_with_rollback(rangeStart, months(1), roll_to_first = TRUE)
+    rangeEnd <- add_with_rollback(rangeStart, months(1), roll_to_first = TRUE) #-1
     rangeEnd <- as_date(ifelse(rangeEnd > Sys.Date(), Sys.Date(), rangeEnd))
     rangeStep <- "day"
     

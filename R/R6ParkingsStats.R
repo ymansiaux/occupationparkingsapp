@@ -93,7 +93,8 @@ ParkingsStats <- R6::R6Class(
         select.(-type) %>%
         mutate.(time = as_datetime(time, tz = mytimezone),
                 libres = ceiling(libres),
-                taux_occupation = 100 * pmax(0, 1-(libres / total)))
+                taux_occupation = 100 * pmax(0, 1-(libres / total))) #%>% 
+        # mutate.(taux_occupation = replace_na.(taux_occupation, 0))
     },
     
     #' @description

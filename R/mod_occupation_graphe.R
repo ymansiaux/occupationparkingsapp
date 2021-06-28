@@ -9,7 +9,7 @@
 #' @import shiny
 #' @import R6
 #' @importFrom DT DTOutput renderDT
-#' @importFrom ggiraph renderGirafe girafeOutput girafe  opts_hover_inv
+#' @importFrom ggiraph renderGirafe girafeOutput girafe  opts_hover_inv opts_sizing opts_hover
 #' @importFrom shinybm hidden_div
 #' @importFrom shinyjs show hide
 #' 
@@ -24,7 +24,7 @@ mod_occupation_graphe_ui <- function(id){
       ),
       column(width = 4,
              selectizeInput(inputId = ns("parkings_to_plot"),
-                            label = "Parkings à afficher",
+                            label = "Parkings \u00e0 afficher",
                             choices = NULL,
                             multiple = TRUE,
                             options = list(maxItems = 5, placeholder = "Choisir au max 10 pkgs", deselectBehavior = "top")
@@ -58,8 +58,10 @@ mod_occupation_graphe_server <- function(id, r6){
       
       gg <- r6$timeseries_plot(isolate(input$parkings_to_plot), TRUE)
       
-      x <- girafe(ggobj = gg, width_svg = 8, height_svg = 6,
+      x <- girafe(ggobj = gg, #width_svg = 8, height_svg = 8,
+                  # pointsize = 200,
                   options = list(
+                    # opts_sizing(rescale = TRUE, width = 1) ,
                     opts_hover_inv(css = "opacity:0.1;"),
                     opts_hover(css = "stroke-width:2;")
                   ))
@@ -69,7 +71,7 @@ mod_occupation_graphe_server <- function(id, r6){
       # 
       # data_plot <-  r6$data_xtradata %>% 
       #   mutate.(tooltip = as.character(
-      #     glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf('%.2f', taux_occupation)}")
+      #     glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf(\'%.2f\', taux_occupation)}")
       #   )
       #   ) %>% 
       #   mutate.(linetype = ifelse(ident == "moyenne", "dotted", "solid"))

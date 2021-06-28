@@ -3,7 +3,7 @@ usethis::use_build_ignore("deploy_to_RSPM.R")
 usethis::use_build_ignore("vignettes/occupationparkingsapp")
 usethis::use_build_ignore("vignettes/questions")
 usethis::use_build_ignore("vignettes/designApp")
-usethis::use_build_ignore("R/_disable_autoload")
+usethis::use_build_ignore("R/_disable_autoload.R")
 
 
 usethis::use_data_raw("parkings")
