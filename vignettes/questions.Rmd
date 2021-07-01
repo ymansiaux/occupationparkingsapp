@@ -57,7 +57,7 @@ Au max sélection d'un mois, on garde un parking si le critère est rempli pour 
 Voir pour inverser les axes du graphique
 
 
-# Réu XXXX P. Mercé
+# Réu 01/07/21 P. Mercé P. Brebinaud
 
 ## Questions
 
@@ -69,3 +69,17 @@ Proposer de mettre 2 graphes coté à coté pour la saturation avec 2 petits sé
 Utilise t on le même système avec 2 graphes pour la comparaison année précédente ?
 Comment on fait pour une journée ou une semaine 1 an avant ? 
 Pour la semaine on peut proposer de prendre le même numéro de semaine
+
+Partie qualité de données : rapport à la semaine par ex ...
+
+## Réponses
+
+Occupation : proposer 2 options moyenne des parkings de la zone / moyenne des parcs sélctionnés uniquement 
+Comparaison : manuellement pour pas de temps jour et semaine
+en dur pour mois et année
+
+Modifier panneau pour avoir des critères manuels pour la saturation
+
+
+
+
