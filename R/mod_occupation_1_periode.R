@@ -200,8 +200,6 @@ mod_occupation_1_periode_server <- function(id){
       output$my_Occupation_UI <- renderUI({
         lapply(names(list_of_Occupation), function(.y) {
           tagList(
-            mod_occupation_appel_WS_ui(ns(paste0("occupation_appel_WS_ui_",.y))),
-            mod_occupation_clean_ui(ns(paste0("occupation_clean_ui_", .y))),
             mod_occupation_graphe_ui(ns(paste0("occupation_graphe_ui_", .y))),
             mod_occupation_table_ui(ns(paste0("occupation_table_ui_",.y)))
           )

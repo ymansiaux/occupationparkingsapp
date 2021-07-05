@@ -22,7 +22,7 @@ app_ui <- function(request) {
                  tabPanel("Occupation - observer 1 période",
                           mod_occupation_1_periode_ui("occupation_ui_1")),
                  tabPanel("Occupation - comparer 2 périodes",
-                          h2("coucou")),
+                          mod_occupation_2_periodes_ui("occupation_ui_2")),
                  tabPanel("Saturation",
                           mod_saturation_ui("saturation_ui_1")),
                  tabPanel("Tab3")
