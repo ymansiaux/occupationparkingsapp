@@ -188,6 +188,7 @@ mod_occupation_2_periodes_server <- function(id){
         parc_relais1 = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
                                       rangeEnd = xtradata_parameters$periode1$rangeEnd,
                                       rangeStep = xtradata_parameters$periode1$rangeStep,
+                                      timeStep = input$timestep,
                                       plageHoraire = plageHoraire(),
                                       localisation_parking = NA,
                                       parc_relais = TRUE)
@@ -195,6 +196,7 @@ mod_occupation_2_periodes_server <- function(id){
         hypercentre1 = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
                                       rangeEnd = xtradata_parameters$periode1$rangeEnd,
                                       rangeStep = xtradata_parameters$periode1$rangeStep,
+                                      timeStep = input$timestep,
                                       plageHoraire = plageHoraire(),
                                       localisation_parking = "hypercentre",
                                       parc_relais = FALSE)
@@ -202,6 +204,7 @@ mod_occupation_2_periodes_server <- function(id){
         centre1 = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
                                  rangeEnd = xtradata_parameters$periode1$rangeEnd,
                                  rangeStep = xtradata_parameters$periode1$rangeStep,
+                                 timeStep = input$timestep,
                                  plageHoraire = plageHoraire(),
                                  localisation_parking = "centre",
                                  parc_relais = FALSE)
@@ -209,6 +212,7 @@ mod_occupation_2_periodes_server <- function(id){
         peripherie1 = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
                                      rangeEnd = xtradata_parameters$periode1$rangeEnd,
                                      rangeStep = xtradata_parameters$periode1$rangeStep,
+                                     timeStep = input$timestep,
                                      plageHoraire = plageHoraire(),
                                      localisation_parking = "peripherie",
                                      parc_relais = FALSE)
@@ -219,6 +223,7 @@ mod_occupation_2_periodes_server <- function(id){
         parc_relais2 = Occupation$new(rangeStart = xtradata_parameters$periode2$rangeStart,
                                       rangeEnd = xtradata_parameters$periode2$rangeEnd,
                                       rangeStep = xtradata_parameters$periode2$rangeStep,
+                                      timeStep = input$timestep,
                                       plageHoraire = plageHoraire(),
                                       localisation_parking = NA,
                                       parc_relais = TRUE)
@@ -226,6 +231,7 @@ mod_occupation_2_periodes_server <- function(id){
         hypercentre2 = Occupation$new(rangeStart = xtradata_parameters$periode2$rangeStart,
                                       rangeEnd = xtradata_parameters$periode2$rangeEnd,
                                       rangeStep = xtradata_parameters$periode2$rangeStep,
+                                      timeStep = input$timestep,
                                       plageHoraire = plageHoraire(),
                                       localisation_parking = "hypercentre",
                                       parc_relais = FALSE)
@@ -233,6 +239,7 @@ mod_occupation_2_periodes_server <- function(id){
         centre2 = Occupation$new(rangeStart = xtradata_parameters$periode2$rangeStart,
                                  rangeEnd = xtradata_parameters$periode2$rangeEnd,
                                  rangeStep = xtradata_parameters$periode2$rangeStep,
+                                 timeStep = input$timestep,
                                  plageHoraire = plageHoraire(),
                                  localisation_parking = "centre",
                                  parc_relais = FALSE)
@@ -240,6 +247,7 @@ mod_occupation_2_periodes_server <- function(id){
         peripherie2 = Occupation$new(rangeStart = xtradata_parameters$periode2$rangeStart,
                                      rangeEnd = xtradata_parameters$periode2$rangeEnd,
                                      rangeStep = xtradata_parameters$periode2$rangeStep,
+                                     timeStep = input$timestep,
                                      plageHoraire = plageHoraire(),
                                      localisation_parking = "peripherie",
                                      parc_relais = FALSE)
@@ -252,7 +260,7 @@ mod_occupation_2_periodes_server <- function(id){
       })
       
       purrr::pmap(list(list_of_Occupation1, list_of_Occupation2, names(list_of_Occupation1)), function(.x, .y, .z) {
-        mod_occupation_2_periodes_graphe_server(paste0("occupation_2_periodes_clean_ui_", .z), r6_1 = .x, r6_2 = .y)
+        mod_occupation_2_periodes_graphe_server(paste0("occupation_2_periodes_graphe_ui_", .z), r6_1 = .x, r6_2 = .y)
       })
       
       # browser()

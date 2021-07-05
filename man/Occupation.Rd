@@ -59,6 +59,7 @@ Create a new occupation object.
   rangeStart,
   rangeEnd,
   rangeStep,
+  timeStep,
   plageHoraire,
   localisation_parking,
   parc_relais,
@@ -74,6 +75,8 @@ Create a new occupation object.
 \item{\code{rangeEnd}}{rangeEnd}
 
 \item{\code{rangeStep}}{rangeStep}
+
+\item{\code{timeStep}}{timeStep}
 
 \item{\code{plageHoraire}}{plageHoraire}
 

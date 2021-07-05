@@ -15,14 +15,15 @@ Occupation <- R6::R6Class(
     #' @param rangeStart rangeStart
     #' @param rangeEnd rangeEnd
     #' @param rangeStep rangeStep
+    #' @param timeStep timeStep
     #' @param plageHoraire plageHoraire
     #' @param localisation_parking localisation_parking
     #' @param parc_relais parc_relais
     #' @param data_xtradata data_xtradata
     #' @return A new `Occupation` object.
     
-    initialize = function(rangeStart, rangeEnd, rangeStep, plageHoraire, localisation_parking, parc_relais, aggregated_data) {
-      super$initialize(rangeStart, rangeEnd, rangeStep, plageHoraire, localisation_parking, parc_relais)
+    initialize = function(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais, aggregated_data) {
+      super$initialize(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais)
       self$aggregated_data <- NULL
     },
     
@@ -81,7 +82,7 @@ Occupation <- R6::R6Class(
         geom_line_interactive(aes(data_id=ident), lwd = 1) + 
         geom_point_interactive(aes(tooltip=tooltip, data_id=ident)) + 
         theme_minimal() +
-        theme(legend.position = "bottom") +
+        theme(legend.position = "right") +
         
         geom_line_interactive(data = data_plot %>% filter.(ident == "moyenne"), 
                               mapping = aes(x = time, y = taux_occupation, tooltip=taux_occupation, data_id = ident, group = nom, color = nom),

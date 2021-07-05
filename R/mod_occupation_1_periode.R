@@ -164,6 +164,7 @@ mod_occupation_1_periode_server <- function(id){
         parc_relais = Occupation$new(rangeStart = xtradata_parameters()$rangeStart,
                                      rangeEnd = xtradata_parameters()$rangeEnd,
                                      rangeStep = xtradata_parameters()$rangeStep,
+                                     timeStep = input$timestep,
                                      plageHoraire = plageHoraire(),
                                      localisation_parking = NA,
                                      parc_relais = TRUE)
@@ -171,6 +172,7 @@ mod_occupation_1_periode_server <- function(id){
         hypercentre = Occupation$new(rangeStart = xtradata_parameters()$rangeStart,
                                      rangeEnd = xtradata_parameters()$rangeEnd,
                                      rangeStep = xtradata_parameters()$rangeStep,
+                                     timeStep = input$timestep,
                                      plageHoraire = plageHoraire(),
                                      localisation_parking = "hypercentre",
                                      parc_relais = FALSE)
@@ -178,13 +180,15 @@ mod_occupation_1_periode_server <- function(id){
         centre = Occupation$new(rangeStart = xtradata_parameters()$rangeStart,
                                 rangeEnd = xtradata_parameters()$rangeEnd,
                                 rangeStep = xtradata_parameters()$rangeStep,
+                                timeStep = input$timestep,
                                 plageHoraire = plageHoraire(),
                                 localisation_parking = "centre",
                                 parc_relais = FALSE)
         ,
         peripherie =  Occupation$new(rangeStart = xtradata_parameters()$rangeStart,
                                      rangeEnd = xtradata_parameters()$rangeEnd,
-                                     rangeStep = xtradata_parameters()$rangeStep,
+                                     rangeStep = xtradata_parameters()$rangeStep, 
+                                     timeStep = input$timestep,
                                      plageHoraire = plageHoraire(),
                                      localisation_parking = "peripherie",
                                      parc_relais = FALSE)
