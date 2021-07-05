@@ -80,6 +80,11 @@ en dur pour mois et année
 
 Modifier panneau pour avoir des critères manuels pour la saturation
 
+## Actions
+
+Suite à ca on propose de modifier l'UI de la partie Occupation.
+1 sous-onglet : observer 1 période, 1 sous-onglet comparer 2 périodes
+
 
 
 
