@@ -17,6 +17,7 @@ Imports:
     magrittr,
     pkgload,
     processx,
+    purrr,
     R6,
     rlang,
     shiny,

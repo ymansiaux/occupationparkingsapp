@@ -159,7 +159,7 @@ Graphe de série temporelle
 \if{html}{\out{<a id="method-timeseries_plot_2_curves"></a>}}
 \if{latex}{\out{\hypertarget{method-timeseries_plot_2_curves}{}}}
 \subsection{Method \code{timeseries_plot_2_curves()}}{
-Graphe de série temporelle
+Graphe de série temporelle avec comparaison de 2 périodes
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_2_curves(
   data_occupation_1,
@@ -172,11 +172,13 @@ Graphe de série temporelle
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{data_occupation_1}}{données d'occupation de la période 1}
+
+\item{\code{data_occupation_2}}{données d'occupation de la période 2}
+
+\item{\code{timeStep}}{pas de temps pour l'axe des x (heure, jour, wday, mois)}
+
 \item{\code{parkings_to_plot}}{liste des parkings à afficher (parametre input shiny)}
-
-\item{\code{show_average}}{affichage de la moyenne (boolean)}
-
-\item{\code{horaires}}{horaires d'interet}
 }
 \if{html}{\out{</div>}}
 }

@@ -10,6 +10,7 @@
 #' @importFrom shinybm hidden_div show_some_ids hide_some_ids
 #' @importFrom shinyjs show hide 
 #' @importFrom lubridate year floor_date as_date
+#' @importFrom purrr imap
 
 mod_occupation_1_periode_ui <- function(id){
   ns <- NS(id)
@@ -194,7 +195,7 @@ mod_occupation_1_periode_server <- function(id){
                                      parc_relais = FALSE)
       )
       
-      purrr::imap(list_of_Occupation, function(.x, .y) {
+      imap(list_of_Occupation, function(.x, .y) {
         mod_occupation_appel_WS_server(paste0("occupation_appel_WS_ui_", .y), r6 = .x)
         mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x)
         mod_occupation_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x)

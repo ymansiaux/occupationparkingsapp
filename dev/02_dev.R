@@ -21,11 +21,12 @@ usethis::use_package( "tidytable" )
 usethis::use_package( "data.table" )
 usethis::use_package( "DT" )
 usethis::use_package( "lubridate" )
-usethis::use_package( "timetk" )
 usethis::use_package( "dplyr" )
 usethis::use_package( "ggplot2" )
 usethis::use_package( "ggiraph")
 usethis::use_package( "glue")
+usethis::use_package( "purrr")
+
 
 
 
