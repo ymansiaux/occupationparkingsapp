@@ -19,11 +19,12 @@ app_ui <- function(request) {
       navbarPage(title = title_with_logoDatalab(main_title = "Coucou"),
                  id = "navbarpage",
                  collapsible = TRUE,
-                 tabPanel("Occupation",
-                          mod_occupation_ui("occupation_ui_1")),
+                 tabPanel("Occupation - observer 1 p\u00e9riode",
+                          mod_occupation_1_periode_ui("occupation_ui_1")),
+                 tabPanel("Occupation - comparer 2 p\u00e9riodes",
+                          mod_occupation_2_periodes_ui("occupation_ui_2")),
                  tabPanel("Saturation",
-                          mod_saturation_ui("saturation_ui_1")),
-                 tabPanel("Tab3")
+                          mod_saturation_ui("saturation_ui_1"))
       )
     )
     

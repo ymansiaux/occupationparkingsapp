@@ -26,11 +26,11 @@ mod_saturation_graphe_ui <- function(id){
     # ),
     fluidRow(
       column(width = 6,
-             selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking à afficher", choices = NULL),
+             selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
              girafeOutput(ns("plot"))
       ),
       column(width = 6,
-             selectizeInput(ns("selected_satured_parking2"), label = "Choisir un parking à afficher", choices = NULL),
+             selectizeInput(ns("selected_satured_parking2"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
              girafeOutput(ns("plot2"))
       )
     )

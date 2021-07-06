@@ -65,6 +65,7 @@ Create a new occupation object.
   rangeStart,
   rangeEnd,
   rangeStep,
+  timeStep,
   plageHoraire,
   localisation_parking,
   parc_relais

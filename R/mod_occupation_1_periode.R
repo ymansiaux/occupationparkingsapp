@@ -10,8 +10,9 @@
 #' @importFrom shinybm hidden_div show_some_ids hide_some_ids
 #' @importFrom shinyjs show hide 
 #' @importFrom lubridate year floor_date as_date
+#' @importFrom purrr imap
 
-mod_occupation_ui <- function(id){
+mod_occupation_1_periode_ui <- function(id){
   ns <- NS(id)
   tagList(
     sidebarLayout(
@@ -89,30 +90,10 @@ mod_occupation_ui <- function(id){
                 fluidRow(
                   column(
                     width = 12,
-                    
-                    mod_occupation_appel_WS_ui(ns("occupation_appel_WS_ui_1")),
-                    mod_occupation_clean_ui(ns("occupation_clean_ui_1")),
-                    mod_occupation_graphe_ui(ns("occupation_graphe_ui_1")),
-                    mod_occupation_table_ui(ns("occupation_table_ui_1")),
-                    
-                    mod_occupation_appel_WS_ui(ns("occupation_appel_WS_ui_2")),
-                    mod_occupation_clean_ui(ns("occupation_clean_ui_2")),
-                    mod_occupation_graphe_ui(ns("occupation_graphe_ui_2")),
-                    mod_occupation_table_ui(ns("occupation_table_ui_2")),
-                    
-                    mod_occupation_appel_WS_ui(ns("occupation_appel_WS_ui_3")),
-                    mod_occupation_clean_ui(ns("occupation_clean_ui_3")),
-                    mod_occupation_graphe_ui(ns("occupation_graphe_ui_3")),
-                    mod_occupation_table_ui(ns("occupation_table_ui_3")),
-                    
-                    mod_occupation_appel_WS_ui(ns("occupation_appel_WS_ui_4")),
-                    mod_occupation_clean_ui(ns("occupation_clean_ui_4")),
-                    mod_occupation_graphe_ui(ns("occupation_graphe_ui_4")),
-                    mod_occupation_table_ui(ns("occupation_table_ui_4")))
-                  
-                )
-      )         
-      
+                    uiOutput(ns("my_Occupation_UI"))
+                  )
+                )         
+      )
     )
   )
 }
@@ -120,7 +101,7 @@ mod_occupation_ui <- function(id){
 #' occupation Server Functions
 #'
 #' @noRd 
-mod_occupation_server <- function(id){
+mod_occupation_1_periode_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     
@@ -178,63 +159,66 @@ mod_occupation_server <- function(id){
         )
       )
       # print(xtradata_parameters())
+      # browser()
+      list_of_Occupation <- list(
+        
+        parc_relais = Occupation$new(rangeStart = xtradata_parameters()$rangeStart,
+                                     rangeEnd = xtradata_parameters()$rangeEnd,
+                                     rangeStep = xtradata_parameters()$rangeStep,
+                                     timeStep = input$timestep,
+                                     plageHoraire = plageHoraire(),
+                                     localisation_parking = NA,
+                                     parc_relais = TRUE)
+        ,
+        hypercentre = Occupation$new(rangeStart = xtradata_parameters()$rangeStart,
+                                     rangeEnd = xtradata_parameters()$rangeEnd,
+                                     rangeStep = xtradata_parameters()$rangeStep,
+                                     timeStep = input$timestep,
+                                     plageHoraire = plageHoraire(),
+                                     localisation_parking = "hypercentre",
+                                     parc_relais = FALSE)
+        ,
+        centre = Occupation$new(rangeStart = xtradata_parameters()$rangeStart,
+                                rangeEnd = xtradata_parameters()$rangeEnd,
+                                rangeStep = xtradata_parameters()$rangeStep,
+                                timeStep = input$timestep,
+                                plageHoraire = plageHoraire(),
+                                localisation_parking = "centre",
+                                parc_relais = FALSE)
+        ,
+        peripherie =  Occupation$new(rangeStart = xtradata_parameters()$rangeStart,
+                                     rangeEnd = xtradata_parameters()$rangeEnd,
+                                     rangeStep = xtradata_parameters()$rangeStep, 
+                                     timeStep = input$timestep,
+                                     plageHoraire = plageHoraire(),
+                                     localisation_parking = "peripherie",
+                                     parc_relais = FALSE)
+      )
       
-      parc_relais <- Occupation$new(rangeStart = xtradata_parameters()$rangeStart,
-                                    rangeEnd = xtradata_parameters()$rangeEnd,
-                                    rangeStep = xtradata_parameters()$rangeStep,
-                                    plageHoraire = plageHoraire(),
-                                    localisation_parking = NA,
-                                    parc_relais = TRUE)
+      imap(list_of_Occupation, function(.x, .y) {
+        mod_occupation_appel_WS_server(paste0("occupation_appel_WS_ui_", .y), r6 = .x)
+        mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x)
+        mod_occupation_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x)
+        mod_occupation_table_server(paste0("occupation_table_ui_", .y), r6 = .x)
+      })
       
-      # hypercentre <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
-      #                               rangeEnd = xtradata_parameters$rangeEnd,
-      #                               rangeStep = xtradata_parameters$rangeStep,
-      #                               localisation_parking = "hypercentre",
-      #                               parc_relais = FALSE)
-      # 
-      # centre <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
-      #                          rangeEnd = xtradata_parameters$rangeEnd,
-      #                          rangeStep = xtradata_parameters$rangeStep,
-      #                          localisation_parking = "centre",
-      #                          parc_relais = FALSE)
-      # 
-      # peripherie  <- Occupation$new(rangeStart = xtradata_parameters$rangeStart,
-      #                               rangeEnd = xtradata_parameters$rangeEnd,
-      #                               rangeStep = xtradata_parameters$rangeStep,
-      #                               localisation_parking = "peripherie",
-      #                               parc_relais = FALSE)
-      
-      
-      mod_occupation_appel_WS_server("occupation_appel_WS_ui_1", r6 = parc_relais)
-      mod_occupation_clean_server("occupation_clean_ui_1", r6 = parc_relais)
-      mod_occupation_graphe_server("occupation_graphe_ui_1", r6 = parc_relais)
-      mod_occupation_table_server("occupation_table_ui_1", r6 = parc_relais)
-      
-      # mod_occupation_appel_WS_server("occupation_appel_WS_ui_2", r6 = hypercentre)
-      # mod_occupation_clean_server("occupation_clean_ui_2", r6 = hypercentre)
-      # mod_occupation_graphe_server("occupation_graphe_ui_2", r6 = hypercentre)
-      # mod_occupation_table_server("occupation_table_ui_2", r6 = hypercentre)
-      # 
-      # mod_occupation_appel_WS_server("occupation_appel_WS_ui_3", r6 = centre)
-      # mod_occupation_clean_server("occupation_clean_ui_3", r6 = centre)
-      # mod_occupation_graphe_server("occupation_graphe_ui_3", r6 = centre)
-      # mod_occupation_table_server("occupation_table_ui_3", r6 = centre)
-      # 
-      # mod_occupation_appel_WS_server("occupation_appel_WS_ui_4", r6 = peripherie)
-      # mod_occupation_clean_server("occupation_clean_ui_4", r6 = peripherie)
-      # mod_occupation_graphe_server("occupation_graphe_ui_4", r6 = peripherie)
-      # mod_occupation_table_server("occupation_table_ui_4", r6 = peripherie)
-      
+      output$my_Occupation_UI <- renderUI({
+        lapply(names(list_of_Occupation), function(.y) {
+          tagList(
+            mod_occupation_graphe_ui(ns(paste0("occupation_graphe_ui_", .y))),
+            mod_occupation_table_ui(ns(paste0("occupation_table_ui_",.y)))
+          )
+        })
+      })
     })
     
   })
 }
-
 ## To be copied in the UI
-# mod_occupation_ui("occupation_ui_1")
+# mod_occupation_1_periode_ui("occupation_ui_1")
 
 ## To be copied in the server
-# mod_occupation_server("occupation_ui_1")
+# mod_occupation_1_periode_server("occupation_ui_1")
 
 
 
