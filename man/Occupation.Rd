@@ -19,6 +19,13 @@ va gérer la routine API / clean / plot / table / download
 ## Method `Occupation$timeseries_plot`
 ## ------------------------------------------------
 
+\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
+} 
+
+## ------------------------------------------------
+## Method `Occupation$timeseries_plot_2_curves`
+## ------------------------------------------------
+
 \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
 } 
 }
@@ -28,7 +35,7 @@ va gérer la routine API / clean / plot / table / download
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{aggregated_data}}{Données sur lesquelles on applique une fonction d'aggregation par unité de temps}
+\item{\code{aggregated_data_by_some_time_unit}}{Données sur lesquelles on applique une fonction d'aggregation par unité de temps}
 }
 \if{html}{\out{</div>}}
 }
@@ -38,6 +45,7 @@ va gérer la routine API / clean / plot / table / download
 \item \href{#method-new}{\code{Occupation$new()}}
 \item \href{#method-mean_by_some_time_unit}{\code{Occupation$mean_by_some_time_unit()}}
 \item \href{#method-timeseries_plot}{\code{Occupation$timeseries_plot()}}
+\item \href{#method-timeseries_plot_2_curves}{\code{Occupation$timeseries_plot_2_curves()}}
 \item \href{#method-clone}{\code{Occupation$clone()}}
 }
 }
@@ -63,7 +71,7 @@ Create a new occupation object.
   plageHoraire,
   localisation_parking,
   parc_relais,
-  aggregated_data
+  aggregated_data_by_some_time_unit
 )}\if{html}{\out{</div>}}
 }
 
@@ -127,7 +135,38 @@ Aggregation des données selon une fenetre temporelle
 \subsection{Method \code{timeseries_plot()}}{
 Graphe de série temporelle
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot(parkings_to_plot, show_average = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot(parkings_to_plot)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{parkings_to_plot}}{liste des parkings à afficher (parametre input shiny)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
+} 
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-timeseries_plot_2_curves"></a>}}
+\if{latex}{\out{\hypertarget{method-timeseries_plot_2_curves}{}}}
+\subsection{Method \code{timeseries_plot_2_curves()}}{
+Graphe de série temporelle
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_2_curves(
+  data_occupation_1,
+  data_occupation_2,
+  timeStep,
+  parkings_to_plot
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

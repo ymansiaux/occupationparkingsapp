@@ -1,7 +1,7 @@
 plot2courbes<- function(r6_1, r6_2, timeStep) {
-data_plot <-  r6_1$aggregated_data %>% 
+data_plot <-  r6_1$aggregated_data_by_some_time_unit %>% 
   mutate.(nom = paste0(nom, "_periode1")) %>% 
-  bind_rows.(r6_2$aggregated_data %>% 
+  bind_rows.(r6_2$aggregated_data_by_some_time_unit %>% 
                mutate.(nom = paste0(nom, "_periode2"))) %>% 
   mutate.(tooltip = as.character(
     glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf('%.2f', taux_occupation)}")

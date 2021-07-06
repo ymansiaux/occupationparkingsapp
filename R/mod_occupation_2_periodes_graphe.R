@@ -21,9 +21,9 @@ mod_occupation_2_periodes_graphe_ui <- function(id){
              # h3("Graphique"),
              girafeOutput(ns("plot")),
              # actionButton(inputId = ns("pause"), "pause")
-      # )
+             # )
       ),
-    # fluidRow(
+      # fluidRow(
       
       column(width = 4,
              selectizeInput(inputId = ns("parkings_to_plot"),
@@ -53,17 +53,12 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
     # observe(      browser())
     output$plot <- renderGirafe({
       observeEvent(input$pause, browser())
-      # r6$timeseries_plot()
       input$maj
       
-      # r6$add_parkings_names()
-      r6_1$aggregated_data$nom[is.na(r6_1$aggregated_data$nom)] <- "moyenne"
-      r6_2$aggregated_data$nom[is.na(r6_2$aggregated_data$nom)] <- "moyenne"
+      r6_1$aggregated_data_by_some_time_unit$nom[is.na(r6_1$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
+      r6_2$aggregated_data_by_some_time_unit$nom[is.na(r6_2$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       
-      
-      # gg <- r6$timeseries_plot(isolate(input$parkings_to_plot), TRUE)
-      
-      gg <- plot2courbes(r6_1, r6_2, r6_1$timeStep)
+      gg <- r6_1$timeseries_plot_2_curves(r6_1, r6_2, r6_1$timeStep, isolate(input$parkings_to_plot))
       
       x <- girafe(ggobj = gg, width_svg = 8, height_svg = 5, 
                   pointsize = 15,
