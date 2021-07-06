@@ -27,6 +27,17 @@ mod_saturation_graphe_ui <- function(id){
                girafeOutput(ns("plot2"))
              )
       )
+    ),
+    
+    fluidRow(
+      column(width = 12,
+             withSpinner(
+               DTOutput(ns("table_plot"))
+             ),
+             withSpinner(
+               DTOutput(ns("table_raw"))
+             )
+      )
     )
   )
 }
@@ -66,12 +77,12 @@ mod_saturation_graphe_server <- function(id, r6){
       }
     })
     
-    
-    
+
     output$plot <- renderGirafe({
       
       gg <- r6$calendar_heatmap(selected_parking = parkings$ident[parkings$nom %in% input$selected_satured_parking1]) 
       
+  
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
                   pointsize = 12,
                   options = list(
@@ -90,6 +101,23 @@ mod_saturation_graphe_server <- function(id, r6){
                     opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
                   ))
       x
+    })
+    
+    output$table_plot <- renderDT({
+      
+      r6$data_plot %>% 
+        mutate.(taux_occupation = round(taux_occupation,1),
+                                   time = as.character(time)) %>% 
+        select.(time:nom) %>% 
+        select.(-etat)
+      
+    })
+    
+    output$table_raw <- renderDT({
+      r6$cleaned_data %>% 
+        mutate.(taux_occupation = round(taux_occupation,1),
+                time = as.character(time)) %>% 
+        select.(-etat)
     })
     
   })

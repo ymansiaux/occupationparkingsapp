@@ -30,6 +30,15 @@ va gérer la routine API / clean / plot / table / download
 \describe{
 \item{\code{parkings_satures}}{contient les parkings satures selon des criteres de % 
 d'occupation en nb d'heures par jour et nb de jours par semaine}
+
+\item{\code{donnees}}{du graphique de saturation}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{donnees}}{du graphique de saturation}
 }
 \if{html}{\out{</div>}}
 }

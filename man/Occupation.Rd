@@ -16,14 +16,14 @@ va gérer la routine API / clean / plot / table / download
 } 
 
 ## ------------------------------------------------
-## Method `Occupation$timeseries_plot`
+## Method `Occupation$timeseries_plot_1_period`
 ## ------------------------------------------------
 
 \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
 } 
 
 ## ------------------------------------------------
-## Method `Occupation$timeseries_plot_2_curves`
+## Method `Occupation$timeseries_plot_2_periods`
 ## ------------------------------------------------
 
 \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
@@ -36,6 +36,10 @@ va gérer la routine API / clean / plot / table / download
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{aggregated_data_by_some_time_unit}}{Données sur lesquelles on applique une fonction d'aggregation par unité de temps}
+
+\item{\code{data_plot_1_period}}{donnée du graphique pour 1 seule période étudiée}
+
+\item{\code{data_plot_2_periods}}{donnée du graphique pour 2 période étudiées}
 }
 \if{html}{\out{</div>}}
 }
@@ -44,8 +48,8 @@ va gérer la routine API / clean / plot / table / download
 \itemize{
 \item \href{#method-new}{\code{Occupation$new()}}
 \item \href{#method-mean_by_some_time_unit}{\code{Occupation$mean_by_some_time_unit()}}
-\item \href{#method-timeseries_plot}{\code{Occupation$timeseries_plot()}}
-\item \href{#method-timeseries_plot_2_curves}{\code{Occupation$timeseries_plot_2_curves()}}
+\item \href{#method-timeseries_plot_1_period}{\code{Occupation$timeseries_plot_1_period()}}
+\item \href{#method-timeseries_plot_2_periods}{\code{Occupation$timeseries_plot_2_periods()}}
 \item \href{#method-clone}{\code{Occupation$clone()}}
 }
 }
@@ -130,12 +134,12 @@ Aggregation des données selon une fenetre temporelle
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-timeseries_plot"></a>}}
-\if{latex}{\out{\hypertarget{method-timeseries_plot}{}}}
-\subsection{Method \code{timeseries_plot()}}{
+\if{html}{\out{<a id="method-timeseries_plot_1_period"></a>}}
+\if{latex}{\out{\hypertarget{method-timeseries_plot_1_period}{}}}
+\subsection{Method \code{timeseries_plot_1_period()}}{
 Graphe de série temporelle
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot(parkings_to_plot)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_1_period(parkings_to_plot)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -156,12 +160,12 @@ Graphe de série temporelle
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-timeseries_plot_2_curves"></a>}}
-\if{latex}{\out{\hypertarget{method-timeseries_plot_2_curves}{}}}
-\subsection{Method \code{timeseries_plot_2_curves()}}{
+\if{html}{\out{<a id="method-timeseries_plot_2_periods"></a>}}
+\if{latex}{\out{\hypertarget{method-timeseries_plot_2_periods}{}}}
+\subsection{Method \code{timeseries_plot_2_periods()}}{
 Graphe de série temporelle avec comparaison de 2 périodes
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_2_curves(
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_2_periods(
   data_occupation_1,
   data_occupation_2,
   timeStep,

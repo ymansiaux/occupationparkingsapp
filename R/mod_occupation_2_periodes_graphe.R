@@ -19,14 +19,10 @@ mod_occupation_2_periodes_graphe_ui <- function(id){
   tagList(
     fluidRow(
       column(width = 8,
-             # h3("Graphique"),
              withSpinner(
                girafeOutput(ns("plot"))
-             ),
-             # actionButton(inputId = ns("pause"), "pause")
-             # )
+             )
       ),
-      # fluidRow(
       
       column(width = 4,
              selectizeInput(inputId = ns("parkings_to_plot"),
@@ -39,6 +35,16 @@ mod_occupation_2_periodes_graphe_ui <- function(id){
              actionButton(inputId = ns("maj"), "maj")
              
       )
+    ),
+    
+    fluidRow(
+      column(width = 12,
+             withSpinner(
+               DTOutput(ns("table_plot"))
+             ),
+             withSpinner(
+               DTOutput(ns("table_raw"))
+             ))
     )
     
   )
@@ -53,7 +59,6 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
     observe(updateSelectizeInput(session, 'parkings_to_plot', choices = unique(c(r6_1$cleaned_data$nom, r6_2$cleaned_data$nom)), server = TRUE))
     observeEvent(input$pause, browser())
     
-    # observe(      browser())
     output$plot <- renderGirafe({
       observeEvent(input$pause, browser())
       input$maj
@@ -61,7 +66,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
       r6_1$aggregated_data_by_some_time_unit$nom[is.na(r6_1$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       r6_2$aggregated_data_by_some_time_unit$nom[is.na(r6_2$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       
-      gg <- r6_1$timeseries_plot_2_curves(r6_1, r6_2, r6_1$timeStep, isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])))
+      gg <- r6_1$timeseries_plot_2_periods(r6_1, r6_2, r6_1$timeStep, isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])))
       
       x <- girafe(ggobj = gg, width_svg = 8, height_svg = 5, 
                   pointsize = 15,
@@ -73,11 +78,33 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
       
     })
     
+    output$table_plot <- renderDT({
+      input$maj
+      
+      r6_1$data_plot_2_periods %>% 
+        mutate.(taux_occupation = round(taux_occupation,1),
+                time = as.character(time)) %>% 
+        select.(-tooltip, -linetype)
+      
+    })
+    
+    output$table_raw <- renderDT({
+      bind_rows.(
+        r6_1$cleaned_data %>% 
+          mutate.(taux_occupation = round(taux_occupation,1),
+                  time = as.character(time)),
+        r6_2$cleaned_data %>% 
+          mutate.(taux_occupation = round(taux_occupation,1),
+                  time = as.character(time))
+      )  %>% 
+        select.(-etat)
+    })
+    
   })
 }
 
 ## To be copied in the UI
-# mod_occupation_graphe_ui("occupation_graphe_ui_1")
+# mod_occupation_1_periode_graphe_ui("occupation_graphe_ui_1")
 
 ## To be copied in the server
-# mod_occupation_graphe_server("occupation_graphe_ui_1")
+# mod_occupation_1_periode_graphe_server("occupation_graphe_ui_1")

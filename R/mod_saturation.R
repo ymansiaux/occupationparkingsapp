@@ -137,15 +137,13 @@ mod_saturation_server <- function(id){
                                     nb_heures_journalieres_saturation = input$nb_heures_journalieres_saturation,
                                     nb_jours_hebdo_saturation = input$nb_jours_hebdo_saturation)
         mod_saturation_graphe_server(paste0("saturation_graphe_ui_", .y), r6 = .x)
-        mod_saturation_table_server(paste0("saturation_table_ui_", .y), r6 = .x)
       })
       
       
       output$my_Saturation_UI <- renderUI({
         lapply(names(list_of_Saturation), function(.y) {
           tagList(
-            mod_saturation_graphe_ui(ns(paste0("saturation_graphe_ui_", .y))),
-            mod_saturation_table_ui(ns(paste0("saturation_table_ui_",.y)))
+            mod_saturation_graphe_ui(ns(paste0("saturation_graphe_ui_", .y)))
           )
         })
       })

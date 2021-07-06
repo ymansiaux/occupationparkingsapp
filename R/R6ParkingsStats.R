@@ -53,8 +53,6 @@ ParkingsStats <- R6::R6Class(
       self$plageHoraire <- plageHoraire
       self$localisation_parking <- localisation_parking
       self$parc_relais <- parc_relais
-      self$data_xtradata <- NULL
-      self$cleaned_data <- NULL
     },
     
     #' @description

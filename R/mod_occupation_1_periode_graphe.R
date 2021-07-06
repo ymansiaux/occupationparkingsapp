@@ -14,7 +14,7 @@
 #' @importFrom shinyjs show hide
 #' @importFrom shinycssloaders withSpinner
 #' 
-mod_occupation_graphe_ui <- function(id){
+mod_occupation_1_periode_graphe_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidRow(
@@ -36,6 +36,16 @@ mod_occupation_graphe_ui <- function(id){
              actionButton(inputId = ns("maj"), "maj")
              
       )
+    ),
+    fluidRow(
+      column(width = 12,
+             withSpinner(
+               DTOutput(ns("table_plot"))
+             ),
+             withSpinner(
+               DTOutput(ns("table_raw"))
+             )
+      )
     )
   )
 }
@@ -43,7 +53,7 @@ mod_occupation_graphe_ui <- function(id){
 #' occupation_graphe Server Functions
 #'
 #' @noRd 
-mod_occupation_graphe_server <- function(id, r6){
+mod_occupation_1_periode_graphe_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
     
     observe(updateSelectizeInput(session, 'parkings_to_plot', choices = unique(r6$cleaned_data$nom), server = TRUE))
@@ -52,14 +62,11 @@ mod_occupation_graphe_server <- function(id, r6){
     
     output$plot <- renderGirafe({
       observeEvent(input$pause, browser())
-      # r6$timeseries_plot()
-      
       input$maj
       
-      # r6$add_parkings_names()
       r6$aggregated_data_by_some_time_unit$nom[is.na(r6$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       
-      gg <- r6$timeseries_plot(isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])))
+      gg <- r6$timeseries_plot_1_period(isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])))
       
       x <- girafe(ggobj = gg, width_svg = 8, height_svg = 5, 
                   pointsize = 15,
@@ -71,6 +78,22 @@ mod_occupation_graphe_server <- function(id, r6){
       
     })
     
+    output$table_plot <- renderDT({
+      input$maj
+      
+      r6$data_plot_1_period %>% 
+        mutate.(taux_occupation = round(taux_occupation,1),
+                time = as.character(time)) %>% 
+        select.(-tooltip, -linetype)
+    })
+    
+    output$table_raw <- renderDT({
+      r6$cleaned_data %>% 
+        mutate.(taux_occupation = round(taux_occupation,1),
+                time = as.character(time)) %>% 
+        select.(-etat)
+    })
+    
   })
 }
 
@@ -79,7 +102,7 @@ mod_occupation_graphe_server <- function(id, r6){
 # parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
 
 ## To be copied in the UI
-# mod_occupation_graphe_ui("occupation_graphe_ui_1")
+# mod_occupation_1_periode_graphe_ui("occupation_graphe_ui_1")
 
 ## To be copied in the server
-# mod_occupation_graphe_server("occupation_graphe_ui_1")
+# mod_occupation_1_periode_graphe_server("occupation_graphe_ui_1")
