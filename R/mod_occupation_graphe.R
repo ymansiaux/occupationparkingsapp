@@ -27,7 +27,7 @@ mod_occupation_graphe_ui <- function(id){
                             label = "Parkings \u00e0 afficher",
                             choices = NULL,
                             multiple = TRUE,
-                            options = list(maxItems = 5, placeholder = "Choisir au max 10 pkgs", deselectBehavior = "top")
+                            options = list(maxItems = 5, placeholder = "Choisir au max 5 pkgs", deselectBehavior = "top")
              ),
           
              actionButton(inputId = ns("maj"), "maj")
@@ -43,7 +43,7 @@ mod_occupation_graphe_ui <- function(id){
 mod_occupation_graphe_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
     
-    observe(updateSelectizeInput(session, 'parkings_to_plot', choices = unique(r6$data_xtradata$ident), server = TRUE))
+    observe(updateSelectizeInput(session, 'parkings_to_plot', choices = unique(r6$cleaned_data$nom), server = TRUE))
     observeEvent(input$pause, browser())
     
     
@@ -56,7 +56,7 @@ mod_occupation_graphe_server <- function(id, r6){
       # r6$add_parkings_names()
       r6$aggregated_data_by_some_time_unit$nom[is.na(r6$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       
-      gg <- r6$timeseries_plot(isolate(input$parkings_to_plot))
+      gg <- r6$timeseries_plot(isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])))
       
       x <- girafe(ggobj = gg, width_svg = 8, height_svg = 5, 
                   pointsize = 15,

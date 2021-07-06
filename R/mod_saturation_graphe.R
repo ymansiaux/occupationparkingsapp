@@ -35,12 +35,12 @@ mod_saturation_graphe_server <- function(id, r6){
     
     observe({
       updateSelectizeInput(session, 'selected_satured_parking1', 
-                                  choices = unique(r6$parkings_satures$ident),
-                                  selected = unique(r6$parkings_satures$ident)[1],
-                                  server = TRUE)
+                           choices = unique(parkings$nom[parkings$ident %in% r6$parkings_satures$ident]),
+                           selected = unique(parkings$nom[parkings$ident %in% r6$parkings_satures$ident])[1],
+                           server = TRUE)
       updateSelectizeInput(session, 'selected_satured_parking2', 
-                           choices = unique(r6$parkings_satures$ident),
-                           selected = unique(r6$parkings_satures$ident)[1],
+                           choices = unique(parkings$nom[parkings$ident %in% r6$parkings_satures$ident]),
+                           selected = unique(parkings$nom[parkings$ident %in% r6$parkings_satures$ident])[1],
                            server = TRUE)
     })
     
@@ -48,7 +48,8 @@ mod_saturation_graphe_server <- function(id, r6){
     girafe_sizing <- reactiveValues()
     
     observe({
-      if(length(unique(as_date(r6$data_xtradata$time)))>7) {
+      # if(length(unique(as_date(r6$data_xtradata$time)))>7) {
+      if(r6$timeStep != "Semaine") {
         # si on a un graphe restitué au mois
         girafe_sizing$width_svg <- 10
         girafe_sizing$height_svg <- 9
@@ -63,8 +64,8 @@ mod_saturation_graphe_server <- function(id, r6){
     
     
     output$plot <- renderGirafe({
-
-      gg <- r6$calendar_heatmap(selected_parking = input$selected_satured_parking1) 
+      
+      gg <- r6$calendar_heatmap(selected_parking = parkings$ident[parkings$nom %in% input$selected_satured_parking1]) 
       
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
                   pointsize = 12,
@@ -75,8 +76,8 @@ mod_saturation_graphe_server <- function(id, r6){
     })
     
     output$plot2 <- renderGirafe({
-
-      gg <- r6$calendar_heatmap(selected_parking = input$selected_satured_parking2) 
+      
+      gg <- r6$calendar_heatmap(selected_parking = parkings$ident[parkings$nom %in% input$selected_satured_parking2]) 
       
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
                   pointsize = 12,
@@ -85,7 +86,7 @@ mod_saturation_graphe_server <- function(id, r6){
                   ))
       x
     })
-
+    
   })
 }
 
