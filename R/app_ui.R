@@ -5,6 +5,7 @@
 #' @import shiny
 #' @importFrom shinyjs useShinyjs
 #' @importFrom shinybm waiter_logoDatalab title_with_logoDatalab 
+#' @importFrom shinybusy add_busy_spinner
 #' @noRd
 #' 
 
@@ -15,6 +16,8 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     shinyjs::useShinyjs(),
     waiter_logoDatalab(golem::app_prod()),
+    add_busy_spinner(spin = "fading-circle"),
+    
     fluidPage(
       navbarPage(title = title_with_logoDatalab(main_title = "Coucou"),
                  id = "navbarpage",

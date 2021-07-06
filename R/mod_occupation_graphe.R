@@ -12,6 +12,7 @@
 #' @importFrom ggiraph renderGirafe girafeOutput girafe  opts_hover_inv opts_sizing opts_hover
 #' @importFrom shinybm hidden_div
 #' @importFrom shinyjs show hide
+#' @importFrom shinycssloaders withSpinner
 #' 
 mod_occupation_graphe_ui <- function(id){
   ns <- NS(id)
@@ -19,7 +20,9 @@ mod_occupation_graphe_ui <- function(id){
     fluidRow(
       column(width = 8,
              h3("Graphique"),
-             girafeOutput(ns("plot")),
+             withSpinner(
+               girafeOutput(ns("plot"))
+             ),
              actionButton(inputId = ns("pause"), "pause")
       ),
       column(width = 4,
@@ -29,7 +32,7 @@ mod_occupation_graphe_ui <- function(id){
                             multiple = TRUE,
                             options = list(maxItems = 5, placeholder = "Choisir au max 5 pkgs", deselectBehavior = "top")
              ),
-          
+             
              actionButton(inputId = ns("maj"), "maj")
              
       )
@@ -65,7 +68,7 @@ mod_occupation_graphe_server <- function(id, r6){
                     opts_hover(css = "stroke-width:2;")
                   ))
       x
-  
+      
     })
     
   })

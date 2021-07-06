@@ -9,6 +9,7 @@
 #' @import shiny
 #' @import R6
 #' @importFrom ggiraph renderGirafe girafeOutput girafe opts_sizing opts_tooltip opts_hover  
+#' @importFrom shinycssloaders withSpinner
 
 mod_saturation_graphe_ui <- function(id){
   ns <- NS(id)
@@ -16,11 +17,15 @@ mod_saturation_graphe_ui <- function(id){
     fluidRow(
       column(width = 6,
              selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
-             girafeOutput(ns("plot"))
+             withSpinner(
+               girafeOutput(ns("plot"))
+             )
       ),
       column(width = 6,
              selectizeInput(ns("selected_satured_parking2"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
-             girafeOutput(ns("plot2"))
+             withSpinner(
+               girafeOutput(ns("plot2"))
+             )
       )
     )
   )

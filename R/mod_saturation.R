@@ -40,7 +40,7 @@ mod_saturation_ui <- function(id){
                             )
                  ),
                  
-                 h4("Définition de la saturation :"),
+                 h4("D\u00e9finition de la saturation :"),
                  sliderInput(inputId = ns("seuil_saturation"), "Seuil de saturation (%)", min = 0, max = 100, value = 90, step = 5),
                  sliderInput(inputId = ns("nb_heures_journalieres_saturation"), "Nb heures / j de saturation", min = 0, max = 23, value = 3, step = 1),
                  sliderInput(inputId = ns("nb_jours_hebdo_saturation"), "Nb j / semaine de saturation", min = 0, max = 7, value = 2, step = 1),

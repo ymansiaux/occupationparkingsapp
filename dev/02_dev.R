@@ -26,6 +26,8 @@ usethis::use_package( "ggplot2" )
 usethis::use_package( "ggiraph")
 usethis::use_package( "glue")
 usethis::use_package( "purrr")
+usethis::use_package( "shinycssloaders")
+usethis::use_package( "shinybusy")
 
 
 

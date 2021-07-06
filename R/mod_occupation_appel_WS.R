@@ -12,8 +12,6 @@
 mod_occupation_appel_WS_ui <- function(id){
   ns <- NS(id)
   tagList(
-    # DTOutput(ns("table"))
-    # plotOutput(ns("plot"))
   )
 }
 

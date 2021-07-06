@@ -9,11 +9,15 @@
 #' @import shiny
 #' @import R6
 #' @importFrom DT DTOutput renderDT
+#' @importFrom shinycssloaders withSpinner
+
 mod_occupation_table_ui <- function(id){
   ns <- NS(id)
   tagList(
     h3("Tableau"),
-    DTOutput(ns("table"))
+    withSpinner(
+      DTOutput(ns("table"))
+    )
   )
 }
 

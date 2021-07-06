@@ -12,14 +12,17 @@
 #' @importFrom ggiraph renderGirafe girafeOutput girafe  opts_hover_inv opts_sizing opts_hover
 #' @importFrom shinybm hidden_div
 #' @importFrom shinyjs show hide
-#' 
+#' @importFrom shinycssloaders withSpinner
+
 mod_occupation_2_periodes_graphe_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidRow(
       column(width = 8,
              # h3("Graphique"),
-             girafeOutput(ns("plot")),
+             withSpinner(
+               girafeOutput(ns("plot"))
+             ),
              # actionButton(inputId = ns("pause"), "pause")
              # )
       ),
