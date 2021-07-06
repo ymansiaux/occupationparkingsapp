@@ -29,8 +29,6 @@ mod_saturation_clean_server <- function(id, r6, seuil_saturation, nb_heures_jour
   })
 }
 
-# parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
-
 ## To be copied in the UI
 # mod_saturation_clean_ui("saturation_clean_ui_1")
 

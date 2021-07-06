@@ -23,10 +23,7 @@ mod_occupation_2_periodes_table_ui <- function(id){
 mod_occupation_2_periodes_table_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
     # ns <- session$ns
-    # observe(browser())
-    
     output$table <- renderDT({
-      # r6$data_xtradata[1:5,]
       r6$cleaned_data
     })
     

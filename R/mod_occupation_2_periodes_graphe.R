@@ -73,10 +73,6 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
   })
 }
 
-## isolate dans le graphe et bouton MAJ parking
-
-# parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
-
 ## To be copied in the UI
 # mod_occupation_graphe_ui("occupation_graphe_ui_1")
 

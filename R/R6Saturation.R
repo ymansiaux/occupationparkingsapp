@@ -54,7 +54,7 @@ Saturation <- R6::R6Class(
     #' @import ggplot2
     #' @examples \dontrun{ temporal_aggregate("day")
     #' } 
-    calendar_heatmap = function(with_facet = FALSE, selected_parking) {
+    calendar_heatmap = function(selected_parking) {
       
       data_parkings_heatmap <- self$cleaned_data %>% 
         inner_join.(self$parkings_satures, by = "ident") %>% 
@@ -68,19 +68,13 @@ Saturation <- R6::R6Class(
         scale_x_continuous(breaks = 0:23) +
         scale_y_date(date_labels = "%d/%m", breaks = "3 days", expand = c(0,0)) +
         ggtitle(data_parkings_heatmap$nom[1]) + 
-        # facet_wrap(~ nom, ncol = 2, strip.position = "top") +
         theme_minimal() + 
         theme(
           legend.position = "bottom",
-          # legend.key.width = unit(2, "cm"),
           text = element_text(size=16),
           panel.grid = element_blank(),
           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)
-        ) +
-        coord_equal()
-      
-      if(with_facet) gg <- gg + facet_wrap(~ nom, ncol = 2, strip.position = "top")
-      
+        )
       gg
 
     }

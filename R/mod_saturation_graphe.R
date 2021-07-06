@@ -13,17 +13,6 @@
 mod_saturation_graphe_ui <- function(id){
   ns <- NS(id)
   tagList(
-    # fluidRow(
-    #   column(width = 12,
-    #          h3("Graphique"),
-    #          sliderInput(ns("width"), "width", min = 3, max = 20, value = 12),
-    #          sliderInput(ns("height"), "height", min = 3, max = 20, value = 6),
-    #          sliderInput(ns("pointsize"), "pointsize", min = 3, max = 50, value = 12),
-    #          checkboxInput(ns("with_facet"), "with_facet", value = FALSE)
-    #          
-    #          
-    #   )
-    # ),
     fluidRow(
       column(width = 6,
              selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
@@ -75,7 +64,7 @@ mod_saturation_graphe_server <- function(id, r6){
     
     output$plot <- renderGirafe({
 
-      gg <- r6$calendar_heatmap(FALSE, selected_parking = input$selected_satured_parking1) 
+      gg <- r6$calendar_heatmap(selected_parking = input$selected_satured_parking1) 
       
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
                   pointsize = 12,
@@ -87,7 +76,7 @@ mod_saturation_graphe_server <- function(id, r6){
     
     output$plot2 <- renderGirafe({
 
-      gg <- r6$calendar_heatmap(FALSE, selected_parking = input$selected_satured_parking2) 
+      gg <- r6$calendar_heatmap(selected_parking = input$selected_satured_parking2) 
       
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
                   pointsize = 12,
@@ -99,8 +88,6 @@ mod_saturation_graphe_server <- function(id, r6){
 
   })
 }
-
-# parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
 
 ## To be copied in the UI
 # mod_saturation_graphe_ui("saturation_graphe_ui_1")
