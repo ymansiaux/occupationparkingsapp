@@ -38,6 +38,14 @@ mod_saturation_ui <- function(id){
                      )
                    )
         ),
+        
+        h4("Définition de la saturation :"),
+        sliderInput(inputId = ns("seuil_saturation"), "Seuil de saturation (%)", min = 0, max = 100, value = 90, step = 5),
+        sliderInput(inputId = ns("nb_heures_journalieres_saturation"), "Nb heures / j de saturation", min = 0, max = 23, value = 3, step = 1),
+        sliderInput(inputId = ns("nb_jours_hebdo_saturation"), "Nb j / semaine de saturation", min = 0, max = 7, value = 2, step = 1),
+        
+        
+        
         actionButton(
           inputId = ns("run_query"),
           label = "Lancer la requ\u00eate"
@@ -120,6 +128,7 @@ mod_saturation_server <- function(id){
                                     rangeEnd = xtradata_parameters()$rangeEnd,
                                     rangeStep = "hour",
                                     plageHoraire = 0:23,
+                                    timeStep = input$timestep,
                                     localisation_parking = NA,
                                     parc_relais = TRUE)
       
@@ -127,6 +136,7 @@ mod_saturation_server <- function(id){
                                     rangeEnd = xtradata_parameters()$rangeEnd,
                                     rangeStep = "hour",
                                     plageHoraire = 0:23,
+                                    timeStep = input$timestep,
                                     localisation_parking = "hypercentre",
                                     parc_relais = FALSE)
       
@@ -134,6 +144,7 @@ mod_saturation_server <- function(id){
                                rangeEnd = xtradata_parameters()$rangeEnd,
                                rangeStep = "hour",
                                plageHoraire = 0:23,
+                               timeStep = input$timestep,
                                localisation_parking = "centre",
                                parc_relais = FALSE)
       
@@ -141,11 +152,16 @@ mod_saturation_server <- function(id){
                                     rangeEnd = xtradata_parameters()$rangeEnd,
                                     rangeStep = "hour",
                                     plageHoraire = 0:23,
+                                    timeStep = input$timestep,
                                     localisation_parking = "peripherie",
                                     parc_relais = FALSE)
       
       mod_saturation_appel_WS_server("saturation_appel_WS_ui_1", r6 = parc_relais)
-      mod_saturation_clean_server("saturation_clean_ui_1", r6 = parc_relais)
+      mod_saturation_clean_server("saturation_clean_ui_1", r6 = parc_relais, 
+                                  seuil_saturation = input$seuil_saturation, 
+                                  nb_heures_journalieres_saturation = input$nb_heures_journalieres_saturation,
+                                  nb_jours_hebdo_saturation = input$nb_jours_hebdo_saturation)
+      
       mod_saturation_graphe_server("saturation_graphe_ui_1", r6 = parc_relais)
       mod_saturation_table_server("saturation_table_ui_1", r6 = parc_relais)
       
