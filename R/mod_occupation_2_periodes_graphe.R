@@ -14,11 +14,12 @@
 #' @importFrom shinyjs show hide onclick toggle
 #' @importFrom shinycssloaders withSpinner
 
-mod_occupation_2_periodes_graphe_ui <- function(id){
+mod_occupation_2_periodes_graphe_ui <- function(id, title){
   ns <- NS(id)
   tagList(
     fluidRow(
       column(width = 8,
+             h4(title),
              withSpinner(
                girafeOutput(ns("plot"))
              )

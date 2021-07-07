@@ -12,9 +12,13 @@
 #' @importFrom shinycssloaders withSpinner
 #' @importFrom DT datatable
 
-mod_saturation_graphe_ui <- function(id){
+mod_saturation_graphe_ui <- function(id, title){
   ns <- NS(id)
   tagList(
+    fluidRow(
+      column(width = 12,
+             h4(title))
+    ),
     fluidRow(
       column(width = 6,
              selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
@@ -91,12 +95,12 @@ mod_saturation_graphe_server <- function(id, r6){
       }
     })
     
-
+    
     output$plot <- renderGirafe({
       
       gg <- r6$calendar_heatmap(selected_parking = parkings$ident[parkings$nom %in% input$selected_satured_parking1]) 
       
-  
+      
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
                   pointsize = 12,
                   options = list(
@@ -129,11 +133,11 @@ mod_saturation_graphe_server <- function(id, r6){
       
       r6$data_plot %>% 
         mutate.(taux_occupation = round(taux_occupation,1),
-                                   time = as.character(time)) %>% 
+                time = as.character(time)) %>% 
         select.(time:nom) %>% 
         select.(-etat) %>% 
         datatable(., rownames = FALSE, caption = NULL,
-                                 extensions = "Buttons", options = parametres_output_DT)
+                  extensions = "Buttons", options = parametres_output_DT)
       
     })
     

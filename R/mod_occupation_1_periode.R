@@ -200,14 +200,12 @@ mod_occupation_1_periode_server <- function(id){
         mod_occupation_appel_WS_server(paste0("occupation_appel_WS_ui_", .y), r6 = .x)
         mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x)
         mod_occupation_1_periode_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x)
-        # mod_occupation_table_server(paste0("occupation_table_ui_", .y), r6 = .x)
       })
       
       output$my_Occupation_UI <- renderUI({
         lapply(names(list_of_Occupation), function(.y) {
           tagList(
-            mod_occupation_1_periode_graphe_ui(ns(paste0("occupation_graphe_ui_", .y)))#,
-            # mod_occupation_table_ui(ns(paste0("occupation_table_ui_",.y)))
+            mod_occupation_1_periode_graphe_ui(ns(paste0("occupation_graphe_ui_", .y)), title = camel(remove_underscore(.y)))
           )
         })
       })

@@ -186,7 +186,7 @@ mod_occupation_2_periodes_server <- function(id){
       # print(xtradata_parameters$periode1)
       
       list_of_Occupation1 <- list(
-        parc_relais1 = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
+        parc_relais = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
                                       rangeEnd = xtradata_parameters$periode1$rangeEnd,
                                       rangeStep = xtradata_parameters$periode1$rangeStep,
                                       timeStep = input$timestep,
@@ -194,7 +194,7 @@ mod_occupation_2_periodes_server <- function(id){
                                       localisation_parking = NA,
                                       parc_relais = TRUE)
         ,
-        hypercentre1 = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
+        hypercentre = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
                                       rangeEnd = xtradata_parameters$periode1$rangeEnd,
                                       rangeStep = xtradata_parameters$periode1$rangeStep,
                                       timeStep = input$timestep,
@@ -202,7 +202,7 @@ mod_occupation_2_periodes_server <- function(id){
                                       localisation_parking = "hypercentre",
                                       parc_relais = FALSE)
         ,
-        centre1 = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
+        centre = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
                                  rangeEnd = xtradata_parameters$periode1$rangeEnd,
                                  rangeStep = xtradata_parameters$periode1$rangeStep,
                                  timeStep = input$timestep,
@@ -210,7 +210,7 @@ mod_occupation_2_periodes_server <- function(id){
                                  localisation_parking = "centre",
                                  parc_relais = FALSE)
         ,
-        peripherie1 = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
+        peripherie = Occupation$new(rangeStart = xtradata_parameters$periode1$rangeStart,
                                      rangeEnd = xtradata_parameters$periode1$rangeEnd,
                                      rangeStep = xtradata_parameters$periode1$rangeStep,
                                      timeStep = input$timestep,
@@ -269,7 +269,7 @@ mod_occupation_2_periodes_server <- function(id){
       output$my_Occupation_UI <- renderUI({
         lapply(names(list_of_Occupation1), function(.y) {
           tagList(
-            mod_occupation_2_periodes_graphe_ui(ns(paste0("occupation_2_periodes_graphe_ui_", .y)))
+            mod_occupation_2_periodes_graphe_ui(ns(paste0("occupation_2_periodes_graphe_ui_", .y)), title = camel(remove_underscore(.y)))
           )
         })
       })
