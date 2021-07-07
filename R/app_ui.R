@@ -19,7 +19,7 @@ app_ui <- function(request) {
     add_busy_spinner(spin = "fading-circle"),
     
     fluidPage(
-      navbarPage(title = title_with_logoDatalab(main_title = "Coucou"),
+      navbarPage(title = "coucou",#title_with_logoDatalab(main_title = "Coucou"),
                  id = "navbarpage",
                  collapsible = TRUE,
                  tabPanel("Occupation - observer 1 p\u00e9riode",

@@ -10,8 +10,8 @@
 #' @import R6
 #' @importFrom DT DTOutput renderDT
 #' @importFrom ggiraph renderGirafe girafeOutput girafe  opts_hover_inv opts_sizing opts_hover
-#' @importFrom shinybm hidden_div
-#' @importFrom shinyjs show hide
+#' @importFrom shinybm hidden_div lien_afficher_cacher_div
+#' @importFrom shinyjs show hide onclick toggle
 #' @importFrom shinycssloaders withSpinner
 
 mod_occupation_2_periodes_graphe_ui <- function(id){
@@ -39,14 +39,27 @@ mod_occupation_2_periodes_graphe_ui <- function(id){
     
     fluidRow(
       column(width = 12,
-             withSpinner(
-               DTOutput(ns("table_plot"))
-             ),
-             withSpinner(
-               DTOutput(ns("table_raw"))
-             ))
+             lien_afficher_cacher_div(id_lien = ns("show_plot_data"), 
+                                      label_lien = "Afficher les donn\u00e9es du graphe",
+                                      id_div = ns("plot_data"), 
+                                      contenu_div = tagList(
+                                        withSpinner(
+                                          DTOutput(ns("table_plot"))
+                                        ))
+             )
+      )
+    ),
+    fluidRow(column(width = 12,
+                    lien_afficher_cacher_div(id_lien = ns("show_raw_data"), 
+                                             label_lien = "Afficher les donn\u00e9es brutes",
+                                             id_div = ns("raw_data"), 
+                                             contenu_div = tagList(
+                                               withSpinner(
+                                                 DTOutput(ns("table_raw"))
+                                               ))
+                    )
     )
-    
+    )
   )
 }
 
@@ -78,13 +91,23 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
       
     })
     
+    
+    onclick("show_plot_data",
+            toggle(id = "plot_data", anim = TRUE))
+    
+    onclick("show_raw_data",
+            toggle(id = "raw_data", anim = TRUE))
+    
+    
     output$table_plot <- renderDT({
       input$maj
       
       r6_1$data_plot_2_periods %>% 
         mutate.(taux_occupation = round(taux_occupation,1),
                 time = as.character(time)) %>% 
-        select.(-tooltip, -linetype)
+        select.(-tooltip, -linetype) %>% 
+        datatable(., rownames = FALSE, caption = NULL,
+                  extensions = "Buttons", options = parametres_output_DT)
       
     })
     
@@ -97,7 +120,9 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
           mutate.(taux_occupation = round(taux_occupation,1),
                   time = as.character(time))
       )  %>% 
-        select.(-etat)
+        select.(-etat) %>% 
+        datatable(., rownames = FALSE, caption = NULL,
+                  extensions = "Buttons", options = parametres_output_DT)
     })
     
   })
