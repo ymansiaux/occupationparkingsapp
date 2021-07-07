@@ -22,8 +22,8 @@ mod_occupation_1_periode_graphe_ui <- function(id, title){
              h4(title),
              withSpinner(
                girafeOutput(ns("plot"))
-             ),
-             actionButton(inputId = ns("pause"), "pause")
+             )
+             # ,actionButton(inputId = ns("pause"), "pause")
       ),
       column(width = 4,
              selectizeInput(inputId = ns("parkings_to_plot"),
@@ -33,7 +33,7 @@ mod_occupation_1_periode_graphe_ui <- function(id, title){
                             options = list(maxItems = 5, placeholder = "Choisir au max 5 pkgs", deselectBehavior = "top")
              ),
              
-             actionButton(inputId = ns("maj"), "maj")
+             actionButton(inputId = ns("maj"), "MAJ graphes et tableaux")
              
       )
     ),

@@ -205,7 +205,8 @@ mod_occupation_1_periode_server <- function(id){
       output$my_Occupation_UI <- renderUI({
         lapply(names(list_of_Occupation), function(.y) {
           tagList(
-            mod_occupation_1_periode_graphe_ui(ns(paste0("occupation_graphe_ui_", .y)), title = camel(remove_underscore(.y)))
+            mod_occupation_1_periode_graphe_ui(ns(paste0("occupation_graphe_ui_", .y)), title = camel(remove_underscore(.y))),
+            tags$br(), tags$br()
           )
         })
       })

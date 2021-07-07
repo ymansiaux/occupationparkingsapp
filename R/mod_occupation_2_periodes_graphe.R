@@ -33,7 +33,7 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title){
                             options = list(maxItems = 5, placeholder = "Choisir au max 5 pkgs", deselectBehavior = "top")
              ),
              
-             actionButton(inputId = ns("maj"), "maj")
+             actionButton(inputId = ns("maj"), "MAJ graphes et tableaux")
              
       )
     ),

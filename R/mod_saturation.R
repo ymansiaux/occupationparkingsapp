@@ -143,7 +143,8 @@ mod_saturation_server <- function(id){
       output$my_Saturation_UI <- renderUI({
         lapply(names(list_of_Saturation), function(.y) {
           tagList(
-            mod_saturation_graphe_ui(ns(paste0("saturation_graphe_ui_", .y)), title = camel(remove_underscore(.y)))
+            mod_saturation_graphe_ui(ns(paste0("saturation_graphe_ui_", .y)), title = camel(remove_underscore(.y))),
+            tags$br(), tags$br()
           )
         })
       })
