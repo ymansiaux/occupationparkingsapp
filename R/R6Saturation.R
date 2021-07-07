@@ -77,7 +77,9 @@ Saturation <- R6::R6Class(
           text = element_text(size=16),
           panel.grid = element_blank(),
           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)
-        )
+        ) +
+        xlab("Heure")
+      
       gg
       
     }

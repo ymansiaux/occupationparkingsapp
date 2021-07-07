@@ -90,7 +90,7 @@ Occupation <- R6::R6Class(
                               mapping = aes(x = time, y = taux_occupation, tooltip = tooltip, data_id = ident, group = nom, color = nom),
                               lwd = 1.5) +
         scale_linetype_manual(
-          "nom",
+          "Parking",
           values =
             unlist(
               with(
@@ -98,10 +98,12 @@ Occupation <- R6::R6Class(
                             filter.(ident %in% c("moyenne", parkings_to_plot)) %>%
                             select.(nom, linetype)),
                 split(linetype, nom)))
-        ) +
+        ) + 
+        xlab("Heure") +
+        ylab("Taux d'occupation (%)") +
+        labs(color = "Parking", scale = "Parking") +
         # A modifier quand on aura la palette bx metro
         scale_color_manual(values = sample(colors(distinct = TRUE), length(parkings_to_plot)+1))
-      
       gg
     },
     
@@ -137,15 +139,26 @@ Occupation <- R6::R6Class(
         # browser()
         self$data_plot_2_periods <- self$data_plot_2_periods %>% 
           mutate.(time = strftime(time, "%H:%M"))
+        
+        xlab <- "Heure"
+        
       } else if(timeStep == "Semaine") {
         self$data_plot_2_periods <- self$data_plot_2_periods %>% 
           mutate.(time = factor(wday(time, label = TRUE, week_start = 1)))
+        
+        xlab <- "Jour de la semaine"
+        
       } else if(timeStep == "Mois") {
         self$data_plot_2_periods <- self$data_plot_2_periods %>% 
           mutate.(time = factor(day(time)))
+        
+        xlab <- "Jour du mois"
+        
       } else {
         self$data_plot_2_periods <- self$data_plot_2_periods %>% 
           mutate.(time = factor(month(time, label = TRUE, abbr = FALSE)))
+        
+        xlab <- "Mois"
       }
       
       gg <- filter.(self$data_plot_2_periods, ident %in% parkings_to_plot & ident != "moyenne") %>%  
@@ -158,7 +171,7 @@ Occupation <- R6::R6Class(
                               mapping = aes(x = time, y = taux_occupation, tooltip = tooltip, data_id = ident, group = nom, color = nom),
                               lwd = 1.5) +
         scale_linetype_manual(
-          "nom",
+          "Parking",
           values =
             unlist(
               with(
@@ -166,7 +179,10 @@ Occupation <- R6::R6Class(
                             filter.(ident %in% c("moyenne", parkings_to_plot)) %>%
                             select.(nom, linetype)),
                 split(linetype, nom)))
-        ) #+
+        )  +
+        xlab(xlab) +
+        ylab("Taux d'occupation (%)") +
+        labs(color = "Parking", scale = "Parking")
       
       gg
       
