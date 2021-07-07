@@ -8,22 +8,23 @@
 #'
 #' @import shiny
 #' @import R6
-#' @importFrom DT DTOutput renderDT
+#' @importFrom DT DTOutput renderDT datatable
 #' @importFrom ggiraph renderGirafe girafeOutput girafe  opts_hover_inv opts_sizing opts_hover
 #' @importFrom shinybm hidden_div lien_afficher_cacher_div
 #' @importFrom shinyjs show hide onclick toggle
 #' @importFrom shinycssloaders withSpinner
-
-mod_occupation_2_periodes_graphe_ui <- function(id){
+#' 
+mod_occupation_1_periode_graphe_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidRow(
       column(width = 8,
+             h3("Graphique"),
              withSpinner(
                girafeOutput(ns("plot"))
-             )
+             ),
+             actionButton(inputId = ns("pause"), "pause")
       ),
-      
       column(width = 4,
              selectizeInput(inputId = ns("parkings_to_plot"),
                             label = "Parkings \u00e0 afficher",
@@ -36,7 +37,6 @@ mod_occupation_2_periodes_graphe_ui <- function(id){
              
       )
     ),
-    
     fluidRow(
       column(width = 12,
              lien_afficher_cacher_div(id_lien = ns("show_plot_data"), 
@@ -61,25 +61,26 @@ mod_occupation_2_periodes_graphe_ui <- function(id){
     )
     )
   )
+  
 }
 
 #' occupation_graphe Server Functions
 #'
 #' @noRd 
-mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
+mod_occupation_1_periode_graphe_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
     
-    observe(updateSelectizeInput(session, 'parkings_to_plot', choices = unique(c(r6_1$cleaned_data$nom, r6_2$cleaned_data$nom)), server = TRUE))
+    observe(updateSelectizeInput(session, 'parkings_to_plot', choices = unique(r6$cleaned_data$nom), server = TRUE))
     observeEvent(input$pause, browser())
+    
     
     output$plot <- renderGirafe({
       observeEvent(input$pause, browser())
       input$maj
       
-      r6_1$aggregated_data_by_some_time_unit$nom[is.na(r6_1$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
-      r6_2$aggregated_data_by_some_time_unit$nom[is.na(r6_2$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
+      r6$aggregated_data_by_some_time_unit$nom[is.na(r6$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       
-      gg <- r6_1$timeseries_plot_2_periods(r6_1, r6_2, r6_1$timeStep, isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])))
+      gg <- r6$timeseries_plot_1_period(isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])))
       
       x <- girafe(ggobj = gg, width_svg = 8, height_svg = 5, 
                   pointsize = 15,
@@ -91,7 +92,6 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
       
     })
     
-    
     onclick("show_plot_data",
             toggle(id = "plot_data", anim = TRUE))
     
@@ -99,34 +99,35 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
             toggle(id = "raw_data", anim = TRUE))
     
     
-    output$table_plot <- renderDT({
+    
+    output$table_plot <- renderDT(server = FALSE, {
       input$maj
       
-      r6_1$data_plot_2_periods %>% 
+      r6$data_plot_1_period %>% 
         mutate.(taux_occupation = round(taux_occupation,1),
                 time = as.character(time)) %>% 
         select.(-tooltip, -linetype) %>% 
         datatable(., rownames = FALSE, caption = NULL,
                   extensions = "Buttons", options = parametres_output_DT)
       
+      
     })
     
-    output$table_raw <- renderDT({
-      bind_rows.(
-        r6_1$cleaned_data %>% 
-          mutate.(taux_occupation = round(taux_occupation,1),
-                  time = as.character(time)),
-        r6_2$cleaned_data %>% 
-          mutate.(taux_occupation = round(taux_occupation,1),
-                  time = as.character(time))
-      )  %>% 
+    output$table_raw <- renderDT(server = FALSE, {
+      r6$cleaned_data %>% 
+        mutate.(taux_occupation = round(taux_occupation,1),
+                time = as.character(time)) %>% 
         select.(-etat) %>% 
-        datatable(., rownames = FALSE, caption = NULL,
-                  extensions = "Buttons", options = parametres_output_DT)
+        datatable(., extensions = "Buttons", options = parametres_output_DT)
+      
     })
     
   })
 }
+
+## isolate dans le graphe et bouton MAJ parking
+
+# parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
 
 ## To be copied in the UI
 # mod_occupation_1_periode_graphe_ui("occupation_graphe_ui_1")

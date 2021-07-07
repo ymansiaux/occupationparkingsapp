@@ -12,6 +12,9 @@ Saturation <- R6::R6Class(
     #' d'occupation en nb d'heures par jour et nb de jours par semaine
     parkings_satures = NULL,
     
+    #' @field donnees du graphique de saturation
+    data_plot = NULL,
+    
     #' @description
     #' On garde les parkings satures. Càd les parkings avec un taux d'occupation
     #' superieur à seuil_taux_occupation pendant au moins nb_heures_par_jour_satures 
@@ -56,18 +59,18 @@ Saturation <- R6::R6Class(
     #' } 
     calendar_heatmap = function(selected_parking) {
       
-      data_parkings_heatmap <- self$cleaned_data %>% 
+      self$data_plot <- self$cleaned_data %>% 
         inner_join.(self$parkings_satures, by = "ident") %>% 
-        filter.(ident == selected_parking) %>% 
         mutate.(hours = hour(time), date = as_date(time)) %>% 
         mutate.(tooltip = glue_data(.SD, "Date : {as.character(time)}\nTaux : {sprintf('%.2f', taux_occupation)}"))
       
-      gg <- ggplot(data_parkings_heatmap, aes(y = date, x = hours, tooltip = tooltip)) +
+      gg <- filter.(self$data_plot, ident == selected_parking) %>% 
+        ggplot(., aes(y = date, x = hours, tooltip = tooltip)) +
         geom_tile_interactive(aes(fill = taux_occupation), colour = "white") +
         scale_fill_distiller(palette = "Spectral", direction = -1) +
         scale_x_continuous(breaks = 0:23) +
         scale_y_date(date_labels = "%d/%m", breaks = "3 days", expand = c(0,0)) +
-        ggtitle(data_parkings_heatmap$nom[1]) + 
+        ggtitle(self$data_plot$nom[1]) + 
         theme_minimal() + 
         theme(
           legend.position = "bottom",
@@ -76,7 +79,7 @@ Saturation <- R6::R6Class(
           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)
         )
       gg
-
+      
     }
   )
 )

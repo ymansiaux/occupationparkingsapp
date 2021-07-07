@@ -10,6 +10,11 @@ Occupation <- R6::R6Class(
     #' @field aggregated_data_by_some_time_unit Données sur lesquelles on applique une fonction d'aggregation par unité de temps
     aggregated_data_by_some_time_unit = NULL,
     
+    #' @field data_plot_1_period donnée du graphique pour 1 seule période étudiée
+    data_plot_1_period = NULL,
+    #' @field data_plot_2_periods donnée du graphique pour 2 période étudiées
+    data_plot_2_periods = NULL,
+    
     #' @description
     #' Create a new occupation object.
     #' @param rangeStart rangeStart
@@ -24,7 +29,6 @@ Occupation <- R6::R6Class(
     
     initialize = function(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais, aggregated_data_by_some_time_unit) {
       super$initialize(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais)
-      self$aggregated_data_by_some_time_unit <- NULL
     },
     
     #' @description
@@ -65,31 +69,32 @@ Occupation <- R6::R6Class(
     #'  
     #' @examples \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
     #' } 
-    timeseries_plot = function(parkings_to_plot) {
+    timeseries_plot_1_period = function(parkings_to_plot) {
       
-      data_plot <-  self$aggregated_data_by_some_time_unit %>% 
+      self$data_plot_1_period <-  self$aggregated_data_by_some_time_unit %>% 
+        filter.(ident %in% c(parkings_to_plot, "moyenne")) %>% 
         mutate.(tooltip = as.character(
           glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf('%.2f', taux_occupation)}")
         )) %>% 
         mutate.(linetype = ifelse(ident == "moyenne", "dotted", "solid"))
       
       
-      gg <- filter.(data_plot, ident %in% parkings_to_plot & ident != "moyenne") %>%  
+      gg <- filter.(self$data_plot_1_period, ident %in% parkings_to_plot & ident != "moyenne") %>%  
         ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group=nom, linetype = nom)) + 
         geom_line_interactive(aes(data_id=ident), lwd = 1) + 
         geom_point_interactive(aes(tooltip=tooltip, data_id=ident)) + 
         theme_minimal() +
         theme(legend.position = "right") +
         
-        geom_line_interactive(data = data_plot %>% filter.(ident == "moyenne"), 
-                              mapping = aes(x = time, y = taux_occupation, tooltip=taux_occupation, data_id = ident, group = nom, color = nom),
+        geom_line_interactive(data = self$data_plot_1_period %>% filter.(ident == "moyenne"), 
+                              mapping = aes(x = time, y = taux_occupation, tooltip = tooltip, data_id = ident, group = nom, color = nom),
                               lwd = 1.5) +
         scale_linetype_manual(
           "nom",
           values =
             unlist(
               with(
-                distinct.(data_plot %>% 
+                distinct.(self$data_plot_1_period %>% 
                             filter.(ident %in% c("moyenne", parkings_to_plot)) %>%
                             select.(nom, linetype)),
                 split(linetype, nom)))
@@ -97,9 +102,7 @@ Occupation <- R6::R6Class(
         # A modifier quand on aura la palette bx metro
         scale_color_manual(values = sample(colors(distinct = TRUE), length(parkings_to_plot)+1))
       
-      
       gg
-      
     },
     
     #' @description
@@ -117,55 +120,56 @@ Occupation <- R6::R6Class(
     #'  
     #' @examples \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
     #' } 
-    timeseries_plot_2_curves = function(data_occupation_1, data_occupation_2, timeStep, parkings_to_plot) {
+    timeseries_plot_2_periods = function(data_occupation_1, data_occupation_2, timeStep, parkings_to_plot) {
       
-      data_plot <-  data_occupation_1$aggregated_data_by_some_time_unit %>% 
+      self$data_plot_2_periods <- data_occupation_1$aggregated_data_by_some_time_unit %>% 
         mutate.(nom = paste0(nom, "_periode1")) %>% 
         bind_rows.(data_occupation_2$aggregated_data_by_some_time_unit %>% 
                      mutate.(nom = paste0(nom, "_periode2"))) %>% 
         mutate.(tooltip = as.character(
           glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf('%.2f', taux_occupation)}")
         )) %>% 
-        mutate.(linetype = ifelse(ident == "moyenne", "dotted", "solid")) 
+        mutate.(linetype = ifelse(ident == "moyenne", "dotted", "solid"))  %>% 
+        filter.(ident %in% c(parkings_to_plot, "moyenne"))
+      
       
       if(timeStep == "Jour") {
-        data_plot <- data_plot %>% 
-          mutate.(time = factor(hour(time)))
+        # browser()
+        self$data_plot_2_periods <- self$data_plot_2_periods %>% 
+          mutate.(time = strftime(time, "%H:%M"))
       } else if(timeStep == "Semaine") {
-        data_plot <- data_plot %>% 
+        self$data_plot_2_periods <- self$data_plot_2_periods %>% 
           mutate.(time = factor(wday(time, label = TRUE, week_start = 1)))
       } else if(timeStep == "Mois") {
-        data_plot <- data_plot %>% 
+        self$data_plot_2_periods <- self$data_plot_2_periods %>% 
           mutate.(time = factor(day(time)))
       } else {
-        data_plot <- data_plot %>% 
+        self$data_plot_2_periods <- self$data_plot_2_periods %>% 
           mutate.(time = factor(month(time, label = TRUE, abbr = FALSE)))
       }
       
-      gg <- filter.(data_plot, ident %in% parkings_to_plot & ident != "moyenne") %>%  
+      gg <- filter.(self$data_plot_2_periods, ident %in% parkings_to_plot & ident != "moyenne") %>%  
         ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group=nom, linetype = nom)) + 
         geom_line_interactive(aes(data_id=ident), lwd = 1) + 
         geom_point_interactive(aes(tooltip=tooltip, data_id=ident))  +
         theme_minimal() +
         
-        geom_line_interactive(data = data_plot %>% filter.(ident == "moyenne"), 
-                              mapping = aes(x = time, y = taux_occupation, tooltip=taux_occupation, data_id = ident, group = nom, color = nom),
+        geom_line_interactive(data = self$data_plot_2_periods %>% filter.(ident == "moyenne"), 
+                              mapping = aes(x = time, y = taux_occupation, tooltip = tooltip, data_id = ident, group = nom, color = nom),
                               lwd = 1.5) +
         scale_linetype_manual(
           "nom",
           values =
             unlist(
               with(
-                distinct.(data_plot %>% 
+                distinct.(self$data_plot_2_periods %>% 
                             filter.(ident %in% c("moyenne", parkings_to_plot)) %>%
                             select.(nom, linetype)),
                 split(linetype, nom)))
         ) #+
-      # A modifier quand on aura la palette bx metro
-      # scale_color_manual(values = sample(colors(distinct = TRUE), length(parkings_to_plot)+1))
-      
       
       gg
+      
     }
     
     

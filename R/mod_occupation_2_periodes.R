@@ -269,8 +269,7 @@ mod_occupation_2_periodes_server <- function(id){
       output$my_Occupation_UI <- renderUI({
         lapply(names(list_of_Occupation1), function(.y) {
           tagList(
-            mod_occupation_2_periodes_graphe_ui(ns(paste0("occupation_2_periodes_graphe_ui_", .y))),
-            mod_occupation_2_periodes_table_ui(ns(paste0("occupation_2_periodes_table_ui_",.y)))
+            mod_occupation_2_periodes_graphe_ui(ns(paste0("occupation_2_periodes_graphe_ui_", .y)))
           )
         })
       })
