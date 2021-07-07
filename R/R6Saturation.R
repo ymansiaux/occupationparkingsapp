@@ -70,7 +70,6 @@ Saturation <- R6::R6Class(
         scale_fill_distiller(palette = "Spectral", direction = -1) +
         scale_x_continuous(breaks = 0:23) +
         scale_y_date(date_labels = "%d/%m", breaks = "3 days", expand = c(0,0)) +
-        ggtitle(self$data_plot$nom[1]) + 
         theme_minimal() + 
         theme(
           legend.position = "bottom",
