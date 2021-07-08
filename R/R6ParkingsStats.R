@@ -67,7 +67,8 @@ ParkingsStats <- R6::R6Class(
     #' parc_relais$download_data()
     #' parc_relais$data_xtradata }
     download_data = function(rangeStep) {
-      self$data_xtradata <- try(xtradata_requete_aggregate(
+      
+      download <- try(xtradata_requete_aggregate(
         key = "DATAZBOUBB",
         typename = "ST_PARK_P",
         rangeStart = self$rangeStart,
@@ -84,6 +85,11 @@ ParkingsStats <- R6::R6Class(
         attributes = list("gid", "time", "libres", "total", "etat", "ident"),
         showURL = TRUE
       ))
+      
+      if(inherits(download, "try-error")) {
+        self$data_xtradata <- NULL
+      } else { self$data_xtradata <- download }
+      
     },
     
     #' @description

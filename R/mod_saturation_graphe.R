@@ -16,6 +16,7 @@ mod_saturation_graphe_ui <- function(id, title){
   ns <- NS(id)
   tagList(
     fluidRow(
+      actionButton(ns("pause"), "pause"),
       column(width = 12,
              h4(title))
     ),
@@ -66,6 +67,7 @@ mod_saturation_graphe_ui <- function(id, title){
 mod_saturation_graphe_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
     
+    observeEvent(input$pause, browser())
     
     observe({
       updateSelectizeInput(session, 'selected_satured_parking1', 
@@ -82,14 +84,11 @@ mod_saturation_graphe_server <- function(id, r6){
     girafe_sizing <- reactiveValues()
     
     observe({
-      # if(length(unique(as_date(r6$data_xtradata$time)))>7) {
       if(r6$timeStep != "Semaine") {
         # si on a un graphe restitué au mois
         girafe_sizing$width_svg <- 10
         girafe_sizing$height_svg <- 9
-      }
-      
-      else {
+      }  else {
         girafe_sizing$width_svg <- 12
         girafe_sizing$height_svg <- 6
       }
@@ -97,6 +96,13 @@ mod_saturation_graphe_server <- function(id, r6){
     
     
     output$plot <- renderGirafe({
+
+      validate(
+        need(isTruthy(r6$data_xtradata), 'Aucun graphe à afficher - vérifier la requête'),
+        need(nrow(r6$parkings_satures) >0, 'Aucun parking ne remplit les critères définis')
+      )
+      
+      
       
       gg <- r6$calendar_heatmap(selected_parking = parkings$ident[parkings$nom %in% input$selected_satured_parking1]) 
       
@@ -110,6 +116,11 @@ mod_saturation_graphe_server <- function(id, r6){
     })
     
     output$plot2 <- renderGirafe({
+      
+      validate(
+        need(isTruthy(r6$data_xtradata), 'Aucun graphe à afficher - vérifier la requête'),
+        need(nrow(r6$parkings_satures) >0, 'Aucun parking ne remplit les critères définis')
+      )
       
       gg <- r6$calendar_heatmap(selected_parking = parkings$ident[parkings$nom %in% input$selected_satured_parking2]) 
       
@@ -130,6 +141,9 @@ mod_saturation_graphe_server <- function(id, r6){
     
     
     output$table_plot <- renderDT({
+      validate(
+        need(isTruthy(r6$data_xtradata), 'Aucun tableau à afficher - vérifier la requête')
+      )
       
       r6$data_plot %>% 
         mutate.(taux_occupation = round(taux_occupation,1),
@@ -142,6 +156,10 @@ mod_saturation_graphe_server <- function(id, r6){
     })
     
     output$table_raw <- renderDT({
+      validate(
+        need(isTruthy(r6$data_xtradata), 'Aucun tableau à afficher - vérifier la requête')
+      )
+      
       r6$cleaned_data %>% 
         mutate.(taux_occupation = round(taux_occupation,1),
                 time = as.character(time)) %>% 

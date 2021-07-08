@@ -77,6 +77,11 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
       observeEvent(input$pause, browser())
       input$maj
       
+      validate(
+        need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), 'Aucun graphe à afficher - vérifier la requête')
+      )
+      
+      
       r6_1$aggregated_data_by_some_time_unit$nom[is.na(r6_1$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       r6_2$aggregated_data_by_some_time_unit$nom[is.na(r6_2$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       
@@ -103,6 +108,10 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
     output$table_plot <- renderDT({
       input$maj
       
+      validate(
+        need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), 'Aucun graphe à afficher - vérifier la requête')
+      )
+      
       r6_1$data_plot_2_periods %>% 
         mutate.(taux_occupation = round(taux_occupation,1),
                 time = as.character(time)) %>% 
@@ -113,6 +122,11 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
     })
     
     output$table_raw <- renderDT({
+      
+      validate(
+        need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), 'Aucun graphe à afficher - vérifier la requête')
+      )
+      
       bind_rows.(
         r6_1$cleaned_data %>% 
           mutate.(taux_occupation = round(taux_occupation,1),

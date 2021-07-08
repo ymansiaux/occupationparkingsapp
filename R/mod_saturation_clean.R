@@ -22,8 +22,10 @@ mod_saturation_clean_server <- function(id, r6, seuil_saturation, nb_heures_jour
   moduleServer( id, function(input, output, session){
     # ns <- session$ns
     observe({
-      r6$clean_output()
-      r6$filter_full_capacity_parkings(seuil_saturation, nb_heures_journalieres_saturation, nb_jours_hebdo_saturation)
+      if(isTruthy(r6$data_xtradata)) {
+        r6$clean_output()
+        r6$filter_full_capacity_parkings(seuil_saturation, nb_heures_journalieres_saturation, nb_jours_hebdo_saturation)
+      }
     })
     
   })
