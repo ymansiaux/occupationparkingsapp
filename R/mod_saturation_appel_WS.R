@@ -21,10 +21,15 @@ mod_saturation_appel_WS_ui <- function(id){
 mod_saturation_appel_WS_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
     # ns <- session$ns
-    observe(
+    observe({
       r6$download_data(rangeStep = "hour")
-    )
       
+      if(!isTruthy(r6$data_xtradata)) {
+        showNotification("La requête n'a pas fonctionné", type = "error", duration = 30)
+      }
+
+    })
+    
   })
   
 }
