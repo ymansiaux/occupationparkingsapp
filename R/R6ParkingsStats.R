@@ -58,8 +58,7 @@ ParkingsStats <- R6::R6Class(
     #' @description
     #' Interroge le WS aggregate
     #' @param rangeStep rangeStep xtradata aggregate
-    #' @import tidytable
-    #' @importFrom data.table :=
+    #' @import data.table
     #' @importFrom xtradata xtradata_requete_aggregate
     #' @examples \dontrun{
     #' parc_relais <- Occupation(rangeStart = Sys.Date() - 2, 
@@ -79,7 +78,7 @@ ParkingsStats <- R6::R6Class(
           "ident" =
             list(
               "$in" =
-                parkings %>% filter.(localisation_parking %in% self$localisation_parking & parc_relais == self$parc_relais) %>% select.(ident) %>% pull.()
+                parkings[which(parkings$localisation_parking %in% self$localisation_parking & parkings$parc_relais == self$parc_relais), "ident"]
             )
         ),
         attributes = list("gid", "time", "libres", "total", "etat", "ident"),
@@ -95,19 +94,23 @@ ParkingsStats <- R6::R6Class(
     #' @description
     #' Nettoyage de la sortie xtradata
     #' (application de lubridate et calcul du taux d'occup)
-    #' @import tidytable
-    #' @importFrom data.table :=
+    #' @import data.table
     #' @importFrom lubridate as_datetime
     #' @examples \dontrun{ clean_output()
     #' }
     clean_output = function() {
-      ## rajouter du defensive programming
-      self$cleaned_data <- self$data_xtradata %>%
-        select.(-type) %>%
-        mutate.(time = as_datetime(time, tz = mytimezone),
-                libres = ceiling(libres),
-                taux_occupation = 100 * pmax(0, 1-(libres / total))) %>% 
-        left_join.(.,  select.(parkings, ident, nom), by = "ident")
+      # browser()
+      self$cleaned_data <- self$data_xtradata %>% 
+        as.data.table() %>% 
+        .[, type := NULL] %>% 
+        .[, `:=` (
+          time = as_datetime(time, tz = mytimezone),
+          libres = as.integer(ceiling(libres))
+        )] %>% 
+        .[,taux_occupation := 100 * pmax(0, 1-(libres / total))] %>% 
+        merge(., unique(parkings[,c("nom", "ident")]), by = "ident") %>% 
+        setcolorder(neworder = "time")
+      
     }
   )
 )

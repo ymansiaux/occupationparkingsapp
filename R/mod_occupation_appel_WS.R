@@ -34,8 +34,6 @@ mod_occupation_appel_WS_server <- function(id, r6){
   
 }
 
-# parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
-
 ## To be copied in the UI
 # mod_occupation_appel_WS_ui("occupation_appel_WS_ui_1")
 

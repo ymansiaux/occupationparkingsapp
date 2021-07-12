@@ -112,9 +112,10 @@ mod_occupation_1_periode_graphe_server <- function(id, r6){
       )
       
       r6$data_plot_1_period %>% 
-        mutate.(taux_occupation = round(taux_occupation,1),
-                time = as.character(time)) %>% 
-        select.(-tooltip, -linetype) %>% 
+        .[, `:=`(taux_occupation = round(taux_occupation,1),
+                 time = as.character(time))] %>% 
+        .[, tooltip := NULL] %>% 
+        .[, linetype := NULL] %>% 
         datatable(., rownames = FALSE, caption = NULL,
                   extensions = "Buttons", options = parametres_output_DT)
       
@@ -128,9 +129,9 @@ mod_occupation_1_periode_graphe_server <- function(id, r6){
       )
       
       r6$cleaned_data %>% 
-        mutate.(taux_occupation = round(taux_occupation,1),
-                time = as.character(time)) %>% 
-        select.(-etat) %>% 
+        .[, `:=`(taux_occupation = round(taux_occupation,1),
+                 time = as.character(time))] %>% 
+        .[,etat:=NULL] %>% 
         datatable(., extensions = "Buttons", options = parametres_output_DT)
       
     })
@@ -139,8 +140,6 @@ mod_occupation_1_periode_graphe_server <- function(id, r6){
 }
 
 ## isolate dans le graphe et bouton MAJ parking
-
-# parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
 
 ## To be copied in the UI
 # mod_occupation_1_periode_graphe_ui("occupation_graphe_ui_1")

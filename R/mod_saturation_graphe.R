@@ -104,7 +104,7 @@ mod_saturation_graphe_server <- function(id, r6){
       
       
       
-      gg <- r6$calendar_heatmap(selected_parking = parkings$ident[parkings$nom %in% input$selected_satured_parking1]) 
+      gg <- r6$calendar_heatmap(selected_parking = unique(parkings$ident[parkings$nom %in% input$selected_satured_parking1])) 
       
       
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
@@ -122,7 +122,7 @@ mod_saturation_graphe_server <- function(id, r6){
         need(nrow(r6$parkings_satures) >0, 'Aucun parking ne remplit les critères définis')
       )
       
-      gg <- r6$calendar_heatmap(selected_parking = parkings$ident[parkings$nom %in% input$selected_satured_parking2]) 
+      gg <- r6$calendar_heatmap(selected_parking = unique(parkings$ident[parkings$nom %in% input$selected_satured_parking2]))
       
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
                   pointsize = 12,
@@ -145,11 +145,13 @@ mod_saturation_graphe_server <- function(id, r6){
         need(isTruthy(r6$data_xtradata), 'Aucun tableau à afficher - vérifier la requête')
       )
       
+      browser()
+      
       r6$data_plot %>% 
-        mutate.(taux_occupation = round(taux_occupation,1),
-                time = as.character(time)) %>% 
-        select.(time:nom) %>% 
-        select.(-etat) %>% 
+        .[, `:=`(taux_occupation = round(taux_occupation,1),
+                time = as.character(time))] %>% 
+        .[,ident:nom] %>% 
+        .[,etat:=NULL] %>% 
         datatable(., rownames = FALSE, caption = NULL,
                   extensions = "Buttons", options = parametres_output_DT)
       
@@ -161,9 +163,9 @@ mod_saturation_graphe_server <- function(id, r6){
       )
       
       r6$cleaned_data %>% 
-        mutate.(taux_occupation = round(taux_occupation,1),
-                time = as.character(time)) %>% 
-        select.(-etat) %>% 
+        .[, `:=`(taux_occupation = round(taux_occupation,1),
+                 time = as.character(time))] %>% 
+        .[,etat:=NULL] %>% 
         datatable(., rownames = FALSE, caption = NULL,
                   extensions = "Buttons", options = parametres_output_DT)
     })

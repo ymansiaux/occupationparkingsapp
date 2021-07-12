@@ -3,11 +3,10 @@
 #' @param input,output,session Internal parameters for {shiny}.
 #'     DO NOT REMOVE.
 #' @import shiny
-#' @import tidytable
 #' @import R6
 #' @importFrom shinybm closeWaiter_logoDatalab
 #' @importFrom golem app_prod
-#' @importFrom data.table :=
+#' @import data.table
 
 
 #' @noRd

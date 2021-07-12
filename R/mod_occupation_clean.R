@@ -31,9 +31,7 @@ mod_occupation_clean_server <- function(id, r6){
   })
 }
 
-# parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
-
-## To be copied in the UI
+# To be copied in the UI
 # mod_occupation_clean_ui("occupation_clean_ui_1")
 
 ## To be copied in the server

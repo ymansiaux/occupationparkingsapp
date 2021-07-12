@@ -113,9 +113,10 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
       )
       
       r6_1$data_plot_2_periods %>% 
-        mutate.(taux_occupation = round(taux_occupation,1),
-                time = as.character(time)) %>% 
-        select.(-tooltip, -linetype) %>% 
+        .[, `:=`(taux_occupation = round(taux_occupation,1),
+                 time = as.character(time))] %>% 
+        .[, tooltip := NULL] %>% 
+        .[, linetype := NULL] %>% 
         datatable(., rownames = FALSE, caption = NULL,
                   extensions = "Buttons", options = parametres_output_DT)
       
@@ -127,15 +128,15 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
         need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), 'Aucun graphe à afficher - vérifier la requête')
       )
       
-      bind_rows.(
+      rbind(
         r6_1$cleaned_data %>% 
-          mutate.(taux_occupation = round(taux_occupation,1),
-                  time = as.character(time)),
+          .[, `:=`(taux_occupation = round(taux_occupation,1),
+                   time = as.character(time))],
         r6_2$cleaned_data %>% 
-          mutate.(taux_occupation = round(taux_occupation,1),
-                  time = as.character(time))
+          .[, `:=`(taux_occupation = round(taux_occupation,1),
+                   time = as.character(time))]
       )  %>% 
-        select.(-etat) %>% 
+        .[, etat := NULL] %>% 
         datatable(., rownames = FALSE, caption = NULL,
                   extensions = "Buttons", options = parametres_output_DT)
     })

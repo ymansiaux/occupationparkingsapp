@@ -22,7 +22,6 @@ Imports:
     shinybusy,
     shinycssloaders,
     shinyjs,
-    tidytable,
     xtradata
 Encoding: UTF-8
 LazyData: true
