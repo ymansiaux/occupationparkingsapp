@@ -61,7 +61,8 @@ Saturation <- R6::R6Class(
     calendar_heatmap = function(selected_parking, app_theme) {
       self$data_plot <- self$cleaned_data %>% 
         copy() %>%
-        merge(self$parkings_satures, by = "ident") %>% 
+        # merge(self$parkings_satures, by = "ident") %>% 
+        .[ident %in% unique(self$parkings_satures$ident)] %>% 
         .[, `:=` (hours = hour(time), date = as_date(time))] %>% 
         .[, tooltip := glue_data(.SD, "Date : {as.character(time)}\nTaux : {sprintf('%.2f', taux_occupation)}")]
       

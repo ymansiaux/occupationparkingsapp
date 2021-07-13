@@ -16,7 +16,7 @@ mod_saturation_graphe_ui <- function(id, title){
   ns <- NS(id)
   tagList(
     fluidRow(
-      actionButton(ns("pause"), "pause"),
+      # actionButton(ns("pause"), "pause"),
       column(width = 12,
              h4(title))
     ),
