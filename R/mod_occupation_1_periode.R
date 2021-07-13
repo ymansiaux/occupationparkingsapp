@@ -8,7 +8,7 @@
 #'
 #' @import shiny
 #' @importFrom shinybm hidden_div show_some_ids hide_some_ids
-#' @importFrom shinyjs show hide 
+#' @importFrom shinyjs show hide enable disable
 #' @importFrom lubridate year floor_date as_date
 #' @importFrom purrr imap
 #' @importFrom shinycssloaders withSpinner
@@ -120,9 +120,32 @@ mod_occupation_1_periode_server <- function(id, app_theme){
       
     })
     
+    observe({
+      if(input$timestep == "Jour") {
+        if(isTruthy(input$selected_day)) {
+          enable("run_query")
+        }
+        else {
+          disable("run_query")
+        }
+      } else if(input$timestep == "Semaine") {
+        if(isTruthy(input$selected_week)) {
+          enable("run_query")
+        }
+        else {
+          disable("run_query")
+        }
+      } else {
+        enable("run_query")
+      }
+      
+    })
+    
+    
     observeEvent(input$timestep, {
       if(input$timestep == "Jour") {
         show("selection_plage_horaire") 
+        
       } else {
         hide("selection_plage_horaire")
       }
