@@ -67,7 +67,7 @@ mod_occupation_1_periode_graphe_ui <- function(id, title){
 #' occupation_graphe Server Functions
 #'
 #' @noRd 
-mod_occupation_1_periode_graphe_server <- function(id, r6){
+mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme){
   moduleServer( id, function(input, output, session){
     
     observe(updateSelectizeInput(session, 'parkings_to_plot', choices = unique(r6$cleaned_data$nom), server = TRUE))
@@ -83,8 +83,8 @@ mod_occupation_1_periode_graphe_server <- function(id, r6){
       )
       
       r6$aggregated_data_by_some_time_unit$nom[is.na(r6$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
-      
-      gg <- r6$timeseries_plot_1_period(isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])))
+      # browser()
+      gg <- r6$timeseries_plot_1_period(isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])), app_theme = app_theme())
       
       x <- girafe(ggobj = gg, width_svg = 8, height_svg = 5, 
                   pointsize = 15,

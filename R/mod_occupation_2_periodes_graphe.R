@@ -67,7 +67,7 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title){
 #' occupation_graphe Server Functions
 #'
 #' @noRd 
-mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
+mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme){
   moduleServer( id, function(input, output, session){
     
     observe(updateSelectizeInput(session, 'parkings_to_plot', choices = unique(c(r6_1$cleaned_data$nom, r6_2$cleaned_data$nom)), server = TRUE))
@@ -85,7 +85,11 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2){
       r6_1$aggregated_data_by_some_time_unit$nom[is.na(r6_1$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       r6_2$aggregated_data_by_some_time_unit$nom[is.na(r6_2$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       
-      gg <- r6_1$timeseries_plot_2_periods(r6_1, r6_2, r6_1$timeStep, isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])))
+      gg <- r6_1$timeseries_plot_2_periods(data_occupation_1 = r6_1,
+                                           data_occupation_2 = r6_2,
+                                           timeStep = r6_1$timeStep, 
+                                           parkings_to_plot = isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])), 
+                                           app_theme = app_theme())
       
       x <- girafe(ggobj = gg, width_svg = 8, height_svg = 5, 
                   pointsize = 15,

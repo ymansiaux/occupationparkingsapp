@@ -117,7 +117,7 @@ mod_occupation_2_periodes_ui <- function(id){
 #' occupation Server Functions
 #'
 #' @noRd 
-mod_occupation_2_periodes_server <- function(id){
+mod_occupation_2_periodes_server <- function(id, app_theme){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     
@@ -261,7 +261,7 @@ mod_occupation_2_periodes_server <- function(id){
       })
       
       pmap(list(list_of_Occupation1, list_of_Occupation2, names(list_of_Occupation1)), function(.x, .y, .z) {
-        mod_occupation_2_periodes_graphe_server(paste0("occupation_2_periodes_graphe_ui_", .z), r6_1 = .x, r6_2 = .y)
+        mod_occupation_2_periodes_graphe_server(paste0("occupation_2_periodes_graphe_ui_", .z), r6_1 = .x, r6_2 = .y, app_theme = app_theme)
       })
       
       output$my_Occupation_UI <- renderUI({

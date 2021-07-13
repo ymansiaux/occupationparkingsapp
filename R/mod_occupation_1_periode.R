@@ -102,7 +102,7 @@ mod_occupation_1_periode_ui <- function(id){
 #' occupation Server Functions
 #'
 #' @noRd 
-mod_occupation_1_periode_server <- function(id){
+mod_occupation_1_periode_server <- function(id, app_theme){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     
@@ -199,7 +199,7 @@ mod_occupation_1_periode_server <- function(id){
       imap(list_of_Occupation, function(.x, .y) {
         mod_occupation_appel_WS_server(paste0("occupation_appel_WS_ui_", .y), r6 = .x)
         mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x)
-        mod_occupation_1_periode_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x)
+        mod_occupation_1_periode_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x, app_theme = app_theme)
       })
       
       output$my_Occupation_UI <- renderUI({

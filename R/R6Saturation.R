@@ -55,12 +55,14 @@ Saturation <- R6::R6Class(
     #' @importFrom glue glue_data
     #' @import ggiraph
     #' @import ggplot2
+    #' @importFrom bdxmetroidentity theme_bdxmetro
     #' @examples \dontrun{ temporal_aggregate("day")
     #' } 
-    calendar_heatmap = function(selected_parking) {
+    calendar_heatmap = function(selected_parking, app_theme) {
       self$data_plot <- self$cleaned_data %>% 
         copy() %>%
-        merge(self$parkings_satures, by = "ident") %>% 
+        # merge(self$parkings_satures, by = "ident") %>% 
+        .[ident %in% unique(self$parkings_satures$ident)] %>% 
         .[, `:=` (hours = hour(time), date = as_date(time))] %>% 
         .[, tooltip := glue_data(.SD, "Date : {as.character(time)}\nTaux : {sprintf('%.2f', taux_occupation)}")]
       
@@ -70,7 +72,7 @@ Saturation <- R6::R6Class(
         scale_fill_distiller(palette = "Spectral", direction = -1) +
         scale_x_continuous(breaks = 0:23) +
         scale_y_date(date_labels = "%d/%m", breaks = "3 days", expand = c(0,0)) +
-        theme_minimal() + 
+        theme_bdxmetro(app_theme, axis_text_size = 15, axis_title_size  = 15) + 
         theme(
           legend.position = "bottom",
           text = element_text(size=16),

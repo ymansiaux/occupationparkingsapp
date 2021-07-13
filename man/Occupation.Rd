@@ -139,7 +139,7 @@ Aggregation des données selon une fenetre temporelle
 \subsection{Method \code{timeseries_plot_1_period()}}{
 Graphe de série temporelle
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_1_period(parkings_to_plot)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_1_period(parkings_to_plot, app_theme)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -169,7 +169,8 @@ Graphe de série temporelle avec comparaison de 2 périodes
   data_occupation_1,
   data_occupation_2,
   timeStep,
-  parkings_to_plot
+  parkings_to_plot,
+  app_theme
 )}\if{html}{\out{</div>}}
 }
 
