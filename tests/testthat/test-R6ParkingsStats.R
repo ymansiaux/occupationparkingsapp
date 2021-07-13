@@ -5,7 +5,7 @@ test_that("R6 Class Occupation Works", {
   parc_relais = Occupation$new(rangeStart = "2021-05-10",
                                rangeEnd = "2021-05-11",
                                rangeStep = "hour",
-                               timeStep = "hour",
+                               timeStep = "Jour",
                                plageHoraire = 0:23,
                                localisation_parking = NA,
                                parc_relais = TRUE)
@@ -29,3 +29,35 @@ test_that("R6 Class Occupation Works", {
   expect_s3_class(gg, "ggplot")
   
 })
+
+
+test_that("R6 Class Saturation Works", {
+  
+  parc_relais = Saturation$new(rangeStart = "2021-06-28",
+                               rangeEnd = "2021-07-05",
+                               rangeStep = "hour",
+                               timeStep = "Semaine",
+                               plageHoraire = 0:23,
+                               localisation_parking = NA,
+                               parc_relais = TRUE)
+  
+  expect_s3_class(parc_relais, "R6")
+  expect_s3_class(parc_relais, "Saturation")
+  
+  parc_relais$download_data(rangeStep = parc_relais$rangeStep)
+  expect_equal(dim(parc_relais$data_xtradata), c(4704,7))
+  
+  parc_relais$clean_output()
+  expect_equal(as.character(mean(parc_relais$cleaned_data$taux_occupation)), "21.2941925772493")
+  
+  parc_relais$filter_full_capacity_parkings(seuil_taux_occupation  = .8, nb_heures_par_jour_satures  = 4, nb_jour_par_semaine_sature  = 1)
+  expect_equal(dim(parc_relais$parkings_satures), c(28,3))
+  expect_equal(sum(parc_relais$parkings_satures$n_day_per_week_full), 186)
+  
+  
+  gg <- parc_relais$calendar_heatmap(selected_parking = c("CUBPK98"), app_theme = "light")
+  
+  expect_s3_class(gg, "ggplot")
+  
+})
+
