@@ -64,7 +64,7 @@ mod_saturation_graphe_ui <- function(id, title){
 #' saturation_graphe Server Functions
 #'
 #' @noRd 
-mod_saturation_graphe_server <- function(id, r6){
+mod_saturation_graphe_server <- function(id, r6, app_theme = app_theme){
   moduleServer( id, function(input, output, session){
     
     observeEvent(input$pause, browser())
@@ -96,7 +96,7 @@ mod_saturation_graphe_server <- function(id, r6){
     
     
     output$plot <- renderGirafe({
-
+      
       validate(
         need(isTruthy(r6$data_xtradata), 'Aucun graphe à afficher - vérifier la requête'),
         need(nrow(r6$parkings_satures) >0, 'Aucun parking ne remplit les critères définis')
@@ -104,11 +104,12 @@ mod_saturation_graphe_server <- function(id, r6){
       
       
       
-      gg <- r6$calendar_heatmap(selected_parking = unique(parkings$ident[parkings$nom %in% input$selected_satured_parking1])) 
+      gg <- r6$calendar_heatmap(selected_parking = unique(parkings$ident[parkings$nom %in% input$selected_satured_parking1]),
+                                app_theme = app_theme()) 
       
       
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
-                  pointsize = 12,
+                  # pointsize = 15,
                   options = list(
                     opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
                   ))
@@ -122,10 +123,11 @@ mod_saturation_graphe_server <- function(id, r6){
         need(nrow(r6$parkings_satures) >0, 'Aucun parking ne remplit les critères définis')
       )
       
-      gg <- r6$calendar_heatmap(selected_parking = unique(parkings$ident[parkings$nom %in% input$selected_satured_parking2]))
+      gg <- r6$calendar_heatmap(selected_parking = unique(parkings$ident[parkings$nom %in% input$selected_satured_parking2]),
+                                app_theme = app_theme())
       
       x <- girafe(ggobj = gg, width_svg =  girafe_sizing$width_svg, height_svg =  girafe_sizing$height_svg,
-                  pointsize = 12,
+                  # pointsize = 15,
                   options = list(
                     opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
                   ))
@@ -145,11 +147,9 @@ mod_saturation_graphe_server <- function(id, r6){
         need(isTruthy(r6$data_xtradata), 'Aucun tableau à afficher - vérifier la requête')
       )
       
-      browser()
-      
       r6$data_plot %>% 
         .[, `:=`(taux_occupation = round(taux_occupation,1),
-                time = as.character(time))] %>% 
+                 time = as.character(time))] %>% 
         .[,ident:nom] %>% 
         .[,etat:=NULL] %>% 
         datatable(., rownames = FALSE, caption = NULL,

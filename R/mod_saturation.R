@@ -72,7 +72,7 @@ mod_saturation_ui <- function(id){
 #' saturation Server Functions
 #'
 #' @noRd 
-mod_saturation_server <- function(id){
+mod_saturation_server <- function(id, app_theme){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
     
@@ -136,7 +136,7 @@ mod_saturation_server <- function(id){
                                     seuil_saturation = input$seuil_saturation, 
                                     nb_heures_journalieres_saturation = input$nb_heures_journalieres_saturation,
                                     nb_jours_hebdo_saturation = input$nb_jours_hebdo_saturation)
-        mod_saturation_graphe_server(paste0("saturation_graphe_ui_", .y), r6 = .x)
+        mod_saturation_graphe_server(paste0("saturation_graphe_ui_", .y), r6 = .x, app_theme = app_theme)
       })
       
       

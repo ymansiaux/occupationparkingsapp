@@ -24,7 +24,8 @@ app_ui <- function(request) {
                      collapsible = TRUE,
                      tabPanel("Accueil",
                               titlePanel("Bienvenue"),
-                              uiOutput(outputId = "my_logo")),
+                              uiOutput(outputId = "my_logo"),
+                              h5("Blabla à compléter")),
                      tabPanel("Occupation - observer 1 p\u00e9riode",
                               mod_occupation_1_periode_ui("occupation_ui_1")),
                      tabPanel("Occupation - comparer 2 p\u00e9riodes",
@@ -57,6 +58,7 @@ golem_add_external_resources <- function() {
   
   golem::use_internal_file(path = system.file("shiny/www", "datalab-logo-lightmode.png", package = "bdxmetroidentity"))
   golem::use_internal_file(path = system.file("shiny/www", "datalab-logo-darkmode.png", package = "bdxmetroidentity"))
+  
   
   tags$head(
     favicon(),
