@@ -17,7 +17,7 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     shinyjs::useShinyjs(),
     waiter_logoDatalab(golem::app_prod()),
-    add_busy_spinner(spin = "fading-circle"),
+    add_busy_spinner(spin = "fading-circle", color = "#ff4d3e", height = "150px", width = "150px"),
     
     fluidPage(
       navbarpage_bdx(title = "Parkings",
