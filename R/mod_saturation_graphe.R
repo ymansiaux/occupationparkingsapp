@@ -80,7 +80,6 @@ mod_saturation_graphe_server <- function(id, r6, app_theme = app_theme){
                            server = TRUE)
     })
     
-    
     girafe_sizing <- reactiveValues()
     
     observe({
