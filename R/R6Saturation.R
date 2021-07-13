@@ -12,7 +12,7 @@ Saturation <- R6::R6Class(
     #' d'occupation en nb d'heures par jour et nb de jours par semaine
     parkings_satures = NULL,
     
-    #' @field donnees du graphique de saturation
+    #' @field data_plot donnees du graphique de saturation
     data_plot = NULL,
     
     #' @description
@@ -48,6 +48,8 @@ Saturation <- R6::R6Class(
     
     #' @description
     #' Realise une calendar heatmap des parkings les plus satures
+    #' @param selected_parking parkings à afficher
+    #' @param app_theme theme de l'application (dark ou light)
     #' @import data.table
     #' @importFrom ggplot2 ggplot ggtitle aes geom_tile scale_fill_distiller scale_y_continuous scale_x_date facet_wrap theme_minimal theme unit element_blank coord_equal element_text
     #' @importFrom ggiraph geom_tile_interactive

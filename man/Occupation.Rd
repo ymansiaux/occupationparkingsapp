@@ -74,8 +74,7 @@ Create a new occupation object.
   timeStep,
   plageHoraire,
   localisation_parking,
-  parc_relais,
-  aggregated_data_by_some_time_unit
+  parc_relais
 )}\if{html}{\out{</div>}}
 }
 
@@ -95,8 +94,6 @@ Create a new occupation object.
 \item{\code{localisation_parking}}{localisation_parking}
 
 \item{\code{parc_relais}}{parc_relais}
-
-\item{\code{data_xtradata}}{data_xtradata}
 }
 \if{html}{\out{</div>}}
 }
@@ -146,6 +143,8 @@ Graphe de série temporelle
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{parkings_to_plot}}{liste des parkings à afficher (parametre input shiny)}
+
+\item{\code{app_theme}}{theme de l'application (dark ou light)}
 }
 \if{html}{\out{</div>}}
 }
@@ -184,6 +183,8 @@ Graphe de série temporelle avec comparaison de 2 périodes
 \item{\code{timeStep}}{pas de temps pour l'axe des x (heure, jour, wday, mois)}
 
 \item{\code{parkings_to_plot}}{liste des parkings à afficher (parametre input shiny)}
+
+\item{\code{app_theme}}{theme de l'application (dark ou light)}
 }
 \if{html}{\out{</div>}}
 }

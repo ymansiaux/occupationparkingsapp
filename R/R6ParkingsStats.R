@@ -15,7 +15,7 @@ ParkingsStats <- R6::R6Class(
     #' @field rangeStep Pas d'aggregation pour requete xtradata
     rangeStep = "",
     
-    #' @fiels timeStep Fenetre de temps de restitution des graphes (heure, jour, jour de la semaine, mois)
+    #' @field timeStep Fenetre de temps de restitution des graphes (heure, jour, jour de la semaine, mois)
     timeStep = "",
     
     #' @field plageHoraire plage horaire des donnees à recup
@@ -38,11 +38,10 @@ ParkingsStats <- R6::R6Class(
     #' @param rangeStart rangeStart
     #' @param rangeEnd rangeEnd
     #' @param rangeStep rangeStep
+    #' @param timeStep timeStep
     #' @param plageHoraire plageHoraire
     #' @param localisation_parking localisation_parking
     #' @param parc_relais parc_relais
-    #' @param data_xtradata data_xtradata
-    #' @param cleaned_data cleaned_data
     #' @return A new `Occupation` object.
     
     initialize = function(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais) {

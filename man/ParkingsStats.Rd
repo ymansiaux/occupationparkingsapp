@@ -34,6 +34,8 @@ parc_relais$data_xtradata }
 
 \item{\code{rangeStep}}{Pas d'aggregation pour requete xtradata}
 
+\item{\code{timeStep}}{Fenetre de temps de restitution des graphes (heure, jour, jour de la semaine, mois)}
+
 \item{\code{plageHoraire}}{plage horaire des donnees à recup}
 
 \item{\code{localisation_parking}}{Secteur de localisation du parking (hypercentre, centre, peripherie, NA pour les parc relais)}
@@ -81,15 +83,13 @@ Create a new occupation object.
 
 \item{\code{rangeStep}}{rangeStep}
 
+\item{\code{timeStep}}{timeStep}
+
 \item{\code{plageHoraire}}{plageHoraire}
 
 \item{\code{localisation_parking}}{localisation_parking}
 
 \item{\code{parc_relais}}{parc_relais}
-
-\item{\code{data_xtradata}}{data_xtradata}
-
-\item{\code{cleaned_data}}{cleaned_data}
 }
 \if{html}{\out{</div>}}
 }

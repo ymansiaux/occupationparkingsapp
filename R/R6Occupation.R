@@ -24,10 +24,9 @@ Occupation <- R6::R6Class(
     #' @param plageHoraire plageHoraire
     #' @param localisation_parking localisation_parking
     #' @param parc_relais parc_relais
-    #' @param data_xtradata data_xtradata
     #' @return A new `Occupation` object.
     
-    initialize = function(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais, aggregated_data_by_some_time_unit) {
+    initialize = function(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais) {
       super$initialize(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais)
     },
     
@@ -62,6 +61,7 @@ Occupation <- R6::R6Class(
     #' @description
     #' Graphe de série temporelle
     #' @param parkings_to_plot liste des parkings à afficher (parametre input shiny)
+    #' @param app_theme theme de l'application (dark ou light)
     #' @importFrom ggplot2 ggplot aes geom_line scale_linetype_manual theme_minimal theme scale_color_manual
     #' @importFrom ggiraph geom_line_interactive geom_point_interactive
     #' @importFrom glue glue_data
@@ -111,6 +111,7 @@ Occupation <- R6::R6Class(
     #' @param data_occupation_2 données d'occupation de la période 2
     #' @param timeStep pas de temps pour l'axe des x (heure, jour, wday, mois)
     #' @param parkings_to_plot liste des parkings à afficher (parametre input shiny)
+    #' @param app_theme theme de l'application (dark ou light)
     #' @importFrom ggplot2 ggplot aes geom_line scale_linetype_manual theme_minimal theme scale_color_manual
     #' @importFrom ggiraph geom_line_interactive geom_point_interactive
     #' @importFrom glue glue_data
