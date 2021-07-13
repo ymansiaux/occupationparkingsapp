@@ -50,7 +50,6 @@ Saturation <- R6::R6Class(
     #' Realise une calendar heatmap des parkings les plus satures
     #' @import data.table
     #' @importFrom ggplot2 ggplot ggtitle aes geom_tile scale_fill_distiller scale_y_continuous scale_x_date facet_wrap theme_minimal theme unit element_blank coord_equal element_text
-    #' @importFrom lubridate hour wday
     #' @importFrom ggiraph geom_tile_interactive
     #' @importFrom glue glue_data
     #' @import ggiraph
@@ -63,7 +62,7 @@ Saturation <- R6::R6Class(
         copy() %>%
         # merge(self$parkings_satures, by = "ident") %>% 
         .[ident %in% unique(self$parkings_satures$ident)] %>% 
-        .[, `:=` (hours = hour(time), date = as_date(time))] %>% 
+        .[, `:=` (hours = lubridate::hour(time), date = as_date(time))] %>% 
         .[, tooltip := glue_data(.SD, "Date : {as.character(time)}\nTaux : {sprintf('%.2f', taux_occupation)}")]
       
       gg <- self$data_plot[ident %in% selected_parking] %>% 

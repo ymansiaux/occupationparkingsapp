@@ -79,7 +79,7 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme){
       input$maj
       
       validate(
-        need(isTruthy(r6$data_xtradata), 'Aucun graphe à afficher - vérifier la requête')
+        need(isTruthy(r6$data_xtradata), 'Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate')
       )
       
       r6$aggregated_data_by_some_time_unit$nom[is.na(r6$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
@@ -108,7 +108,7 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme){
       input$maj
       
       validate(
-        need(isTruthy(r6$data_xtradata), 'Aucun tableau à afficher - vérifier la requête')
+        need(isTruthy(r6$data_xtradata), 'Aucun tableau \u00e0 afficher - v\u00e9rifier la requ\u00eate')
       )
       
       r6$data_plot_1_period %>% 
@@ -125,7 +125,7 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme){
     output$table_raw <- renderDT(server = FALSE, {
       
       validate(
-        need(isTruthy(r6$data_xtradata), 'Aucun tableau à afficher - vérifier la requête')
+        need(isTruthy(r6$data_xtradata), 'Aucun tableau \u00e0 afficher - v\u00e9rifier la requ\u00eate')
       )
       
       r6$cleaned_data %>% 

@@ -5,7 +5,7 @@
 #'
 #' @return une liste de parametres
 #' @export
-#' @importFrom lubridate as_date add_with_rollback days floor_date weeks  years ymd
+#' @importFrom lubridate as_date add_with_rollback days floor_date weeks years ymd
 #' @examples occupation_compute_xtradata_request_parameters("Jour", "2021-04-01")
 occupation_compute_xtradata_request_parameters <- function(selected_timestep, selected_date) {
   

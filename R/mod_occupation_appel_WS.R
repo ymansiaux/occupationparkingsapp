@@ -25,7 +25,7 @@ mod_occupation_appel_WS_server <- function(id, r6){
       r6$download_data(rangeStep = r6$rangeStep)
       
       if(!isTruthy(r6$data_xtradata)) {
-        showNotification("La requête n'a pas fonctionné", type = "error", duration = 30)
+        showNotification("La requ\u00eate n\'a pas fonctionn\u00e9", type = "error", duration = 30)
       }
       
     })

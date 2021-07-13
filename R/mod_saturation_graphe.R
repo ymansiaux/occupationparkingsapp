@@ -97,8 +97,8 @@ mod_saturation_graphe_server <- function(id, r6, app_theme = app_theme){
     output$plot <- renderGirafe({
       
       validate(
-        need(isTruthy(r6$data_xtradata), 'Aucun graphe à afficher - vérifier la requête'),
-        need(nrow(r6$parkings_satures) >0, 'Aucun parking ne remplit les critères définis')
+        need(isTruthy(r6$data_xtradata), 'Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate'),
+        need(nrow(r6$parkings_satures) >0, 'Aucun parking ne remplit les crit\u00e8res d\u00e9finis')
       )
       
       
@@ -118,8 +118,8 @@ mod_saturation_graphe_server <- function(id, r6, app_theme = app_theme){
     output$plot2 <- renderGirafe({
       
       validate(
-        need(isTruthy(r6$data_xtradata), 'Aucun graphe à afficher - vérifier la requête'),
-        need(nrow(r6$parkings_satures) >0, 'Aucun parking ne remplit les critères définis')
+        need(isTruthy(r6$data_xtradata), 'Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate'),
+        need(nrow(r6$parkings_satures) >0, 'Aucun parking ne remplit les crit\u00e8res d\u00e9finis')
       )
       
       gg <- r6$calendar_heatmap(selected_parking = unique(parkings$ident[parkings$nom %in% input$selected_satured_parking2]),
@@ -143,7 +143,7 @@ mod_saturation_graphe_server <- function(id, r6, app_theme = app_theme){
     
     output$table_plot <- renderDT({
       validate(
-        need(isTruthy(r6$data_xtradata), 'Aucun tableau à afficher - vérifier la requête')
+        need(isTruthy(r6$data_xtradata), 'Aucun tableau \u00e0 afficher - v\u00e9rifier la requ\u00eate')
       )
       
       r6$data_plot %>% 
@@ -158,7 +158,7 @@ mod_saturation_graphe_server <- function(id, r6, app_theme = app_theme){
     
     output$table_raw <- renderDT({
       validate(
-        need(isTruthy(r6$data_xtradata), 'Aucun tableau à afficher - vérifier la requête')
+        need(isTruthy(r6$data_xtradata), 'Aucun tableau \u00e0 afficher - v\u00e9rifier la requ\u00eate')
       )
       
       r6$cleaned_data %>% 

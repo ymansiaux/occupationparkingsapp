@@ -9,7 +9,7 @@
 #' @import shiny
 #' @importFrom shinybm hidden_div show_some_ids hide_some_ids
 #' @importFrom shinyjs show hide 
-#' @importFrom lubridate year floor_date as_date
+#' @importFrom lubridate floor_date as_date
 #' @importFrom purrr imap pmap
 
 mod_occupation_2_periodes_ui <- function(id){
@@ -88,9 +88,9 @@ mod_occupation_2_periodes_ui <- function(id){
         hidden_div(id_div = ns("selection_timestep_year"), 
                    contenu_div = tagList(
                      radioButtons(inputId = ns("selected_year1"), label = "S\u00e9lectionner une premi\u00e8re ann\u00e9e",
-                                  choices = year(debut_donnees):year(Sys.Date())),
+                                  choices = lubridate::year(debut_donnees):lubridate::year(Sys.Date())),
                      radioButtons(inputId = ns("selected_year2"), label = "S\u00e9lectionner une deuxi\u00e8me ann\u00e9e",
-                                  choices = year(debut_donnees):year(Sys.Date()))
+                                  choices = lubridate::year(debut_donnees):lubridate::year(Sys.Date()))
                      
                    )
         ),

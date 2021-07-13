@@ -66,7 +66,6 @@ Occupation <- R6::R6Class(
     #' @importFrom ggiraph geom_line_interactive geom_point_interactive
     #' @importFrom glue glue_data
     #' @import data.table
-    #' @importFrom lubridate hour
     #' @importFrom bdxmetroidentity theme_bdxmetro scale_color_bdxmetro_discrete
     #'  
     #' @examples \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
@@ -116,7 +115,6 @@ Occupation <- R6::R6Class(
     #' @importFrom ggiraph geom_line_interactive geom_point_interactive
     #' @importFrom glue glue_data
     #' @import data.table
-    #' @importFrom lubridate hour wday day month
     #' @importFrom bdxmetroidentity theme_bdxmetro scale_color_bdxmetro_discrete
     #'  
     #' @examples \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
@@ -145,7 +143,7 @@ Occupation <- R6::R6Class(
         
       } else if(timeStep == "Semaine") {
         self$data_plot_2_periods <- self$data_plot_2_periods %>% 
-          .[, time := factor(wday(time, label = TRUE, week_start = 1))]
+          .[, time := factor(lubridate::wday(time, label = TRUE, week_start = 1))]
         
         xlab <- "Jour de la semaine"
         
@@ -157,7 +155,7 @@ Occupation <- R6::R6Class(
         
       } else {
         self$data_plot_2_periods <- self$data_plot_2_periods %>% 
-          .[, time := factor(month(time, label = TRUE, abbr = FALSE))]
+          .[, time := factor(lubridate::month(time, label = TRUE, abbr = FALSE))]
         
         xlab <- "Mois"
       }

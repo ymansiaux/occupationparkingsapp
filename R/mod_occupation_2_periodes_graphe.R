@@ -78,7 +78,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme){
       input$maj
       
       validate(
-        need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), 'Aucun graphe à afficher - vérifier la requête')
+        need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), 'Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate')
       )
       
       
@@ -113,7 +113,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme){
       input$maj
       
       validate(
-        need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), 'Aucun graphe à afficher - vérifier la requête')
+        need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), 'Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate')
       )
       
       r6_1$data_plot_2_periods %>% 
@@ -129,7 +129,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme){
     output$table_raw <- renderDT({
       
       validate(
-        need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), 'Aucun graphe à afficher - vérifier la requête')
+        need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), 'Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate')
       )
       
       rbind(

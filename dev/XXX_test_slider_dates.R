@@ -32,7 +32,7 @@ ui <- fluidPage(
       
       
       radioButtons("select_year", "year",
-                   choices = unique(get_year(x)))
+                   choices = unique(get_lubridate::year(x)))
       
       
       
