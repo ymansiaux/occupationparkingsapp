@@ -7,6 +7,7 @@
 #' @noRd 
 #'
 #' @import shiny
+#' @importFrom shinyjs enable disable
 mod_saturation_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -88,6 +89,18 @@ mod_saturation_server <- function(id, app_theme){
       hide_some_ids(ids = ids_list[!names(ids_list) == input$timestep])
       
     })
+    
+    # si il manque un parametre on empeche l'utilisateur de lancer la requete
+    observe({
+      if(!isTruthy(input$selected_week)) {
+        disable("run_query")
+      } else {
+        enable("run_query")
+      }
+    })
+    
+    
+    
     
     observeEvent(input$run_query,{
       xtradata_parameters <- reactive(

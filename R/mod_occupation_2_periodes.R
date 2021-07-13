@@ -135,6 +135,29 @@ mod_occupation_2_periodes_server <- function(id, app_theme){
       
     })
     
+    
+    observe({
+      if(input$timestep == "Jour") {
+        if(isTruthy(input$selected_day1) & isTruthy(input$selected_day2)) {
+          enable("run_query")
+        }
+        else {
+          disable("run_query")
+        }
+      } else if(input$timestep == "Semaine") {
+        if(isTruthy(input$selected_week1) & isTruthy(input$selected_week2)) {
+          enable("run_query")
+        }
+        else {
+          disable("run_query")
+        }
+      } else {
+        enable("run_query")
+      }
+      
+    })
+    
+    
     observeEvent(input$timestep, {
       if(input$timestep == "Jour") {
         show("selection_plage_horaire") 
