@@ -20,6 +20,7 @@ app_server <- function(input, output, session) {
   mod_occupation_1_periode_server("occupation_ui_1", app_theme = reactive(rv$theme))
   mod_occupation_2_periodes_server("occupation_ui_2", app_theme = reactive(rv$theme))
   mod_saturation_server("saturation_ui_1", app_theme = reactive(rv$theme))
+  mod_accueil_server("accueil_ui_1")
   
   ### PARTIE BDXMETROIDENTITY ###
   rv <- reactiveValues()

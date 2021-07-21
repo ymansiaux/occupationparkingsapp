@@ -23,9 +23,9 @@ app_ui <- function(request) {
       navbarpage_bdx(title = "Parkings",
                      collapsible = TRUE,
                      tabPanel("Accueil",
-                              titlePanel("Bienvenue"),
                               uiOutput(outputId = "my_logo"),
-                              h5("Blabla \u00e0 compl\u00e9ter")),
+                              mod_accueil_ui("accueil_ui_1")
+                     ),
                      tabPanel("Occupation - observer 1 p\u00e9riode",
                               mod_occupation_1_periode_ui("occupation_ui_1")),
                      tabPanel("Occupation - comparer 2 p\u00e9riodes",
