@@ -22,53 +22,62 @@ library(occupationparkingsapp)
 
 ## Super classe parkings
 
+On définit une classe ParkingsStats qui va être une super classe des classes Occupation et Saturation.
+
+Cette classe va contenir 2 fonctions : 
+
+* download_data : Téléchargement des données depuis le WS aggregate
+
+* clean_output : Nettoyage des résultats de download_data (dates, calcul du taux d'occupation ...)
+
 ## Occupation
+
+Contient les fonctions :
+
+* mean_by_some_time_unit : Va réaliser une aggrégation du taux d'occupation en fonction d'un certain pas de temps. Renvoie une moyenne pour l'ensemble du secteur et pour chaque parking du secteur.
+
+* timeseries_plot_1_period : graphique de série temporelle pour 1 seule période étudiée
+
+* timeseries_plot_2_periods : graphique de série temporelle pour 2 périodes étudiées
 
 ## Saturation
 
+Contient les fonctions :
 
-# Design 
+* filter_full_capacity_parkings : conserve les parkings qui remplissent les critères de saturation définis par les utilisateurs
 
-## Onglet Saturation
-
-### Panneau Lateral
-
-Sélection d'une niveau d'aggrégation d'intéret
-
--> données horaires
-rangeStep = hour
-dataviz = moyenne horaire sur la plage de temps complète
-on peut représenter les données / parkings en ligne et la moyenne en barplot en arriere plan
-le calendar ne permet de choisir qu'une journée
-
--> données à la semaine
-rangeStep = day
-dataviz = données rendues par xtradata jour par jour
-on peut représenter les données / parkings en ligne et la moyenne en barplot en arriere plan
-le calendar ne permet de choisir qu'une semaine
-
--> données mensuelle
-rangeStep = day
-dataviz = données à agreger à la journée (moyenne)
-on peut représenter les données / parkings en ligne et la moyenne en barplot en arriere plan
-le calendar ne permet de choisir qu'une mois
-
--> données annuelle
-rangeStep = month
-dataviz = données à agreger au mois
-on peut représenter les données / parkings en ligne et la moyenne en barplot en arriere plan
-le calendar ne permet de choisir qu'une annee
-
--> faire du cache là dessus
+* calendar_heatmap : heatmap des taux de saturation des parkings
 
 
-#### Selecteurs
-Niveau de rendu des data : jour / semaine / mois / annee
-Calendar
-Plage horaire : jour (8h - 20h) / nuit / personnalisée
+# Structure de l'app
 
-### Panneau de droite
+## Modules
 
-Options à ajouter : télécharger le graphe / le tableau
-Menu déroulant pour affiner la sélection des parkings
+### Accueil
+
+* mod_accueil : message de bienvenue à l'utilisateur et présentation des parkings étudiés
+
+### Occupation
+
+* mod_occupation_1_periode : analyse pour une période 
+* mod_occupation_2_periodes : analyse pour deux périodes
+
+Ces deux modules appellent des sous-modules :
+
+* mod_occupation_appel_WS : appel au WS pour télécharger les données : RAS d'un point de vue UI
+* mod_occupation_clean : nettoyage des résultats : RAS d'un point de vue UI
+* mod_occupation_1_periode_graphe : graphe + tableaux : génération de l'UI 
+* mod_occupation_2_periodes_graphe : graphe + tableaux : génération de l'UI 
+
+### Saturation
+
+* mod_saturation : va appeler des sous modules
+
+Opérations identiques réalisées, selon le modèle API / nettoyage / résultats avec les modules suivants :
+
+* mod_saturation_appel_WS
+* mod_saturation_clean
+* mod_saturation_graphe
+
+
 

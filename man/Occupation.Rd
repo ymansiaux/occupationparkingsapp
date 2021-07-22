@@ -13,21 +13,21 @@ va gérer la routine API / clean / plot / table / download
 ## ------------------------------------------------
 
 \dontrun{ temporal_aggregate("day")
-} 
+}
 
 ## ------------------------------------------------
 ## Method `Occupation$timeseries_plot_1_period`
 ## ------------------------------------------------
 
 \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
-} 
+}
 
 ## ------------------------------------------------
 ## Method `Occupation$timeseries_plot_2_periods`
 ## ------------------------------------------------
 
 \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
-} 
+}
 }
 \section{Super class}{
 \code{\link[occupationparkingsapp:ParkingsStats]{occupationparkingsapp::ParkingsStats}} -> \code{Occupation}
@@ -114,7 +114,7 @@ Aggregation des données selon une fenetre temporelle
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{time_unit}}{pas d'aggreg (voir timetk)}
+\item{\code{time_unit}}{pas d'aggregation à appliquer}
 
 \item{\code{...}}{parametres additionels de floor_date}
 }
@@ -123,7 +123,7 @@ Aggregation des données selon une fenetre temporelle
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{ temporal_aggregate("day")
-} 
+}
 }
 \if{html}{\out{</div>}}
 
@@ -151,7 +151,7 @@ Graphe de série temporelle
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
-} 
+}
 }
 \if{html}{\out{</div>}}
 
@@ -191,7 +191,7 @@ Graphe de série temporelle avec comparaison de 2 périodes
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
-} 
+}
 }
 \if{html}{\out{</div>}}
 
