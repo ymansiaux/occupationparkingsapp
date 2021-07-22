@@ -12,11 +12,7 @@ utilisee ensuite par classe Occupation et Saturation
 ## Method `ParkingsStats$download_data`
 ## ------------------------------------------------
 
-\dontrun{
-parc_relais <- Occupation(rangeStart = Sys.Date() - 2, 
-rangeEnd = Sys.Date() - 1, localisation_parking = NA, parc_relais = TRUE)
-parc_relais$download_data()
-parc_relais$data_xtradata }
+\dontrun{}
 
 ## ------------------------------------------------
 ## Method `ParkingsStats$clean_output`
@@ -115,11 +111,7 @@ Interroge le WS aggregate
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{
-parc_relais <- Occupation(rangeStart = Sys.Date() - 2, 
-rangeEnd = Sys.Date() - 1, localisation_parking = NA, parc_relais = TRUE)
-parc_relais$download_data()
-parc_relais$data_xtradata }
+\preformatted{\dontrun{}
 }
 \if{html}{\out{</div>}}
 

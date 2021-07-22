@@ -4,35 +4,34 @@
 #' utilisee ensuite par classe Occupation et Saturation
 ParkingsStats <- R6::R6Class(
   "ParkingsStats",
-  
   public = list(
     #' @field rangeStart Debut de la periode d'observation
     rangeStart = "",
-    
+
     #' @field rangeEnd Fin de la periode d'observation
     rangeEnd = "",
-    
+
     #' @field rangeStep Pas d'aggregation pour requete xtradata
     rangeStep = "",
-    
+
     #' @field timeStep Fenetre de temps de restitution des graphes (heure, jour, jour de la semaine, mois)
     timeStep = "",
-    
+
     #' @field plageHoraire plage horaire des donnees à recup
     plageHoraire = 0:23,
-    
+
     #' @field localisation_parking Secteur de localisation du parking (hypercentre, centre, peripherie, NA pour les parc relais)
     localisation_parking = "",
-    
+
     #' @field parc_relais Parc relais ou non (boolean)
     parc_relais = "",
-    
+
     #' @field data_xtradata Données issues de l'appel au WS via la fonction download_data
     data_xtradata = NULL,
-    
+
     #' @field cleaned_data Données nettoyées
     cleaned_data = NULL,
-    
+
     #' @description
     #' Create a new occupation object.
     #' @param rangeStart rangeStart
@@ -43,7 +42,7 @@ ParkingsStats <- R6::R6Class(
     #' @param localisation_parking localisation_parking
     #' @param parc_relais parc_relais
     #' @return A new `Occupation` object.
-    
+
     initialize = function(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais) {
       self$rangeStart <- rangeStart
       self$rangeEnd <- rangeEnd
@@ -53,19 +52,14 @@ ParkingsStats <- R6::R6Class(
       self$localisation_parking <- localisation_parking
       self$parc_relais <- parc_relais
     },
-    
+
     #' @description
     #' Interroge le WS aggregate
     #' @param rangeStep rangeStep xtradata aggregate
     #' @import data.table
     #' @importFrom xtradata xtradata_requete_aggregate
-    #' @examples \dontrun{
-    #' parc_relais <- Occupation(rangeStart = Sys.Date() - 2, 
-    #' rangeEnd = Sys.Date() - 1, localisation_parking = NA, parc_relais = TRUE)
-    #' parc_relais$download_data()
-    #' parc_relais$data_xtradata }
+    #' @examples \dontrun{}
     download_data = function(rangeStep) {
-      
       download <- try(xtradata_requete_aggregate(
         key = "DATAZBOUBB",
         typename = "ST_PARK_P",
@@ -83,13 +77,14 @@ ParkingsStats <- R6::R6Class(
         attributes = list("gid", "time", "libres", "total", "etat", "ident"),
         showURL = TRUE
       ))
-      
-      if(inherits(download, "try-error")) {
+
+      if (inherits(download, "try-error")) {
         self$data_xtradata <- NULL
-      } else { self$data_xtradata <- download }
-      
+      } else {
+        self$data_xtradata <- download
+      }
     },
-    
+
     #' @description
     #' Nettoyage de la sortie xtradata
     #' (application de lubridate et calcul du taux d'occup)
@@ -98,19 +93,17 @@ ParkingsStats <- R6::R6Class(
     #' @examples \dontrun{ clean_output()
     #' }
     clean_output = function() {
-      # browser()
-      self$cleaned_data <- self$data_xtradata %>% 
-        as.data.table() %>% 
-        .[, type := NULL] %>% 
-        .[, `:=` (
+      self$cleaned_data <- self$data_xtradata %>%
+        as.data.table() %>%
+        .[, type := NULL] %>%
+        .[, `:=`(
           time = as_datetime(time, tz = mytimezone),
           libres = as.integer(ceiling(libres))
-        )] %>% 
-        .[,taux_occupation := 100 * pmax(0, 1-(libres / total))] %>% 
-        merge(., unique(parkings[,c("nom", "ident")]), by = "ident") %>% 
+        )] %>%
+        .[, taux_occupation := 100 * pmax(0, 1 - (libres / total))] %>%
+        merge(., unique(parkings[, c("nom", "ident")]), by = "ident") %>%
         setcolorder(neworder = "time")
-      
     }
   )
 )
-#https://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html
+# https://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html

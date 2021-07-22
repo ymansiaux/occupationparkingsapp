@@ -13,14 +13,14 @@ va gérer la routine API / clean / plot / table / download
 ## ------------------------------------------------
 
 \dontrun{ temporal_aggregate("day")
-} 
+}
 
 ## ------------------------------------------------
 ## Method `Saturation$calendar_heatmap`
 ## ------------------------------------------------
 
 \dontrun{ temporal_aggregate("day")
-} 
+}
 }
 \section{Super class}{
 \code{\link[occupationparkingsapp:ParkingsStats]{occupationparkingsapp::ParkingsStats}} -> \code{Saturation}
@@ -28,7 +28,7 @@ va gérer la routine API / clean / plot / table / download
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{parkings_satures}}{contient les parkings satures selon des criteres de % 
+\item{\code{parkings_satures}}{contient les parkings satures selon des criteres de %
 d'occupation en nb d'heures par jour et nb de jours par semaine}
 
 \item{\code{data_plot}}{donnees du graphique de saturation}
@@ -57,7 +57,7 @@ d'occupation en nb d'heures par jour et nb de jours par semaine}
 \if{latex}{\out{\hypertarget{method-filter_full_capacity_parkings}{}}}
 \subsection{Method \code{filter_full_capacity_parkings()}}{
 On garde les parkings satures. Càd les parkings avec un taux d'occupation
-superieur à seuil_taux_occupation pendant au moins nb_heures_par_jour_satures 
+superieur à seuil_taux_occupation pendant au moins nb_heures_par_jour_satures
 par jour pendant au moins nb_jour_par_semaine_sature par semaine
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Saturation$filter_full_capacity_parkings(
@@ -81,7 +81,7 @@ par jour pendant au moins nb_jour_par_semaine_sature par semaine
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{ temporal_aggregate("day")
-} 
+}
 }
 \if{html}{\out{</div>}}
 
@@ -109,7 +109,7 @@ Realise une calendar heatmap des parkings les plus satures
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{ temporal_aggregate("day")
-} 
+}
 }
 \if{html}{\out{</div>}}
 
