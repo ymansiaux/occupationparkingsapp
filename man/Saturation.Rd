@@ -23,13 +23,15 @@ va gérer la routine API / clean / plot / table / download
 } 
 }
 \section{Super class}{
-\code{\link[occupationparkingsapp:Parkings]{occupationparkingsapp::Parkings}} -> \code{Saturation}
+\code{\link[occupationparkingsapp:ParkingsStats]{occupationparkingsapp::ParkingsStats}} -> \code{Saturation}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{parkings_satures}}{contient les parkings satures selon des criteres de % 
 d'occupation en nb d'heures par jour et nb de jours par semaine}
+
+\item{\code{data_plot}}{donnees du graphique de saturation}
 }
 \if{html}{\out{</div>}}
 }
@@ -44,9 +46,9 @@ d'occupation en nb d'heures par jour et nb de jours par semaine}
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="Parkings" data-id="clean_output">}\href{../../occupationparkingsapp/html/Parkings.html#method-clean_output}{\code{occupationparkingsapp::Parkings$clean_output()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="Parkings" data-id="download_data">}\href{../../occupationparkingsapp/html/Parkings.html#method-download_data}{\code{occupationparkingsapp::Parkings$download_data()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="Parkings" data-id="initialize">}\href{../../occupationparkingsapp/html/Parkings.html#method-initialize}{\code{occupationparkingsapp::Parkings$initialize()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="clean_output">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-clean_output}{\code{occupationparkingsapp::ParkingsStats$clean_output()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="download_data">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-download_data}{\code{occupationparkingsapp::ParkingsStats$download_data()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="initialize">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-initialize}{\code{occupationparkingsapp::ParkingsStats$initialize()}}\out{</span>}
 }
 \out{</details>}
 }
@@ -59,7 +61,7 @@ superieur à seuil_taux_occupation pendant au moins nb_heures_par_jour_satures
 par jour pendant au moins nb_jour_par_semaine_sature par semaine
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Saturation$filter_full_capacity_parkings(
-  seuil_taux_occupation = 0.9,
+  seuil_taux_occupation = 90,
   nb_heures_par_jour_satures = 3,
   nb_jour_par_semaine_sature = 2
 )}\if{html}{\out{</div>}}
@@ -92,9 +94,18 @@ par jour pendant au moins nb_jour_par_semaine_sature par semaine
 \subsection{Method \code{calendar_heatmap()}}{
 Realise une calendar heatmap des parkings les plus satures
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Saturation$calendar_heatmap()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Saturation$calendar_heatmap(selected_parking, app_theme)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{selected_parking}}{parkings à afficher}
+
+\item{\code{app_theme}}{theme de l'application (dark ou light)}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{ temporal_aggregate("day")

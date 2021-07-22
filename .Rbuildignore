@@ -12,3 +12,8 @@ deploy_to_RSPM.R
 ^deploy_to_RSPM\.R$
 ^app\.R$
 ^rsconnect$
+^vignettes/occupationparkingsapp$
+^vignettes/questions$
+^vignettes/designApp$
+^R/_disable_autoload$
+^R/_disable_autoload\.R$

@@ -21,15 +21,18 @@ mod_saturation_appel_WS_ui <- function(id){
 mod_saturation_appel_WS_server <- function(id, r6){
   moduleServer( id, function(input, output, session){
     # ns <- session$ns
-    observe(
+    observe({
       r6$download_data(rangeStep = "hour")
-    )
       
+      if(!isTruthy(r6$data_xtradata)) {
+        showNotification("La requ\u00eate n\'a pas fonctionn\u00e9", type = "error", duration = 30)
+      }
+
+    })
+    
   })
   
 }
-
-# parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
 
 ## To be copied in the UI
 # mod_saturation_appel_WS_ui("saturation_appel_WS_ui_1")

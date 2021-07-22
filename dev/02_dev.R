@@ -17,15 +17,17 @@
 ## Add one line by package you want to add as dependency
 usethis::use_package( "R6" )
 usethis::use_package( "xtradata" )
-usethis::use_package( "tidytable" )
 usethis::use_package( "data.table" )
 usethis::use_package( "DT" )
 usethis::use_package( "lubridate" )
-usethis::use_package( "timetk" )
 usethis::use_package( "dplyr" )
 usethis::use_package( "ggplot2" )
-usethis::use_package( "shinyWidgets")
 usethis::use_package( "ggiraph")
+usethis::use_package( "glue")
+usethis::use_package( "purrr")
+usethis::use_package( "shinycssloaders")
+usethis::use_package( "shinybusy")
+usethis::use_package( "bdxmetroidentity")
 
 
 usethis::use_pipe()
@@ -37,6 +39,7 @@ usethis::use_pipe()
 ## Create a module infrastructure in R/
 golem::add_module( name = "occupation" ) # Name of the module
 golem::add_module( name = "occupation_appel_WS" ) # Name of the module
+golem::add_module( name = "accueil" )
 
 ## Add helper functions ----
 ## Creates ftc_* and utils_*

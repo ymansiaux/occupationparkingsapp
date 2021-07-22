@@ -18,19 +18,18 @@ mod_saturation_clean_ui <- function(id){
 #' saturation_clean Server Functions
 #'
 #' @noRd 
-mod_saturation_clean_server <- function(id, r6){
+mod_saturation_clean_server <- function(id, r6, seuil_saturation, nb_heures_journalieres_saturation, nb_jours_hebdo_saturation){
   moduleServer( id, function(input, output, session){
     # ns <- session$ns
-    # observe(browser())
     observe({
-      r6$clean_output()
-      r6$filter_full_capacity_parkings()
+      if(isTruthy(r6$data_xtradata)) {
+        r6$clean_output()
+        r6$filter_full_capacity_parkings(seuil_saturation, nb_heures_journalieres_saturation, nb_jours_hebdo_saturation)
+      }
     })
     
   })
 }
-
-# parkings %>% tidytable::filter.(parc_relais == r6$parc_relais)
 
 ## To be copied in the UI
 # mod_saturation_clean_ui("saturation_clean_ui_1")

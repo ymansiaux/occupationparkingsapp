@@ -16,31 +16,90 @@ va gérer la routine API / clean / plot / table / download
 } 
 
 ## ------------------------------------------------
-## Method `Occupation$timeseries_plot`
+## Method `Occupation$timeseries_plot_1_period`
 ## ------------------------------------------------
 
-\dontrun{ timeseries_plot()
+\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
+} 
+
+## ------------------------------------------------
+## Method `Occupation$timeseries_plot_2_periods`
+## ------------------------------------------------
+
+\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
 } 
 }
 \section{Super class}{
-\code{\link[occupationparkingsapp:Parkings]{occupationparkingsapp::Parkings}} -> \code{Occupation}
+\code{\link[occupationparkingsapp:ParkingsStats]{occupationparkingsapp::ParkingsStats}} -> \code{Occupation}
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{aggregated_data_by_some_time_unit}}{Données sur lesquelles on applique une fonction d'aggregation par unité de temps}
+
+\item{\code{data_plot_1_period}}{donnée du graphique pour 1 seule période étudiée}
+
+\item{\code{data_plot_2_periods}}{donnée du graphique pour 2 période étudiées}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-new}{\code{Occupation$new()}}
 \item \href{#method-mean_by_some_time_unit}{\code{Occupation$mean_by_some_time_unit()}}
-\item \href{#method-timeseries_plot}{\code{Occupation$timeseries_plot()}}
+\item \href{#method-timeseries_plot_1_period}{\code{Occupation$timeseries_plot_1_period()}}
+\item \href{#method-timeseries_plot_2_periods}{\code{Occupation$timeseries_plot_2_periods()}}
 \item \href{#method-clone}{\code{Occupation$clone()}}
 }
 }
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="Parkings" data-id="clean_output">}\href{../../occupationparkingsapp/html/Parkings.html#method-clean_output}{\code{occupationparkingsapp::Parkings$clean_output()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="Parkings" data-id="download_data">}\href{../../occupationparkingsapp/html/Parkings.html#method-download_data}{\code{occupationparkingsapp::Parkings$download_data()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="Parkings" data-id="initialize">}\href{../../occupationparkingsapp/html/Parkings.html#method-initialize}{\code{occupationparkingsapp::Parkings$initialize()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="clean_output">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-clean_output}{\code{occupationparkingsapp::ParkingsStats$clean_output()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="download_data">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-download_data}{\code{occupationparkingsapp::ParkingsStats$download_data()}}\out{</span>}
 }
 \out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+Create a new occupation object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$new(
+  rangeStart,
+  rangeEnd,
+  rangeStep,
+  timeStep,
+  plageHoraire,
+  localisation_parking,
+  parc_relais
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rangeStart}}{rangeStart}
+
+\item{\code{rangeEnd}}{rangeEnd}
+
+\item{\code{rangeStep}}{rangeStep}
+
+\item{\code{timeStep}}{timeStep}
+
+\item{\code{plageHoraire}}{plageHoraire}
+
+\item{\code{localisation_parking}}{localisation_parking}
+
+\item{\code{parc_relais}}{parc_relais}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A new `Occupation` object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-mean_by_some_time_unit"></a>}}
@@ -49,13 +108,15 @@ va gérer la routine API / clean / plot / table / download
 Aggregation des données selon une fenetre temporelle
 (application de la fonction summarise_by_time de timetk)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$mean_by_some_time_unit(time_unit)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$mean_by_some_time_unit(time_unit, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{time_unit}}{pas d'aggreg (voir timetk)}
+
+\item{\code{...}}{parametres additionels de floor_date}
 }
 \if{html}{\out{</div>}}
 }
@@ -70,17 +131,66 @@ Aggregation des données selon une fenetre temporelle
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-timeseries_plot"></a>}}
-\if{latex}{\out{\hypertarget{method-timeseries_plot}{}}}
-\subsection{Method \code{timeseries_plot()}}{
+\if{html}{\out{<a id="method-timeseries_plot_1_period"></a>}}
+\if{latex}{\out{\hypertarget{method-timeseries_plot_1_period}{}}}
+\subsection{Method \code{timeseries_plot_1_period()}}{
 Graphe de série temporelle
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_1_period(parkings_to_plot, app_theme)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{parkings_to_plot}}{liste des parkings à afficher (parametre input shiny)}
+
+\item{\code{app_theme}}{theme de l'application (dark ou light)}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ timeseries_plot()
+\preformatted{\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
+} 
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-timeseries_plot_2_periods"></a>}}
+\if{latex}{\out{\hypertarget{method-timeseries_plot_2_periods}{}}}
+\subsection{Method \code{timeseries_plot_2_periods()}}{
+Graphe de série temporelle avec comparaison de 2 périodes
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_2_periods(
+  data_occupation_1,
+  data_occupation_2,
+  timeStep,
+  parkings_to_plot,
+  app_theme
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data_occupation_1}}{données d'occupation de la période 1}
+
+\item{\code{data_occupation_2}}{données d'occupation de la période 2}
+
+\item{\code{timeStep}}{pas de temps pour l'axe des x (heure, jour, wday, mois)}
+
+\item{\code{parkings_to_plot}}{liste des parkings à afficher (parametre input shiny)}
+
+\item{\code{app_theme}}{theme de l'application (dark ou light)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
 } 
 }
 \if{html}{\out{</div>}}

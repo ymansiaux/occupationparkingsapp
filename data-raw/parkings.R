@@ -37,7 +37,7 @@ parkings_relais <- xtradata_requete_features(
   typename = "ST_PARK_P",
   crs = "epsg:4326",
   filter = list("ta_titul" = 0),
-  attributes = list("ident")
+  attributes = list("ident", "nom")
 )
 
 parkings <- bind_rows(
@@ -53,5 +53,15 @@ parkings <- bind_rows(
   data.frame("ident" = parkings_relais$ident,
              "parc_relais" = TRUE)
 )
+
+noms_des_parkings <- xtradata_requete_features(
+  key = "DATAZBOUBB",
+  typename = "ST_PARK_P",
+  crs = "epsg:4326",
+  attributes = list("ident", "nom")
+)
+
+parkings <- inner_join(parkings, noms_des_parkings, by = "ident") %>% 
+  select(-type)
 
 usethis::use_data(parkings, overwrite = TRUE)
