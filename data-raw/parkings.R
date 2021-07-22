@@ -1,5 +1,5 @@
 # distinction des parc relais : ta_titul = 0
-# 
+#
 # Bourse Jaures CUBPK02
 # Tourny CUBPK03
 # Grands Hommes CUBPK07
@@ -10,7 +10,7 @@
 # République CUBPK26
 # Victoire CUBPK29
 # Victor Hugo CUBPK16
-# 
+#
 # Cité mondiale CUBPK27
 # Porte de Bordeaux CUBPK35
 # Meunier CUBPK04
@@ -19,7 +19,7 @@
 # Saint Jean CUBPK33
 # St Jean Arret Minute CUBPK102
 
-# 
+#
 # Bègles Sècheries CUBPK72
 # Pessac centre CUBPK40
 # Mérignac centre CUBPK39
@@ -41,17 +41,25 @@ parkings_relais <- xtradata_requete_features(
 )
 
 parkings <- bind_rows(
-  data.frame("localisation_parking" = "hypercentre", 
-             "ident" = c("CUBPK02", "CUBPK03", "CUBPK07", "CUBPK24", "CUBPK30", "CUBPK28", "CUBPK34", "CUBPK26", "CUBPK29", "CUBPK16"),
-             "parc_relais" = FALSE),
-  data.frame("localisation_parking" = "centre",
-             "ident" = c("CUBPK27", "CUBPK35", "CUBPK04", "CUBPK05", "CUBPK78", "CUBPK33", "CUBPK102"),
-             "parc_relais" = FALSE),
-  data.frame("localisation_parking" = "peripherie",
-             "ident" = c("CUBPK72", "CUBPK40", "CUBPK39", "CUBPK38"),
-             "parc_relais" = FALSE),
-  data.frame("ident" = parkings_relais$ident,
-             "parc_relais" = TRUE)
+  data.frame(
+    "localisation_parking" = "hypercentre",
+    "ident" = c("CUBPK02", "CUBPK03", "CUBPK07", "CUBPK24", "CUBPK30", "CUBPK28", "CUBPK34", "CUBPK26", "CUBPK29", "CUBPK16"),
+    "parc_relais" = FALSE
+  ),
+  data.frame(
+    "localisation_parking" = "centre",
+    "ident" = c("CUBPK27", "CUBPK35", "CUBPK04", "CUBPK05", "CUBPK78", "CUBPK33", "CUBPK102"),
+    "parc_relais" = FALSE
+  ),
+  data.frame(
+    "localisation_parking" = "peripherie",
+    "ident" = c("CUBPK72", "CUBPK40", "CUBPK39", "CUBPK38"),
+    "parc_relais" = FALSE
+  ),
+  data.frame(
+    "ident" = parkings_relais$ident,
+    "parc_relais" = TRUE
+  )
 )
 
 noms_des_parkings <- xtradata_requete_features(
@@ -61,7 +69,7 @@ noms_des_parkings <- xtradata_requete_features(
   attributes = list("ident", "nom")
 )
 
-parkings <- inner_join(parkings, noms_des_parkings, by = "ident") %>% 
+parkings <- inner_join(parkings, noms_des_parkings, by = "ident") %>%
   select(-type)
 
 usethis::use_data(parkings, overwrite = TRUE)
