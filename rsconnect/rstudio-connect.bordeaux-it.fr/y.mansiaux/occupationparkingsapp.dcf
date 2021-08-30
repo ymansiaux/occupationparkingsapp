@@ -5,9 +5,9 @@ account: y.mansiaux
 server: rstudio-connect.bordeaux-it.fr
 hostUrl: https://rstudio-connect.bordeaux-it.fr/__api__
 appId: 18
-bundleId: 64
+bundleId: 65
 url: https://rstudio-connect.bordeaux-it.fr/occupationparkingsapp/
-when: 1626945307.29362
-lastSyncTime: 1626945307.29364
+when: 1630309534.97606
+lastSyncTime: 1630309534.97608
 asMultiple: FALSE
 asStatic: FALSE
