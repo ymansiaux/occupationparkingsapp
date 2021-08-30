@@ -24,10 +24,11 @@
 # Pessac centre CUBPK40
 # Mérignac centre CUBPK39
 # Bouscat Libération CUBPK38
+# Laharpe CUBPK74
 
 # -hypercentre: Bourse Jaurès, Tourny, Grands hommes, Gambetta, CC Mériadeck, Front du Médoc, 8 mai 45,  République, Victoire, Victor Hugo
 # -centre: Cité mondiale, Porte de Bordeaux, Meunier, Salinières, Saint Jean, Paludate
-# -périphérie: Bègles Sècheries, Pessac centre, Mérignac centre, Bouscat Libération
+# -périphérie: Bègles Sècheries, Pessac centre, Mérignac centre, Bouscat Libération, Laharpe
 
 library(dplyr)
 library(xtradata)
@@ -53,7 +54,7 @@ parkings <- bind_rows(
   ),
   data.frame(
     "localisation_parking" = "peripherie",
-    "ident" = c("CUBPK72", "CUBPK40", "CUBPK39", "CUBPK38"),
+    "ident" = c("CUBPK72", "CUBPK40", "CUBPK39", "CUBPK38", "CUBPK74"),
     "parc_relais" = FALSE
   ),
   data.frame(
