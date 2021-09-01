@@ -7,31 +7,31 @@ ParkingsStats <- R6::R6Class(
   public = list(
     #' @field rangeStart Debut de la periode d'observation
     rangeStart = "",
-
+    
     #' @field rangeEnd Fin de la periode d'observation
     rangeEnd = "",
-
+    
     #' @field rangeStep Pas d'aggregation pour requete xtradata
     rangeStep = "",
-
+    
     #' @field timeStep Fenetre de temps de restitution des graphes (heure, jour, jour de la semaine, mois)
     timeStep = "",
-
+    
     #' @field plageHoraire plage horaire des donnees à recup
     plageHoraire = 0:23,
-
+    
     #' @field localisation_parking Secteur de localisation du parking (hypercentre, centre, peripherie, NA pour les parc relais)
     localisation_parking = "",
-
+    
     #' @field parc_relais Parc relais ou non (boolean)
     parc_relais = "",
-
+    
     #' @field data_xtradata Données issues de l'appel au WS via la fonction download_data
     data_xtradata = NULL,
-
+    
     #' @field cleaned_data Données nettoyées
     cleaned_data = NULL,
-
+    
     #' @description
     #' Create a new occupation object.
     #' @param rangeStart rangeStart
@@ -42,7 +42,7 @@ ParkingsStats <- R6::R6Class(
     #' @param localisation_parking localisation_parking
     #' @param parc_relais parc_relais
     #' @return A new `Occupation` object.
-
+    
     initialize = function(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais) {
       self$rangeStart <- rangeStart
       self$rangeEnd <- rangeEnd
@@ -52,7 +52,7 @@ ParkingsStats <- R6::R6Class(
       self$localisation_parking <- localisation_parking
       self$parc_relais <- parc_relais
     },
-
+    
     #' @description
     #' Interroge le WS aggregate
     #' @param rangeStep rangeStep xtradata aggregate
@@ -60,31 +60,49 @@ ParkingsStats <- R6::R6Class(
     #' @importFrom xtradata xtradata_requete_aggregate
     #' @examples \dontrun{}
     download_data = function(rangeStep) {
-      download <- try(xtradata_requete_aggregate(
-        key = "DATAZBOUBB",
-        typename = "ST_PARK_P",
-        rangeStart = self$rangeStart,
-        rangeEnd = self$rangeEnd,
-        rangeStep = rangeStep,
-        rangeFilter = list(hours = self$plageHoraire, days = 1:7, publicHolidays = FALSE),
-        filter = list(
-          "ident" =
-            list(
-              "$in" =
-                parkings[which(parkings$localisation_parking %in% self$localisation_parking & parkings$parc_relais == self$parc_relais), "ident"]
-            )
-        ),
-        attributes = list("gid", "time", "libres", "total", "etat", "ident"),
-        showURL = TRUE
-      ))
-
-      if (inherits(download, "try-error")) {
-        self$data_xtradata <- NULL
-      } else {
-        self$data_xtradata <- download
+      # plutot memoiser ce truc là
+      rangeStart <- self$rangeStart
+      rangeEnd <- self$rangeEnd
+      rangeFilter <- list(hours = self$plageHoraire, days = 1:7, publicHolidays = FALSE)
+      filter <- list(
+        "ident" =
+          list(
+            "$in" =
+              parkings[which(parkings$localisation_parking %in% self$localisation_parking & parkings$parc_relais == self$parc_relais), "ident"]
+          )
+      )
+      
+      try_xtradata_requete_aggregate <- function(rangeStart, rangeEnd, rangeStep, rangeFilter, filter) {
+        
+        download <- try(xtradata_requete_aggregate(
+          key = "DATAZBOUBB",
+          typename = "ST_PARK_P",
+          rangeStart = rangeStart,
+          rangeEnd = rangeEnd,
+          rangeStep = rangeStep,
+          rangeFilter = rangeFilter,
+          filter = filter,
+          attributes = list("gid", "time", "libres", "total", "etat", "ident"),
+          showURL = TRUE
+        ))
+        
+        if (inherits(download, "try-error")) {
+          return (NULL)
+        } else {
+          return(download)
+        }
       }
+      
+      memoise_try_xtradata_requete_aggregate <- memoise::memoise(try_xtradata_requete_aggregate)
+      print(memoise::is.memoised(memoise_try_xtradata_requete_aggregate))
+      self$data_xtradata <- memoise_try_xtradata_requete_aggregate(rangeStart = rangeStart, 
+                                                                   rangeEnd = rangeEnd,
+                                                                   rangeStep = rangeStep,
+                                                                   rangeFilter = rangeFilter, 
+                                                                   filter = filter)
+      
     },
-
+    
     #' @description
     #' Nettoyage de la sortie xtradata
     #' (application de lubridate et calcul du taux d'occup)
