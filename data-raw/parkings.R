@@ -1,5 +1,6 @@
 # distinction des parc relais : ta_titul = 0
-#
+# 
+# HYPERCENTRE
 # Bourse Jaures CUBPK02
 # Tourny CUBPK03
 # Grands Hommes CUBPK07
@@ -10,24 +11,26 @@
 # République CUBPK26
 # Victoire CUBPK29
 # Victor Hugo CUBPK16
-#
+# Salinières CUBPK05
+# Camille Julian CUBPK06
 # Cité mondiale CUBPK27
+# Allees De Chartres CUBPK18
+#
+# CENTRE
 # Porte de Bordeaux CUBPK35
 # Meunier CUBPK04
-# Salinières CUBPK05
 # Paludate CUBPK78
 # Saint Jean CUBPK33
-# St Jean Arret Minute CUBPK102
 
-#
+# PERIPHERIE
 # Bègles Sècheries CUBPK72
 # Pessac centre CUBPK40
 # Mérignac centre CUBPK39
 # Bouscat Libération CUBPK38
 # Laharpe CUBPK74
 
-# -hypercentre: Bourse Jaurès, Tourny, Grands hommes, Gambetta, CC Mériadeck, Front du Médoc, 8 mai 45,  République, Victoire, Victor Hugo
-# -centre: Cité mondiale, Porte de Bordeaux, Meunier, Salinières, Saint Jean, Paludate
+# -hypercentre: Bourse Jaurès, Tourny, Grands hommes, Gambetta, CC Mériadeck, Front du Médoc, 8 mai 45,  République, Victoire, Victor Hugo, Salinières, Camille Julian, Cité mondiale, Allees De Chartres
+# -centre: Porte de Bordeaux, Meunier, Saint Jean, Paludate
 # -périphérie: Bègles Sècheries, Pessac centre, Mérignac centre, Bouscat Libération, Laharpe
 
 library(dplyr)
@@ -44,12 +47,12 @@ parkings_relais <- xtradata_requete_features(
 parkings <- bind_rows(
   data.frame(
     "localisation_parking" = "hypercentre",
-    "ident" = c("CUBPK02", "CUBPK03", "CUBPK07", "CUBPK24", "CUBPK30", "CUBPK28", "CUBPK34", "CUBPK26", "CUBPK29", "CUBPK16"),
+    "ident" = c("CUBPK02", "CUBPK03", "CUBPK07", "CUBPK24", "CUBPK30", "CUBPK28", "CUBPK34", "CUBPK26", "CUBPK29", "CUBPK16", "CUBPK05", "CUBPK06", "CUBPK27", "CUBPK18"),
     "parc_relais" = FALSE
   ),
   data.frame(
     "localisation_parking" = "centre",
-    "ident" = c("CUBPK27", "CUBPK35", "CUBPK04", "CUBPK05", "CUBPK78", "CUBPK33", "CUBPK102"),
+    "ident" = c("CUBPK27", "CUBPK35", "CUBPK04", "CUBPK78", "CUBPK33", "CUBPK102"),
     "parc_relais" = FALSE
   ),
   data.frame(
