@@ -80,11 +80,12 @@ ParkingsStats <- R6::R6Class(
         showURL = TRUE
       ))
 
-      if (inherits(download, "try-error")) {
-        self$data_xtradata <- NULL
-      } else {
-        self$data_xtradata <- download
-      }
+      # if (inherits(download, "try-error")) {
+      #   self$data_xtradata <- NULL
+      # } else {
+      #   self$data_xtradata <- download
+      # }
+      # self$data_xtradata
     },
 
     #' @description

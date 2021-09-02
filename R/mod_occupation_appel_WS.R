@@ -21,8 +21,16 @@ mod_occupation_appel_WS_server <- function(id, r6) {
   moduleServer(id, function(input, output, session) {
     # ns <- session$ns
     observe({
-      r6$download_data_memoise(r6$rangeStart, r6$rangeEnd, r6$rangeStep, r6$plageHoraire, r6$localisation_parking, r6$parc_relais)
+      api_call <- r6$download_data_memoise(r6$rangeStart, r6$rangeEnd, r6$rangeStep, r6$plageHoraire, r6$localisation_parking, r6$parc_relais)
       
+      if (inherits(api_call, "try-error")) {
+        r6$data_xtradata <- NULL
+      } else {
+        r6$data_xtradata <- api_call
+      }
+      # self$data_xtradata
+      
+      print(head(r6$data_xtradata))
       if (!isTruthy(r6$data_xtradata)) {
         showNotification("La requ\u00eate n\'a pas fonctionn\u00e9", type = "error", duration = 30)
       }

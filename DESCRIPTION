@@ -15,6 +15,7 @@ Imports:
     golem,
     lubridate,
     magrittr,
+    memoise,
     pkgload,
     purrr,
     R6,

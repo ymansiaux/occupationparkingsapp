@@ -12,6 +12,7 @@
 #' @importFrom lubridate floor_date as_date
 #' @importFrom purrr imap
 #' @importFrom shinycssloaders withSpinner
+#' @importFrom memoise memoise
 
 mod_occupation_1_periode_ui <- function(id) {
   ns <- NS(id)
@@ -186,14 +187,16 @@ mod_occupation_1_periode_server <- function(id, app_theme){#, list_of_Occupation
       }
     )
     
+    # On cree la liste d'objets R6 Occupation
     list_of_Occupation <- list(
       parc_relais = Occupation$new(localisation_parking = NA, parc_relais = TRUE),
       hypercentre = Occupation$new(localisation_parking = "hypercentre", parc_relais = FALSE),
       centre = Occupation$new(localisation_parking = "centre", parc_relais = FALSE),
       peripherie = Occupation$new(localisation_parking = "peripherie", parc_relais = FALSE)
     )
+    # On appelle memoise pour activer le cache sur les resultats
     list_of_Occupation <- lapply(list_of_Occupation, function(.l) {
-      .l$download_data_memoise <- memoise::memoise(.l$download_data) 
+      .l$download_data_memoise <- memoise(.l$download_data) 
       .l
     })
     
