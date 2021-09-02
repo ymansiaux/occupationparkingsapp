@@ -15,24 +15,9 @@ app_server <- function(input, output, session) {
   options(bitmapType = "cairo")
   
   observe(closeWaiter_logoDatalab(golem::app_prod()))
-  
-  cm <- cachem::cache_mem()
-  
+
   # Appel des modules #
-  # On crée une liste de classes R6 pour les 4 secteurs étudiés
-  list_of_Occupation <- list(
-    parc_relais = Occupation$new(localisation_parking = NA, parc_relais = TRUE),
-    hypercentre = Occupation$new(localisation_parking = "hypercentre", parc_relais = FALSE),
-    centre = Occupation$new(localisation_parking = "centre", parc_relais = FALSE),
-    peripherie = Occupation$new(localisation_parking = "peripherie", parc_relais = FALSE)
-  )
-  list_of_Occupation <- lapply(list_of_Occupation, function(.l) {
-    .l$download_data_memoise <- memoise::memoise(.l$download_data, cache = cm) 
-    .l
-  })
-  
-  # Appel des modules #
-  mod_occupation_1_periode_server("occupation_ui_1", app_theme = reactive(rv$theme), list_of_Occupation = list_of_Occupation)
+  mod_occupation_1_periode_server("occupation_ui_1", app_theme = reactive(rv$theme))
   mod_occupation_2_periodes_server("occupation_ui_2", app_theme = reactive(rv$theme))
   mod_saturation_server("saturation_ui_1", app_theme = reactive(rv$theme))
   mod_accueil_server("accueil_ui_1")
