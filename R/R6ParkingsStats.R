@@ -32,6 +32,8 @@ ParkingsStats <- R6::R6Class(
     #' @field cleaned_data Données nettoyées
     cleaned_data = NULL,
     
+    download_data_memoise = NULL,
+    
     #' @description
     #' Create a new occupation object.
     #' @param rangeStart rangeStart
@@ -59,19 +61,19 @@ ParkingsStats <- R6::R6Class(
     #' @import data.table
     #' @importFrom xtradata xtradata_requete_aggregate
     #' @examples \dontrun{}
-    download_data = function(rangeStep) {
+    download_data = function(rangeStart, rangeEnd, rangeStep, plageHoraire, localisation_parking, parc_relais) {
       download <- try(xtradata_requete_aggregate(
         key = "DATAZBOUBB",
         typename = "ST_PARK_P",
-        rangeStart = self$rangeStart,
-        rangeEnd = self$rangeEnd,
+        rangeStart = rangeStart,
+        rangeEnd = rangeEnd,
         rangeStep = rangeStep,
-        rangeFilter = list(hours = self$plageHoraire, days = 1:7, publicHolidays = FALSE),
+        rangeFilter = list(hours = plageHoraire, days = 1:7, publicHolidays = FALSE),
         filter = list(
           "ident" =
             list(
               "$in" =
-                parkings[which(parkings$localisation_parking %in% self$localisation_parking & parkings$parc_relais == self$parc_relais), "ident"]
+                parkings[which(parkings$localisation_parking %in% localisation_parking & parkings$parc_relais == parc_relais), "ident"]
             )
         ),
         attributes = list("gid", "time", "libres", "total", "etat", "ident"),
@@ -85,8 +87,6 @@ ParkingsStats <- R6::R6Class(
       }
     },
 
-
-    
     #' @description
     #' Nettoyage de la sortie xtradata
     #' (application de lubridate et calcul du taux d'occup)
@@ -109,3 +109,4 @@ ParkingsStats <- R6::R6Class(
   )
 )
 # https://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html
+# ParkingsStats$set("public", "download_data2", memoise::memoise(ParkingsStats$public_methods$download_data))

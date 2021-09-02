@@ -99,7 +99,14 @@ A new `Occupation` object.
 \subsection{Method \code{download_data()}}{
 Interroge le WS aggregate
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$download_data(rangeStep)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$download_data(
+  rangeStart,
+  rangeEnd,
+  rangeStep,
+  plageHoraire,
+  localisation_parking,
+  parc_relais
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

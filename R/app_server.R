@@ -16,6 +16,8 @@ app_server <- function(input, output, session) {
 
   observe(closeWaiter_logoDatalab(golem::app_prod()))
 
+  cm <- cachem::cache_mem()
+  
   # Appel des modules #
   # On crée une liste de classes R6 pour les 4 secteurs étudiés
   list_of_Occupation <- list(
@@ -56,6 +58,10 @@ app_server <- function(input, output, session) {
       parc_relais = FALSE
     )
   )
+  list_of_Occupation$parc_relais$download_data_memoise <- memoise::memoise(list_of_Occupation$parc_relais$download_data, cache = cm) 
+  list_of_Occupation$hypercentre$download_data_memoise <- memoise::memoise(list_of_Occupation$hypercentre$download_data, cache = cm) 
+  list_of_Occupation$centre$download_data_memoise <- memoise::memoise(list_of_Occupation$centre$download_data, cache = cm) 
+  list_of_Occupation$peripherie$download_data_memoise <- memoise::memoise(list_of_Occupation$peripherie$download_data, cache = cm) 
   
   
   # Appel des modules #
