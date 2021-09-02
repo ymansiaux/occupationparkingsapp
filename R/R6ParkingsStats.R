@@ -60,48 +60,32 @@ ParkingsStats <- R6::R6Class(
     #' @importFrom xtradata xtradata_requete_aggregate
     #' @examples \dontrun{}
     download_data = function(rangeStep) {
-      # plutot memoiser ce truc là
-      rangeStart <- self$rangeStart
-      rangeEnd <- self$rangeEnd
-      rangeFilter <- list(hours = self$plageHoraire, days = 1:7, publicHolidays = FALSE)
-      filter <- list(
-        "ident" =
-          list(
-            "$in" =
-              parkings[which(parkings$localisation_parking %in% self$localisation_parking & parkings$parc_relais == self$parc_relais), "ident"]
-          )
-      )
-      
-      try_xtradata_requete_aggregate <- function(rangeStart, rangeEnd, rangeStep, rangeFilter, filter) {
-        
-        download <- try(xtradata_requete_aggregate(
-          key = "DATAZBOUBB",
-          typename = "ST_PARK_P",
-          rangeStart = rangeStart,
-          rangeEnd = rangeEnd,
-          rangeStep = rangeStep,
-          rangeFilter = rangeFilter,
-          filter = filter,
-          attributes = list("gid", "time", "libres", "total", "etat", "ident"),
-          showURL = TRUE
-        ))
-        
-        if (inherits(download, "try-error")) {
-          return (NULL)
-        } else {
-          return(download)
-        }
+      download <- try(xtradata_requete_aggregate(
+        key = "DATAZBOUBB",
+        typename = "ST_PARK_P",
+        rangeStart = self$rangeStart,
+        rangeEnd = self$rangeEnd,
+        rangeStep = rangeStep,
+        rangeFilter = list(hours = self$plageHoraire, days = 1:7, publicHolidays = FALSE),
+        filter = list(
+          "ident" =
+            list(
+              "$in" =
+                parkings[which(parkings$localisation_parking %in% self$localisation_parking & parkings$parc_relais == self$parc_relais), "ident"]
+            )
+        ),
+        attributes = list("gid", "time", "libres", "total", "etat", "ident"),
+        showURL = TRUE
+      ))
+
+      if (inherits(download, "try-error")) {
+        self$data_xtradata <- NULL
+      } else {
+        self$data_xtradata <- download
       }
-      
-      memoise_try_xtradata_requete_aggregate <- memoise::memoise(try_xtradata_requete_aggregate)
-      print(memoise::is.memoised(memoise_try_xtradata_requete_aggregate))
-      self$data_xtradata <- memoise_try_xtradata_requete_aggregate(rangeStart = rangeStart, 
-                                                                   rangeEnd = rangeEnd,
-                                                                   rangeStep = rangeStep,
-                                                                   rangeFilter = rangeFilter, 
-                                                                   filter = filter)
-      
     },
+
+
     
     #' @description
     #' Nettoyage de la sortie xtradata

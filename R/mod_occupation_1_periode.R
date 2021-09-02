@@ -116,7 +116,7 @@ mod_occupation_1_periode_ui <- function(id) {
 #' occupation Server Functions
 #'
 #' @noRd
-mod_occupation_1_periode_server <- function(id, app_theme) {
+mod_occupation_1_periode_server <- function(id, app_theme, list_of_Occupation) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -199,46 +199,36 @@ mod_occupation_1_periode_server <- function(id, app_theme) {
           "Ann\u00e9e" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_year)
         )
       )
-
-      # On crée une liste de classes R6 pour les 4 secteurs étudiés
-      list_of_Occupation <- list(
-        parc_relais = Occupation$new(
-          rangeStart = xtradata_parameters()$rangeStart,
-          rangeEnd = xtradata_parameters()$rangeEnd,
-          rangeStep = xtradata_parameters()$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = NA,
-          parc_relais = TRUE
-        ),
-        hypercentre = Occupation$new(
-          rangeStart = xtradata_parameters()$rangeStart,
-          rangeEnd = xtradata_parameters()$rangeEnd,
-          rangeStep = xtradata_parameters()$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = "hypercentre",
-          parc_relais = FALSE
-        ),
-        centre = Occupation$new(
-          rangeStart = xtradata_parameters()$rangeStart,
-          rangeEnd = xtradata_parameters()$rangeEnd,
-          rangeStep = xtradata_parameters()$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = "centre",
-          parc_relais = FALSE
-        ),
-        peripherie = Occupation$new(
-          rangeStart = xtradata_parameters()$rangeStart,
-          rangeEnd = xtradata_parameters()$rangeEnd,
-          rangeStep = xtradata_parameters()$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = "peripherie",
-          parc_relais = FALSE
-        )
-      )
+      observe({
+        list_of_Occupation$parc_relais$rangeStart = xtradata_parameters()$rangeStart
+        list_of_Occupation$parc_relais$rangeEnd = xtradata_parameters()$rangeEnd
+        list_of_Occupation$parc_relais$rangeStep = xtradata_parameters()$rangeStep
+        list_of_Occupation$parc_relais$rangeStep = xtradata_parameters()$rangeStep
+        list_of_Occupation$parc_relais$timeStep = input$timestep
+        list_of_Occupation$parc_relais$plageHoraire = plageHoraire()
+        
+        list_of_Occupation$hypercentre$rangeStart = xtradata_parameters()$rangeStart
+        list_of_Occupation$hypercentre$rangeEnd = xtradata_parameters()$rangeEnd
+        list_of_Occupation$hypercentre$rangeStep = xtradata_parameters()$rangeStep
+        list_of_Occupation$hypercentre$rangeStep = xtradata_parameters()$rangeStep
+        list_of_Occupation$hypercentre$timeStep = input$timestep
+        list_of_Occupation$hypercentre$plageHoraire = plageHoraire()
+        
+        list_of_Occupation$centre$rangeStart = xtradata_parameters()$rangeStart
+        list_of_Occupation$centre$rangeEnd = xtradata_parameters()$rangeEnd
+        list_of_Occupation$centre$rangeStep = xtradata_parameters()$rangeStep
+        list_of_Occupation$centre$rangeStep = xtradata_parameters()$rangeStep
+        list_of_Occupation$centre$timeStep = input$timestep
+        list_of_Occupation$centre$plageHoraire = plageHoraire()
+        
+        list_of_Occupation$peripherie$rangeStart = xtradata_parameters()$rangeStart
+        list_of_Occupation$peripherie$rangeEnd = xtradata_parameters()$rangeEnd
+        list_of_Occupation$peripherie$rangeStep = xtradata_parameters()$rangeStep
+        list_of_Occupation$peripherie$rangeStep = xtradata_parameters()$rangeStep
+        list_of_Occupation$peripherie$timeStep = input$timestep
+        list_of_Occupation$peripherie$plageHoraire = plageHoraire()
+        
+      })
 
       # On appelle sur la liste de classes R6, les modules d'appel au WS pour récup les données,
       # le module de nettoyage de l'output, et le module de création du graphique

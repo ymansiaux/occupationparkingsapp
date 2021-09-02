@@ -21,10 +21,8 @@ mod_occupation_appel_WS_server <- function(id, r6) {
   moduleServer(id, function(input, output, session) {
     # ns <- session$ns
     observe({
-      download_data2 = memoise::memoise(r6$download_data)
       
-      
-      download_data2(rangeStep = r6$rangeStep)
+      r6$download_data(rangeStep = r6$rangeStep)
 
       if (!isTruthy(r6$data_xtradata)) {
         showNotification("La requ\u00eate n\'a pas fonctionn\u00e9", type = "error", duration = 30)
