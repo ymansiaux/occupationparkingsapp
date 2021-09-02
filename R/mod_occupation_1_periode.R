@@ -200,34 +200,16 @@ mod_occupation_1_periode_server <- function(id, app_theme, list_of_Occupation) {
         )
       )
       observe({
-        list_of_Occupation$parc_relais$rangeStart = xtradata_parameters()$rangeStart
-        list_of_Occupation$parc_relais$rangeEnd = xtradata_parameters()$rangeEnd
-        list_of_Occupation$parc_relais$rangeStep = xtradata_parameters()$rangeStep
-        list_of_Occupation$parc_relais$rangeStep = xtradata_parameters()$rangeStep
-        list_of_Occupation$parc_relais$timeStep = input$timestep
-        list_of_Occupation$parc_relais$plageHoraire = plageHoraire()
-        
-        list_of_Occupation$hypercentre$rangeStart = xtradata_parameters()$rangeStart
-        list_of_Occupation$hypercentre$rangeEnd = xtradata_parameters()$rangeEnd
-        list_of_Occupation$hypercentre$rangeStep = xtradata_parameters()$rangeStep
-        list_of_Occupation$hypercentre$rangeStep = xtradata_parameters()$rangeStep
-        list_of_Occupation$hypercentre$timeStep = input$timestep
-        list_of_Occupation$hypercentre$plageHoraire = plageHoraire()
-        
-        list_of_Occupation$centre$rangeStart = xtradata_parameters()$rangeStart
-        list_of_Occupation$centre$rangeEnd = xtradata_parameters()$rangeEnd
-        list_of_Occupation$centre$rangeStep = xtradata_parameters()$rangeStep
-        list_of_Occupation$centre$rangeStep = xtradata_parameters()$rangeStep
-        list_of_Occupation$centre$timeStep = input$timestep
-        list_of_Occupation$centre$plageHoraire = plageHoraire()
-        
-        list_of_Occupation$peripherie$rangeStart = xtradata_parameters()$rangeStart
-        list_of_Occupation$peripherie$rangeEnd = xtradata_parameters()$rangeEnd
-        list_of_Occupation$peripherie$rangeStep = xtradata_parameters()$rangeStep
-        list_of_Occupation$peripherie$rangeStep = xtradata_parameters()$rangeStep
-        list_of_Occupation$peripherie$timeStep = input$timestep
-        list_of_Occupation$peripherie$plageHoraire = plageHoraire()
-        
+        list_of_Occupation <- lapply(list_of_Occupation, function(.l) {
+          .l$rangeStart <- xtradata_parameters()$rangeStart
+          .l$rangeEnd <- xtradata_parameters()$rangeEnd
+          .l$rangeStep <- xtradata_parameters()$rangeStep
+          .l$timeStep <- input$timestep
+          .l$plageHoraire <- plageHoraire()
+          .l
+        })
+
+        # 
       })
 
       # On appelle sur la liste de classes R6, les modules d'appel au WS pour récup les données,

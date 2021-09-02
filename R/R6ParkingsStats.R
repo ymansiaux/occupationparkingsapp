@@ -45,7 +45,7 @@ ParkingsStats <- R6::R6Class(
     #' @param parc_relais parc_relais
     #' @return A new `Occupation` object.
     
-    initialize = function(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais) {
+    initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, timeStep = NULL, plageHoraire = NULL, localisation_parking, parc_relais) {
       self$rangeStart <- rangeStart
       self$rangeEnd <- rangeEnd
       self$rangeStep <- rangeStep
