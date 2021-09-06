@@ -136,7 +136,7 @@ Aggregation des données selon une fenetre temporelle
 \subsection{Method \code{timeseries_plot_1_period()}}{
 Graphe de série temporelle
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_1_period(parkings_to_plot, app_theme)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_1_period(parkings_to_plot, timeStep, app_theme)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

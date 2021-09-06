@@ -87,7 +87,7 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme) {
 
       r6$aggregated_data_by_some_time_unit$nom[is.na(r6$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
 
-      gg <- r6$timeseries_plot_1_period(isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])), app_theme = app_theme())
+      gg <- r6$timeseries_plot_1_period(isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])), timeStep = r6$timeStep, app_theme = app_theme())
 
       x <- girafe(
         ggobj = gg, width_svg = 8, height_svg = 5,
