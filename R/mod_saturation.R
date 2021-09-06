@@ -102,6 +102,19 @@ mod_saturation_server <- function(id, app_theme) {
     })
 
 
+    
+    # On cree la liste d'objets R6 Saturation
+    list_of_Saturation <- list(
+      parc_relais = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, localisation_parking = NA, parc_relais = TRUE),
+      hypercentre = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, localisation_parking = "hypercentre", parc_relais = FALSE),
+      centre = Saturation$new(rangeStep = "hour",plageHoraire = 0:23, localisation_parking = "centre", parc_relais = FALSE),
+      peripherie = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, localisation_parking = "peripherie", parc_relais = FALSE)
+    )
+    # On appelle memoise pour activer le cache sur les resultats
+    list_of_Saturation <- lapply(list_of_Saturation, function(.l) {
+      .l$download_data_memoise <- memoise(.l$download_data) 
+      .l
+    })
 
 
     observeEvent(input$run_query, {
@@ -112,44 +125,15 @@ mod_saturation_server <- function(id, app_theme) {
         )
       )
 
-      list_of_Saturation <- list(
-        parc_relais = Saturation$new(
-          rangeStart = xtradata_parameters()$rangeStart,
-          rangeEnd = xtradata_parameters()$rangeEnd,
-          rangeStep = "hour",
-          plageHoraire = 0:23,
-          timeStep = input$timestep,
-          localisation_parking = NA,
-          parc_relais = TRUE
-        ),
-        hypercentre = Saturation$new(
-          rangeStart = xtradata_parameters()$rangeStart,
-          rangeEnd = xtradata_parameters()$rangeEnd,
-          rangeStep = "hour",
-          plageHoraire = 0:23,
-          timeStep = input$timestep,
-          localisation_parking = "hypercentre",
-          parc_relais = FALSE
-        ),
-        centre = Saturation$new(
-          rangeStart = xtradata_parameters()$rangeStart,
-          rangeEnd = xtradata_parameters()$rangeEnd,
-          rangeStep = "hour",
-          plageHoraire = 0:23,
-          timeStep = input$timestep,
-          localisation_parking = "centre",
-          parc_relais = FALSE
-        ),
-        peripherie = Saturation$new(
-          rangeStart = xtradata_parameters()$rangeStart,
-          rangeEnd = xtradata_parameters()$rangeEnd,
-          rangeStep = "hour",
-          plageHoraire = 0:23,
-          timeStep = input$timestep,
-          localisation_parking = "peripherie",
-          parc_relais = FALSE
-        )
-      )
+      observe({
+        list_of_Saturation <- lapply(list_of_Saturation, function(.l) {
+          .l$rangeStart <- xtradata_parameters()$rangeStart
+          .l$rangeEnd <- xtradata_parameters()$rangeEnd
+          .l$timeStep <- input$timestep
+          .l
+        }) 
+      })
+
 
       imap(list_of_Saturation, function(.x, .y) {
         mod_saturation_appel_WS_server(paste0("saturation_appel_WS_ui_", .y), r6 = .x)

@@ -68,11 +68,11 @@ va gérer la routine API / clean / plot / table / download
 Create a new occupation object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Occupation$new(
-  rangeStart,
-  rangeEnd,
-  rangeStep,
-  timeStep,
-  plageHoraire,
+  rangeStart = NULL,
+  rangeEnd = NULL,
+  rangeStep = NULL,
+  timeStep = NULL,
+  plageHoraire = NULL,
   localisation_parking,
   parc_relais
 )}\if{html}{\out{</div>}}

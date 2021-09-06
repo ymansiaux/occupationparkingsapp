@@ -60,11 +60,11 @@ utilisee ensuite par classe Occupation et Saturation
 Create a new occupation object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$new(
-  rangeStart,
-  rangeEnd,
-  rangeStep,
-  timeStep,
-  plageHoraire,
+  rangeStart = NULL,
+  rangeEnd = NULL,
+  rangeStep = NULL,
+  timeStep = NULL,
+  plageHoraire = NULL,
   localisation_parking,
   parc_relais
 )}\if{html}{\out{</div>}}
@@ -99,7 +99,14 @@ A new `Occupation` object.
 \subsection{Method \code{download_data()}}{
 Interroge le WS aggregate
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$download_data(rangeStep)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$download_data(
+  rangeStart,
+  rangeEnd,
+  rangeStep,
+  plageHoraire,
+  localisation_parking,
+  parc_relais
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

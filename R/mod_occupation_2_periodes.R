@@ -208,6 +208,28 @@ mod_occupation_2_periodes_server <- function(id, app_theme) {
     )
 
 
+    # On cree la liste d'objets R6 Occupation
+    list_of_Occupation1 <- list(
+      parc_relais = Occupation$new(localisation_parking = NA, parc_relais = TRUE),
+      hypercentre = Occupation$new(localisation_parking = "hypercentre", parc_relais = FALSE),
+      centre = Occupation$new(localisation_parking = "centre", parc_relais = FALSE),
+      peripherie = Occupation$new(localisation_parking = "peripherie", parc_relais = FALSE)
+    )
+    list_of_Occupation2 <- list(
+      parc_relais2 = Occupation$new(localisation_parking = NA, parc_relais = TRUE),
+      hypercentre2 = Occupation$new(localisation_parking = "hypercentre", parc_relais = FALSE),
+      centre2 = Occupation$new(localisation_parking = "centre", parc_relais = FALSE),
+      peripherie2 = Occupation$new(localisation_parking = "peripherie", parc_relais = FALSE)
+    )
+    # On appelle memoise pour activer le cache sur les resultats
+    list_of_Occupation1 <- lapply(list_of_Occupation1, function(.l) {
+      .l$download_data_memoise <- memoise(.l$download_data) 
+      .l
+    })
+    list_of_Occupation2 <- lapply(list_of_Occupation2, function(.l) {
+      .l$download_data_memoise <- memoise(.l$download_data) 
+      .l
+    })
 
 
     observeEvent(input$run_query, {
@@ -226,86 +248,26 @@ mod_occupation_2_periodes_server <- function(id, app_theme) {
           "Ann\u00e9e" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_year2)
         )
       )
-
-      # On crée une liste de classes R6 pour les 4 secteurs étudiés
-      list_of_Occupation1 <- list(
-        parc_relais = Occupation$new(
-          rangeStart = xtradata_parameters$periode1$rangeStart,
-          rangeEnd = xtradata_parameters$periode1$rangeEnd,
-          rangeStep = xtradata_parameters$periode1$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = NA,
-          parc_relais = TRUE
-        ),
-        hypercentre = Occupation$new(
-          rangeStart = xtradata_parameters$periode1$rangeStart,
-          rangeEnd = xtradata_parameters$periode1$rangeEnd,
-          rangeStep = xtradata_parameters$periode1$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = "hypercentre",
-          parc_relais = FALSE
-        ),
-        centre = Occupation$new(
-          rangeStart = xtradata_parameters$periode1$rangeStart,
-          rangeEnd = xtradata_parameters$periode1$rangeEnd,
-          rangeStep = xtradata_parameters$periode1$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = "centre",
-          parc_relais = FALSE
-        ),
-        peripherie = Occupation$new(
-          rangeStart = xtradata_parameters$periode1$rangeStart,
-          rangeEnd = xtradata_parameters$periode1$rangeEnd,
-          rangeStep = xtradata_parameters$periode1$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = "peripherie",
-          parc_relais = FALSE
-        )
-      )
-
-
-      list_of_Occupation2 <- list(
-        parc_relais2 = Occupation$new(
-          rangeStart = xtradata_parameters$periode2$rangeStart,
-          rangeEnd = xtradata_parameters$periode2$rangeEnd,
-          rangeStep = xtradata_parameters$periode2$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = NA,
-          parc_relais = TRUE
-        ),
-        hypercentre2 = Occupation$new(
-          rangeStart = xtradata_parameters$periode2$rangeStart,
-          rangeEnd = xtradata_parameters$periode2$rangeEnd,
-          rangeStep = xtradata_parameters$periode2$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = "hypercentre",
-          parc_relais = FALSE
-        ),
-        centre2 = Occupation$new(
-          rangeStart = xtradata_parameters$periode2$rangeStart,
-          rangeEnd = xtradata_parameters$periode2$rangeEnd,
-          rangeStep = xtradata_parameters$periode2$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = "centre",
-          parc_relais = FALSE
-        ),
-        peripherie2 = Occupation$new(
-          rangeStart = xtradata_parameters$periode2$rangeStart,
-          rangeEnd = xtradata_parameters$periode2$rangeEnd,
-          rangeStep = xtradata_parameters$periode2$rangeStep,
-          timeStep = input$timestep,
-          plageHoraire = plageHoraire(),
-          localisation_parking = "peripherie",
-          parc_relais = FALSE
-        )
-      )
+      observe({
+        list_of_Occupation1 <- lapply(list_of_Occupation1, function(.l) {
+          .l$rangeStart <- xtradata_parameters$periode1$rangeStart
+          .l$rangeEnd <-  xtradata_parameters$periode1$rangeEnd
+          .l$rangeStep <- xtradata_parameters$periode1$rangeStep
+          .l$timeStep <- input$timestep
+          .l$plageHoraire <- plageHoraire()
+          .l
+        })
+        
+        list_of_Occupation2 <- lapply(list_of_Occupation2, function(.l) {
+          .l$rangeStart <- xtradata_parameters$periode2$rangeStart
+          .l$rangeEnd <-  xtradata_parameters$periode2$rangeEnd
+          .l$rangeStep <- xtradata_parameters$periode2$rangeStep
+          .l$timeStep <- input$timestep
+          .l$plageHoraire <- plageHoraire()
+          .l
+        })
+        
+      })
 
       # On appelle sur la liste de classes R6, les modules d'appel au WS pour récup les données,
       # le module de nettoyage de l'output, et le module de création du graphique

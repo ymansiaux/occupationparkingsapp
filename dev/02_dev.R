@@ -28,6 +28,7 @@ usethis::use_package( "purrr")
 usethis::use_package( "shinycssloaders")
 usethis::use_package( "shinybusy")
 usethis::use_package( "bdxmetroidentity")
+usethis::use_package( "memoise")
 
 
 usethis::use_pipe()
