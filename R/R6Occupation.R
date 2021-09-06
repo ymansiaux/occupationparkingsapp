@@ -6,7 +6,7 @@ Occupation <- R6::R6Class(
   "Occupation",
   inherit = ParkingsStats,
   public = list(
-    #' @field aggregated_data_by_some_time_unit Données sur lesquelles on applique une fonction d'aggregation par unité de temps
+    #' @field aggregated_data_by_some_time_unit Donnees sur lesquelles on applique une fonction d'aggregation par unité de temps
     aggregated_data_by_some_time_unit = NULL,
     
     #' @field data_plot_1_period donnée du graphique pour 1 seule période étudiée
@@ -58,6 +58,7 @@ Occupation <- R6::R6Class(
     #' @description
     #' Graphe de série temporelle
     #' @param parkings_to_plot liste des parkings à afficher (parametre input shiny)
+    #' @param timeStep pas de temps pour l'axe des x (heure, jour, wday, mois)
     #' @param app_theme theme de l'application (dark ou light)
     #' @importFrom ggplot2 ggplot aes geom_line scale_linetype_manual theme_minimal theme scale_color_manual scale_size_manual
     #' @importFrom ggiraph geom_line_interactive geom_point_interactive
@@ -72,7 +73,7 @@ Occupation <- R6::R6Class(
         copy() %>%
         .[ident %in% c(parkings_to_plot, "moyenne")] %>%
         .[, tooltip := as.character(
-          glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf('%.2f', taux_occupation)}")
+          glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf(\'%.2f\', taux_occupation)}")
         )] %>%
         .[, linetype := fifelse(ident == "moyenne", "dotted", "solid")] %>% 
         .[, lwd := fifelse(ident == "moyenne", 1.5, 1)]
@@ -81,7 +82,7 @@ Occupation <- R6::R6Class(
                      "Jour" = "Heure",
                      "Semaine" = "Jour",
                      "Mois" = "Jour",
-                     "Année" = "Mois"
+                     "Ann\u00e9e" = "Mois"
       )
       
       gg <- self$data_plot_1_period %>%
@@ -110,7 +111,7 @@ Occupation <- R6::R6Class(
             )
         ) +
         xlab(xlab) +
-        ylab("Taux d'occupation (%)") +
+        ylab("Taux d\'occupation (%)") +
         labs(color = "Parking", size = "Parking", scale = "Parking") +
         scale_color_bdxmetro_discrete()
       
@@ -121,8 +122,8 @@ Occupation <- R6::R6Class(
     
     #' @description
     #' Graphe de série temporelle avec comparaison de 2 périodes
-    #' @param data_occupation_1 données d'occupation de la période 1
-    #' @param data_occupation_2 données d'occupation de la période 2
+    #' @param data_occupation_1 donnees d'occupation de la période 1
+    #' @param data_occupation_2 donnees d'occupation de la période 2
     #' @param timeStep pas de temps pour l'axe des x (heure, jour, wday, mois)
     #' @param parkings_to_plot liste des parkings à afficher (parametre input shiny)
     #' @param app_theme theme de l'application (dark ou light)
@@ -146,7 +147,7 @@ Occupation <- R6::R6Class(
             .[, nom := paste0(nom, "_periode2")]
         ) %>%
         .[, tooltip := as.character(
-          glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nTaux : {sprintf('%.2f', taux_occupation)}")
+          glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nTaux : {sprintf(\'%.2f\', taux_occupation)}")
         )] %>%
         .[ident %in% c(parkings_to_plot, "moyenne")] %>% 
         .[, linetype := fifelse(ident == "moyenne", "dotted", "solid")] %>%
@@ -212,7 +213,7 @@ Occupation <- R6::R6Class(
           values = mypal
         ) +
         xlab(xlab) +
-        ylab("Taux d'occupation (%)") +
+        ylab("Taux d\'occupation (%)") +
         labs(color = "Parking", size = "Parking", scale = "Parking")
       
       gg

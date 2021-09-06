@@ -32,6 +32,7 @@ ParkingsStats <- R6::R6Class(
     #' @field cleaned_data Données nettoyées
     cleaned_data = NULL,
     
+    #' @field download_data_memoise version optimisee (avec cache) de la fonction de telechargement sur xtradata
     download_data_memoise = NULL,
     
     #' @description
@@ -57,7 +58,12 @@ ParkingsStats <- R6::R6Class(
     
     #' @description
     #' Interroge le WS aggregate
+    #' @param rangeStart rangeStart xtradata aggregate
+    #' @param rangeEnd rangeEnd xtradata aggregate
     #' @param rangeStep rangeStep xtradata aggregate
+    #' @param plageHoraire plage horaire d'interet pour les donnees (filtre sur xtradata)
+    #' @param localisation_parking filtre la localisation
+    #' @param parc_relais boolean de selection des parcs relais
     #' @import data.table
     #' @importFrom xtradata xtradata_requete_aggregate
     #' @examples \dontrun{}
@@ -105,4 +111,3 @@ ParkingsStats <- R6::R6Class(
   )
 )
 # https://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html
-# ParkingsStats$set("public", "download_data2", memoise::memoise(ParkingsStats$public_methods$download_data))

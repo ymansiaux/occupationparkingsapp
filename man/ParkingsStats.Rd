@@ -41,6 +41,8 @@ utilisee ensuite par classe Occupation et Saturation
 \item{\code{data_xtradata}}{Données issues de l'appel au WS via la fonction download_data}
 
 \item{\code{cleaned_data}}{Données nettoyées}
+
+\item{\code{download_data_memoise}}{version optimisee (avec cache) de la fonction de telechargement sur xtradata}
 }
 \if{html}{\out{</div>}}
 }
@@ -112,7 +114,17 @@ Interroge le WS aggregate
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{rangeStart}}{rangeStart xtradata aggregate}
+
+\item{\code{rangeEnd}}{rangeEnd xtradata aggregate}
+
 \item{\code{rangeStep}}{rangeStep xtradata aggregate}
+
+\item{\code{plageHoraire}}{plage horaire d'interet pour les donnees (filtre sur xtradata)}
+
+\item{\code{localisation_parking}}{filtre la localisation}
+
+\item{\code{parc_relais}}{boolean de selection des parcs relais}
 }
 \if{html}{\out{</div>}}
 }

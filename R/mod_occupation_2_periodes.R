@@ -11,6 +11,7 @@
 #' @importFrom shinyjs show hide
 #' @importFrom lubridate floor_date as_date
 #' @importFrom purrr imap pmap
+#' @importFrom memoise memoise
 
 mod_occupation_2_periodes_ui <- function(id) {
   ns <- NS(id)

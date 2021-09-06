@@ -35,7 +35,7 @@ va gérer la routine API / clean / plot / table / download
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{aggregated_data_by_some_time_unit}}{Données sur lesquelles on applique une fonction d'aggregation par unité de temps}
+\item{\code{aggregated_data_by_some_time_unit}}{Donnees sur lesquelles on applique une fonction d'aggregation par unité de temps}
 
 \item{\code{data_plot_1_period}}{donnée du graphique pour 1 seule période étudiée}
 
@@ -144,6 +144,8 @@ Graphe de série temporelle
 \describe{
 \item{\code{parkings_to_plot}}{liste des parkings à afficher (parametre input shiny)}
 
+\item{\code{timeStep}}{pas de temps pour l'axe des x (heure, jour, wday, mois)}
+
 \item{\code{app_theme}}{theme de l'application (dark ou light)}
 }
 \if{html}{\out{</div>}}
@@ -176,9 +178,9 @@ Graphe de série temporelle avec comparaison de 2 périodes
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data_occupation_1}}{données d'occupation de la période 1}
+\item{\code{data_occupation_1}}{donnees d'occupation de la période 1}
 
-\item{\code{data_occupation_2}}{données d'occupation de la période 2}
+\item{\code{data_occupation_2}}{donnees d'occupation de la période 2}
 
 \item{\code{timeStep}}{pas de temps pour l'axe des x (heure, jour, wday, mois)}
 
