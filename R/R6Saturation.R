@@ -13,6 +13,21 @@ Saturation <- R6::R6Class(
 
     #' @field data_plot donnees du graphique de saturation
     data_plot = NULL,
+    
+    #' @description
+    #' Create a new saturation object.
+    #' @param rangeStart rangeStart
+    #' @param rangeEnd rangeEnd
+    #' @param rangeStep rangeStep
+    #' @param timeStep timeStep
+    #' @param plageHoraire plageHoraire
+    #' @param localisation_parking localisation_parking
+    #' @param parc_relais parc_relais
+    #' @return A new `Saturation` object.
+    
+    initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, timeStep = NULL, plageHoraire = NULL, localisation_parking, parc_relais) {
+      super$initialize(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais)
+    },
 
     #' @description
     #' On garde les parkings satures. Càd les parkings avec un taux d'occupation

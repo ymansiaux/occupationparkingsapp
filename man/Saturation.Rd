@@ -38,6 +38,7 @@ d'occupation en nb d'heures par jour et nb de jours par semaine}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-new}{\code{Saturation$new()}}
 \item \href{#method-filter_full_capacity_parkings}{\code{Saturation$filter_full_capacity_parkings()}}
 \item \href{#method-calendar_heatmap}{\code{Saturation$calendar_heatmap()}}
 \item \href{#method-clone}{\code{Saturation$clone()}}
@@ -48,9 +49,48 @@ d'occupation en nb d'heures par jour et nb de jours par semaine}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="clean_output">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-clean_output}{\code{occupationparkingsapp::ParkingsStats$clean_output()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="download_data">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-download_data}{\code{occupationparkingsapp::ParkingsStats$download_data()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="initialize">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-initialize}{\code{occupationparkingsapp::ParkingsStats$initialize()}}\out{</span>}
 }
 \out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+Create a new saturation object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Saturation$new(
+  rangeStart = NULL,
+  rangeEnd = NULL,
+  rangeStep = NULL,
+  timeStep = NULL,
+  plageHoraire = NULL,
+  localisation_parking,
+  parc_relais
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rangeStart}}{rangeStart}
+
+\item{\code{rangeEnd}}{rangeEnd}
+
+\item{\code{rangeStep}}{rangeStep}
+
+\item{\code{timeStep}}{timeStep}
+
+\item{\code{plageHoraire}}{plageHoraire}
+
+\item{\code{localisation_parking}}{localisation_parking}
+
+\item{\code{parc_relais}}{parc_relais}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A new `Saturation` object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-filter_full_capacity_parkings"></a>}}
