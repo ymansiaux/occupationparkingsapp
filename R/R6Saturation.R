@@ -38,8 +38,7 @@ Saturation <- R6::R6Class(
     #' @param nb_jour_par_semaine_sature seuil de nb de jour par semaine de saturation
     #' @import data.table
     #' @importFrom lubridate as_date floor_date
-    #' @examples \dontrun{ temporal_aggregate("day")
-    #' }
+
     filter_full_capacity_parkings = function(seuil_taux_occupation = 90, nb_heures_par_jour_satures = 3, nb_jour_par_semaine_sature = 2) {
 
       # calcul pour chaque parking du nombre d'heure / j pdt lequel il est sature
@@ -70,8 +69,7 @@ Saturation <- R6::R6Class(
     #' @import ggiraph
     #' @import ggplot2
     #' @importFrom bdxmetroidentity theme_bdxmetro
-    #' @examples \dontrun{ temporal_aggregate("day")
-    #' }
+
     calendar_heatmap = function(selected_parking, app_theme) {
       self$data_plot <- self$cleaned_data %>%
         copy() %>%

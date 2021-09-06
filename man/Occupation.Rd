@@ -6,29 +6,6 @@
 \description{
 va gérer la routine API / clean / plot / table / download
 }
-\examples{
-
-## ------------------------------------------------
-## Method `Occupation$mean_by_some_time_unit`
-## ------------------------------------------------
-
-\dontrun{ temporal_aggregate("day")
-}
-
-## ------------------------------------------------
-## Method `Occupation$timeseries_plot_1_period`
-## ------------------------------------------------
-
-\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
-}
-
-## ------------------------------------------------
-## Method `Occupation$timeseries_plot_2_periods`
-## ------------------------------------------------
-
-\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
-}
-}
 \section{Super class}{
 \code{\link[occupationparkingsapp:ParkingsStats]{occupationparkingsapp::ParkingsStats}} -> \code{Occupation}
 }
@@ -120,15 +97,6 @@ Aggregation des données selon une fenetre temporelle
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ temporal_aggregate("day")
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-timeseries_plot_1_period"></a>}}
@@ -150,15 +118,6 @@ Graphe de série temporelle
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-timeseries_plot_2_periods"></a>}}
@@ -190,15 +149,6 @@ Graphe de série temporelle avec comparaison de 2 périodes
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

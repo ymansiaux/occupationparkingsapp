@@ -37,8 +37,7 @@ Occupation <- R6::R6Class(
     #' @param ... parametres additionels de floor_date
     #' @import data.table
     #' @importFrom lubridate floor_date
-    #' @examples \dontrun{ temporal_aggregate("day")
-    #' }
+
     mean_by_some_time_unit = function(time_unit, ...) {
       self$aggregated_data_by_some_time_unit <-
         rbind(
@@ -66,8 +65,7 @@ Occupation <- R6::R6Class(
     #' @import data.table
     #' @importFrom bdxmetroidentity theme_bdxmetro scale_color_bdxmetro_discrete
     #'
-    #' @examples \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
-    #' }
+
     timeseries_plot_1_period = function(parkings_to_plot, timeStep, app_theme) {
       self$data_plot_1_period <- self$aggregated_data_by_some_time_unit %>%
         copy() %>%
@@ -133,8 +131,7 @@ Occupation <- R6::R6Class(
     #' @import data.table
     #' @importFrom bdxmetroidentity theme_bdxmetro scale_color_bdxmetro_discrete create_palette_bdxmetro
     #'
-    #' @examples \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
-    #' }
+
     timeseries_plot_2_periods = function(data_occupation_1, data_occupation_2, timeStep, parkings_to_plot, app_theme) {
       self$data_plot_2_periods <-
         rbind(

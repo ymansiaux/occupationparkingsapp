@@ -6,22 +6,6 @@
 \description{
 va gérer la routine API / clean / plot / table / download
 }
-\examples{
-
-## ------------------------------------------------
-## Method `Saturation$filter_full_capacity_parkings`
-## ------------------------------------------------
-
-\dontrun{ temporal_aggregate("day")
-}
-
-## ------------------------------------------------
-## Method `Saturation$calendar_heatmap`
-## ------------------------------------------------
-
-\dontrun{ temporal_aggregate("day")
-}
-}
 \section{Super class}{
 \code{\link[occupationparkingsapp:ParkingsStats]{occupationparkingsapp::ParkingsStats}} -> \code{Saturation}
 }
@@ -118,15 +102,6 @@ par jour pendant au moins nb_jour_par_semaine_sature par semaine
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ temporal_aggregate("day")
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-calendar_heatmap"></a>}}
@@ -146,15 +121,6 @@ Realise une calendar heatmap des parkings les plus satures
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ temporal_aggregate("day")
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

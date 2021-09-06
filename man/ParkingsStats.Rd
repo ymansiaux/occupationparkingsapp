@@ -6,21 +6,6 @@
 \description{
 utilisee ensuite par classe Occupation et Saturation
 }
-\examples{
-
-## ------------------------------------------------
-## Method `ParkingsStats$download_data`
-## ------------------------------------------------
-
-\dontrun{}
-
-## ------------------------------------------------
-## Method `ParkingsStats$clean_output`
-## ------------------------------------------------
-
-\dontrun{ clean_output()
-}
-}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -128,14 +113,6 @@ Interroge le WS aggregate
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clean_output"></a>}}
@@ -145,15 +122,6 @@ Nettoyage de la sortie xtradata
 (application de lubridate et calcul du taux d'occup)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$clean_output()}\if{html}{\out{</div>}}
-}
-
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ clean_output()
-}
-}
-\if{html}{\out{</div>}}
-
 }
 
 }

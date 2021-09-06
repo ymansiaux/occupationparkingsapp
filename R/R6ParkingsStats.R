@@ -66,7 +66,6 @@ ParkingsStats <- R6::R6Class(
     #' @param parc_relais boolean de selection des parcs relais
     #' @import data.table
     #' @importFrom xtradata xtradata_requete_aggregate
-    #' @examples \dontrun{}
     download_data = function(rangeStart, rangeEnd, rangeStep, plageHoraire, localisation_parking, parc_relais) {
       download <- try(xtradata_requete_aggregate(
         key = "DATAZBOUBB",
@@ -94,8 +93,7 @@ ParkingsStats <- R6::R6Class(
     #' (application de lubridate et calcul du taux d'occup)
     #' @import data.table
     #' @importFrom lubridate as_datetime
-    #' @examples \dontrun{ clean_output()
-    #' }
+
     clean_output = function() {
       self$cleaned_data <- self$data_xtradata %>%
         as.data.table() %>%
