@@ -20,6 +20,7 @@ mod_occupation_1_periode_ui <- function(id) {
     sidebarLayout(
       sidebarPanel(
         width = 2,
+        actionButton(ns("pause"), "Pause"),
         radioButtons(ns("timestep"), "Unit\u00e9 de temps",
                      choices = c("Jour", "Semaine", "Mois", "Ann\u00e9e"),
                      inline = TRUE
@@ -96,6 +97,23 @@ mod_occupation_1_periode_ui <- function(id) {
             )
           )
         ),
+        
+        checkboxInput(inputId = ns("select_custom_parkings_list"),
+                      label = "Sélectionner manuellement des parkings"),
+        
+        hidden_div(
+          id_div = ns("selection_custom_parkings_list"),
+          contenu_div = tagList(
+            selectizeInput(
+              inputId = ns("custom_parkings_list"),
+              label = "Parkings \u00e0 analyser",
+              choices = NULL,
+              multiple = TRUE,
+              options = list(deselectBehavior = "top")
+            ),
+          )
+        ),
+        
         actionButton(
           inputId = ns("run_query"),
           label = "Lancer la requ\u00eate"
@@ -117,9 +135,11 @@ mod_occupation_1_periode_ui <- function(id) {
 #' occupation Server Functions
 #'
 #' @noRd
-mod_occupation_1_periode_server <- function(id, app_theme){#, list_of_Occupation) {
+mod_occupation_1_periode_server <- function(id, app_theme, parkings_list){
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+    
+    observeEvent(input$pause, browser())
     
     ids_list <- list(
       "Jour" = "selection_timestep_day",
@@ -174,6 +194,17 @@ mod_occupation_1_periode_server <- function(id, app_theme){#, list_of_Occupation
       }
     })
     
+    observeEvent(input$select_custom_parkings_list, {
+      if (input$select_custom_parkings_list == TRUE) {
+        show("selection_custom_parkings_list")
+      } else {
+        hide("selection_custom_parkings_list")
+      }
+    })
+    
+    observe(updateSelectizeInput(session, "custom_parkings_list", choices = unique(parkings_list()$nom), server = TRUE))
+    
+    
     plageHoraire <- reactive(
       if (input$timestep == "Jour") {
         switch(input$plage_horaire,
@@ -189,10 +220,11 @@ mod_occupation_1_periode_server <- function(id, app_theme){#, list_of_Occupation
     
     # On cree la liste d'objets R6 Occupation
     list_of_Occupation <- list(
-      parc_relais = Occupation$new(localisation_parking = NA, parc_relais = TRUE),
-      hypercentre = Occupation$new(localisation_parking = "hypercentre", parc_relais = FALSE),
-      centre = Occupation$new(localisation_parking = "centre", parc_relais = FALSE),
-      peripherie = Occupation$new(localisation_parking = "peripherie", parc_relais = FALSE)
+      parc_relais = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% NA & parkings$parc_relais == TRUE), "ident"]),
+      hypercentre = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "hypercentre" & parkings$parc_relais == FALSE), "ident"]),
+      centre = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "centre" & parkings$parc_relais == FALSE), "ident"]),
+      peripherie = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "peripherie" & parkings$parc_relais == FALSE), "ident"]),
+      custom_selection = Occupation$new(parkings_list = NULL)
     )
     # On appelle memoise pour activer le cache sur les resultats
     list_of_Occupation <- lapply(list_of_Occupation, function(.l) {

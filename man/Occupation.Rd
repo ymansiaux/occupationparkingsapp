@@ -50,8 +50,7 @@ Create a new occupation object.
   rangeStep = NULL,
   timeStep = NULL,
   plageHoraire = NULL,
-  localisation_parking,
-  parc_relais
+  parkings_list = NULL
 )}\if{html}{\out{</div>}}
 }
 

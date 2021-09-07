@@ -20,6 +20,8 @@ ParkingsStats <- R6::R6Class(
     #' @field plageHoraire plage horaire des donnees à recup
     plageHoraire = 0:23,
     
+    parkings_list = NULL,
+    
     #' @field localisation_parking Secteur de localisation du parking (hypercentre, centre, peripherie, NA pour les parc relais)
     localisation_parking = "",
     
@@ -46,14 +48,15 @@ ParkingsStats <- R6::R6Class(
     #' @param parc_relais parc_relais
     #' @return A new `Occupation` object.
     
-    initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, timeStep = NULL, plageHoraire = NULL, localisation_parking, parc_relais) {
+    initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, timeStep = NULL, plageHoraire = NULL, parkings_list = NULL) {
       self$rangeStart <- rangeStart
       self$rangeEnd <- rangeEnd
       self$rangeStep <- rangeStep
       self$timeStep <- timeStep
       self$plageHoraire <- plageHoraire
-      self$localisation_parking <- localisation_parking
-      self$parc_relais <- parc_relais
+      # self$localisation_parking <- localisation_parking
+      # self$parc_relais <- parc_relais
+      self$parkings_list <- parkings_list
     },
     
     #' @description
@@ -66,7 +69,7 @@ ParkingsStats <- R6::R6Class(
     #' @param parc_relais boolean de selection des parcs relais
     #' @import data.table
     #' @importFrom xtradata xtradata_requete_aggregate
-    download_data = function(rangeStart, rangeEnd, rangeStep, plageHoraire, localisation_parking, parc_relais) {
+    download_data = function(rangeStart, rangeEnd, rangeStep, plageHoraire, parkings_list) {
       download <- try(xtradata_requete_aggregate(
         key = "DATAZBOUBB",
         typename = "ST_PARK_P",
@@ -78,7 +81,7 @@ ParkingsStats <- R6::R6Class(
           "ident" =
             list(
               "$in" =
-                parkings[which(parkings$localisation_parking %in% localisation_parking & parkings$parc_relais == parc_relais), "ident"]
+                parkings_list#parkings[which(parkings$localisation_parking %in% localisation_parking & parkings$parc_relais == parc_relais), "ident"]
             )
         ),
         attributes = list("gid", "time", "libres", "total", "etat", "ident"),
