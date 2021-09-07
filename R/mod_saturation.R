@@ -47,6 +47,23 @@ mod_saturation_ui <- function(id) {
                 )
               )
             ),
+            
+            checkboxInput(inputId = ns("select_custom_parkings_list"),
+                          label = "Sélectionner manuellement des parkings"),
+            
+            hidden_div(
+              id_div = ns("selection_custom_parkings_list"),
+              contenu_div = tagList(
+                selectizeInput(
+                  inputId = ns("custom_parkings_list"),
+                  label = "Parkings \u00e0 analyser",
+                  choices = NULL,
+                  multiple = TRUE,
+                  options = list(deselectBehavior = "top")
+                ),
+              )
+            ),
+            
             h4("D\u00e9finition de la saturation :"),
             sliderInput(inputId = ns("seuil_saturation"), "Seuil de saturation (%)", min = 0, max = 100, value = 90, step = 5),
             sliderInput(inputId = ns("nb_heures_journalieres_saturation"), "Nb heures / j de saturation", min = 0, max = 23, value = 3, step = 1),
@@ -74,7 +91,7 @@ mod_saturation_ui <- function(id) {
 #' saturation Server Functions
 #'
 #' @noRd
-mod_saturation_server <- function(id, app_theme) {
+mod_saturation_server <- function(id, app_theme, parkings_list) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -102,6 +119,16 @@ mod_saturation_server <- function(id, app_theme) {
     })
 
 
+    observeEvent(input$select_custom_parkings_list, {
+      if (input$select_custom_parkings_list == TRUE) {
+        show("selection_custom_parkings_list")
+      } else {
+        hide("selection_custom_parkings_list")
+      }
+    })
+    
+    observe(updateSelectizeInput(session, "custom_parkings_list", choices = unique(parkings_list()$nom), server = TRUE))
+    
     
     # On cree la liste d'objets R6 Saturation
     list_of_Saturation <- list(
