@@ -220,9 +220,9 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list){
     
     # On cree la liste d'objets R6 Occupation
     list_of_Occupation <- list(
-      # parc_relais = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% NA & parkings$parc_relais == TRUE), "ident"]),
-      # hypercentre = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "hypercentre" & parkings$parc_relais == FALSE), "ident"]),
-      # centre = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "centre" & parkings$parc_relais == FALSE), "ident"]),
+      parc_relais = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% NA & parkings$parc_relais == TRUE), "ident"]),
+      hypercentre = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "hypercentre" & parkings$parc_relais == FALSE), "ident"]),
+      centre = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "centre" & parkings$parc_relais == FALSE), "ident"]),
       peripherie = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "peripherie" & parkings$parc_relais == FALSE), "ident"]),
       custom_selection = Occupation$new(parkings_list = NULL)
     )
@@ -271,7 +271,7 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list){
         imap(list_of_Occupation, function(.x, .y) {
           mod_occupation_appel_WS_server(paste0("occupation_appel_WS_ui_", .y), r6 = .x)
           mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x)
-          mod_occupation_1_periode_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x, app_theme = app_theme)
+          mod_occupation_1_periode_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings_list)
         })
       
       output$my_Occupation_UI <- renderUI({

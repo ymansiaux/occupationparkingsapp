@@ -84,7 +84,7 @@ ParkingsStats <- R6::R6Class(
                 parkings_list#parkings[which(parkings$localisation_parking %in% localisation_parking & parkings$parc_relais == parc_relais), "ident"]
             )
         ),
-        attributes = list("gid", "time", "libres", "total", "etat", "ident"),
+        attributes = list("gid", "time", "nom", "libres", "total", "etat", "ident"),
         showURL = TRUE
       ))
 
@@ -106,7 +106,7 @@ ParkingsStats <- R6::R6Class(
           libres = as.integer(ceiling(libres))
         )] %>%
         .[, taux_occupation := 100 * pmax(0, 1 - (libres / total))] %>%
-        merge(., unique(parkings[, c("nom", "ident")]), by = "ident") %>%
+        # merge(., unique(parkings[, c("nom", "ident")]), by = "ident") %>%
         setcolorder(neworder = "time")
     }
   )
