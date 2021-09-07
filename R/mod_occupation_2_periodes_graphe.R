@@ -71,7 +71,7 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title) {
 #' occupation_graphe Server Functions
 #'
 #' @noRd
-mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme) {
+mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, parkings_list) {
   moduleServer(id, function(input, output, session) {
     observe(updateSelectizeInput(session, "parkings_to_plot", choices = unique(c(r6_1$cleaned_data$nom, r6_2$cleaned_data$nom)), server = TRUE))
     observeEvent(input$pause, browser())
@@ -92,7 +92,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme) {
         data_occupation_1 = r6_1,
         data_occupation_2 = r6_2,
         timeStep = r6_1$timeStep,
-        parkings_to_plot = isolate(unique(parkings$ident[parkings$nom %in% input$parkings_to_plot])),
+        parkings_to_plot = isolate(unique(parkings_list()$ident[parkings_list()$nom %in% input$parkings_to_plot])),
         app_theme = app_theme()
       )
 

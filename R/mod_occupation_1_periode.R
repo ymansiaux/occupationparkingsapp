@@ -224,7 +224,7 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list){
       hypercentre = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "hypercentre" & parkings$parc_relais == FALSE), "ident"]),
       centre = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "centre" & parkings$parc_relais == FALSE), "ident"]),
       peripherie = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "peripherie" & parkings$parc_relais == FALSE), "ident"]),
-      custom_selection = Occupation$new(parkings_list = NULL)
+      selection_personnalisee = Occupation$new(parkings_list = NULL)
     )
     # On appelle memoise pour activer le cache sur les resultats
     list_of_Occupation <- lapply(list_of_Occupation, function(.l) {
@@ -244,15 +244,15 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list){
         )
       )
       
-        # on verifie si la liste des parkings est non nulle, auquel cas soit on ecrase la liste de l'element custom_selection, ou alors on recree une instance R6 si elle n'existe plus
+        # on verifie si la liste des parkings est non nulle, auquel cas soit on ecrase la liste de l'element selection_personnalisee, ou alors on recree une instance R6 si elle n'existe plus
         if(isTruthy(input$custom_parkings_list)) {
-          if("custom_selection" %in% names(list_of_Occupation)) {
-            list_of_Occupation$custom_selection$parkings_list <- parkings_list()[nom %in% input$custom_parkings_list][["ident"]]
+          if("selection_personnalisee" %in% names(list_of_Occupation)) {
+            list_of_Occupation$selection_personnalisee$parkings_list <- parkings_list()[nom %in% input$custom_parkings_list][["ident"]]
           } else {
-            list_of_Occupation$custom_selection = Occupation$new(parkings_list = parkings_list()[nom %in% input$custom_parkings_list][["ident"]])
+            list_of_Occupation$selection_personnalisee = Occupation$new(parkings_list = parkings_list()[nom %in% input$custom_parkings_list][["ident"]])
           }
         } else { # si la selection est nulle on vire la R6 custom selection de la liste des classes R6
-          list_of_Occupation <- list_of_Occupation[names(list_of_Occupation) != "custom_selection"]
+          list_of_Occupation <- list_of_Occupation[names(list_of_Occupation) != "selection_personnalisee"]
         }
         
         list_of_Occupation <- lapply(list_of_Occupation, function(.l) {

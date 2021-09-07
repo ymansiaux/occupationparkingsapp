@@ -86,7 +86,7 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_l
 
       r6$aggregated_data_by_some_time_unit$nom[is.na(r6$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
 
-      gg <- r6$timeseries_plot_1_period(isolate(unique(parkings_list()$ident[parkings_list()$nom %in% input$parkings_to_plot])),
+      gg <- r6$timeseries_plot_1_period(parkings_to_plot = isolate(unique(parkings_list()$ident[parkings_list()$nom %in% input$parkings_to_plot])),
                                         timeStep = r6$timeStep,
                                         app_theme = app_theme())
 

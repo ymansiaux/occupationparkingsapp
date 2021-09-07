@@ -29,11 +29,11 @@ app_ui <- function(request) {
         tabPanel(
           "Occupation - observer 1 p\u00e9riode",
           mod_occupation_1_periode_ui("occupation_ui_1")
+        ),
+        tabPanel(
+          "Occupation - comparer 2 p\u00e9riodes",
+          mod_occupation_2_periodes_ui("occupation_ui_2")
         )#,
-        # tabPanel(
-        #   "Occupation - comparer 2 p\u00e9riodes",
-        #   mod_occupation_2_periodes_ui("occupation_ui_2")
-        # ),
         # tabPanel(
         #   "Saturation",
         #   mod_saturation_ui("saturation_ui_1")
@@ -56,11 +56,11 @@ golem_add_external_resources <- function() {
   add_resource_path(
     "www", app_sys("app/www")
   )
-
+  
   golem::use_internal_file(path = system.file("shiny/www", "datalab-logo-lightmode.png", package = "bdxmetroidentity"))
   golem::use_internal_file(path = system.file("shiny/www", "datalab-logo-darkmode.png", package = "bdxmetroidentity"))
-
-
+  
+  
   tags$head(
     favicon(),
     bundle_resources(
