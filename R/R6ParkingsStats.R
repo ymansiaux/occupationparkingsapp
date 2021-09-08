@@ -7,31 +7,31 @@ ParkingsStats <- R6::R6Class(
   public = list(
     #' @field rangeStart Debut de la periode d'observation
     rangeStart = "",
-    
+
     #' @field rangeEnd Fin de la periode d'observation
     rangeEnd = "",
-    
+
     #' @field rangeStep Pas d'aggregation pour requete xtradata
     rangeStep = "",
-    
+
     #' @field timeStep Fenetre de temps de restitution des graphes (heure, jour, jour de la semaine, mois)
     timeStep = "",
-    
+
     #' @field plageHoraire plage horaire des donnees à recup
     plageHoraire = 0:23,
-    
+
     #' @field parkings_list liste des parkings analyses
     parkings_list = NULL,
-    
+
     #' @field data_xtradata Données issues de l'appel au WS via la fonction download_data
     data_xtradata = NULL,
-    
+
     #' @field cleaned_data Données nettoyées
     cleaned_data = NULL,
-    
+
     #' @field download_data_memoise version optimisee (avec cache) de la fonction de telechargement sur xtradata
     download_data_memoise = NULL,
-    
+
     #' @description
     #' Create a new occupation object.
     #' @param rangeStart rangeStart
@@ -41,7 +41,7 @@ ParkingsStats <- R6::R6Class(
     #' @param plageHoraire plageHoraire
     #' @param parkings_list liste des parkings analyses
     #' @return A new `Occupation` object.
-    
+
     initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, timeStep = NULL, plageHoraire = NULL, parkings_list = NULL) {
       self$rangeStart <- rangeStart
       self$rangeEnd <- rangeEnd
@@ -52,7 +52,7 @@ ParkingsStats <- R6::R6Class(
       # self$parc_relais <- parc_relais
       self$parkings_list <- parkings_list
     },
-    
+
     #' @description
     #' Interroge le WS aggregate
     #' @param rangeStart rangeStart xtradata aggregate
@@ -74,14 +74,18 @@ ParkingsStats <- R6::R6Class(
           "ident" =
             list(
               "$in" =
-                parkings_list#parkings[which(parkings$localisation_parking %in% localisation_parking & parkings$parc_relais == parc_relais), "ident"]
+                parkings_list # parkings[which(parkings$localisation_parking %in% localisation_parking & parkings$parc_relais == parc_relais), "ident"]
             )
         ),
         attributes = list("gid", "time", "nom", "libres", "total", "etat", "ident"),
         showURL = TRUE
       ))
 
-      if (inherits(download, "try-error")) {   return(NULL)  } else {  return(download)    }
+      if (inherits(download, "try-error")) {
+        return(NULL)
+      } else {
+        return(download)
+      }
     },
 
     #' @description

@@ -16,56 +16,58 @@ mod_saturation_graphe_ui <- function(id, title) {
   ns <- NS(id)
   tagList(
     fluidRow(
-      # actionButton(ns("pause"), "pause"),
-      column(
-        width = 12,
-        h4(title)
+      span(
+        h4(title),
+        actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info")
       )
     ),
-    fluidRow(
-      column(
-        width = 6,
-        selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
-        withSpinner(
-          girafeOutput(ns("plot"))
+    div(
+      id = ns("show_results"),
+      fluidRow(
+        column(
+          width = 6,
+          selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
+          withSpinner(
+            girafeOutput(ns("plot"))
+          )
+        ),
+        column(
+          width = 6,
+          selectizeInput(ns("selected_satured_parking2"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
+          withSpinner(
+            girafeOutput(ns("plot2"))
+          )
         )
       ),
-      column(
-        width = 6,
-        selectizeInput(ns("selected_satured_parking2"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
-        withSpinner(
-          girafeOutput(ns("plot2"))
-        )
-      )
-    ),
-    fluidRow(
-      column(
-        width = 12,
-        lien_afficher_cacher_div(
-          id_lien = ns("show_plot_data"),
-          label_lien = "Afficher les donn\u00e9es du graphe",
-          id_div = ns("plot_data"),
-          contenu_div = tagList(
-            withSpinner(
-              DTOutput(ns("table_plot"))
+      fluidRow(
+        column(
+          width = 12,
+          lien_afficher_cacher_div(
+            id_lien = ns("show_plot_data"),
+            label_lien = "Afficher les donn\u00e9es du graphe",
+            id_div = ns("plot_data"),
+            contenu_div = tagList(
+              withSpinner(
+                DTOutput(ns("table_plot"))
+              )
             )
           )
         )
-      )
-    ),
-    fluidRow(column(
-      width = 12,
-      lien_afficher_cacher_div(
-        id_lien = ns("show_raw_data"),
-        label_lien = "Afficher les donn\u00e9es brutes",
-        id_div = ns("raw_data"),
-        contenu_div = tagList(
-          withSpinner(
-            DTOutput(ns("table_raw"))
+      ),
+      fluidRow(column(
+        width = 12,
+        lien_afficher_cacher_div(
+          id_lien = ns("show_raw_data"),
+          label_lien = "Afficher les donn\u00e9es brutes",
+          id_div = ns("raw_data"),
+          contenu_div = tagList(
+            withSpinner(
+              DTOutput(ns("table_raw"))
+            )
           )
         )
-      )
-    ))
+      ))
+    )
   )
 }
 
@@ -75,6 +77,10 @@ mod_saturation_graphe_ui <- function(id, title) {
 mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
   moduleServer(id, function(input, output, session) {
     observeEvent(input$pause, browser())
+
+    observeEvent(input$show_hide_panel, {
+      toggle(id = "show_results", anim = TRUE)
+    })
 
     observe({
       updateSelectizeInput(session, "selected_satured_parking1",
