@@ -13,7 +13,7 @@ Saturation <- R6::R6Class(
 
     #' @field data_plot donnees du graphique de saturation
     data_plot = NULL,
-    
+
     #' @description
     #' Create a new saturation object.
     #' @param rangeStart rangeStart
@@ -23,7 +23,7 @@ Saturation <- R6::R6Class(
     #' @param plageHoraire plageHoraire
     #' @param parkings_list liste des parkings analyses
     #' @return A new `Saturation` object.
-    
+
     initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, timeStep = NULL, plageHoraire = NULL, parkings_list = NULL) {
       super$initialize(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, parkings_list)
     },

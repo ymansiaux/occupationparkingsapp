@@ -18,54 +18,62 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
   ns <- NS(id)
   tagList(
     fluidRow(
-      column(
-        width = 8,
+      span(
         h4(title),
-        withSpinner(
-          girafeOutput(ns("plot"))
-        )
-        ,actionButton(inputId = ns("pause"), "pause")
-      ),
-      column(
-        width = 4,
-        selectizeInput(
-          inputId = ns("parkings_to_plot"),
-          label = "Parkings \u00e0 afficher",
-          choices = NULL,
-          multiple = TRUE,
-          options = list(maxItems = 5, placeholder = "Choisir au max 5 pkgs", deselectBehavior = "top")
-        ),
-        actionButton(inputId = ns("maj"), "MAJ graphes et tableaux")
+        actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info")
       )
     ),
-    fluidRow(
-      column(
-        width = 12,
-        lien_afficher_cacher_div(
-          id_lien = ns("show_plot_data"),
-          label_lien = "Afficher les donn\u00e9es du graphe",
-          id_div = ns("plot_data"),
-          contenu_div = tagList(
-            withSpinner(
-              DTOutput(ns("table_plot"))
+    div(
+      id = ns("show_results"),
+      fluidRow(
+        column(
+          width = 8,
+          withSpinner(
+            girafeOutput(ns("plot"))
+          )
+          # ,actionButton(inputId = ns("pause"), "pause")
+        ),
+        column(
+          width = 4,
+          selectizeInput(
+            inputId = ns("parkings_to_plot"),
+            label = "Parkings \u00e0 afficher",
+            choices = NULL,
+            multiple = TRUE,
+            options = list(maxItems = 5, placeholder = "Choisir au max 5 pkgs", deselectBehavior = "top")
+          ),
+          actionButton(inputId = ns("maj"), "MAJ graphes et tableaux")
+        )
+      ),
+      fluidRow(
+        column(
+          width = 12,
+          lien_afficher_cacher_div(
+            id_lien = ns("show_plot_data"),
+            label_lien = "Afficher les donn\u00e9es du graphe",
+            id_div = ns("plot_data"),
+            contenu_div = tagList(
+              withSpinner(
+                DTOutput(ns("table_plot"))
+              )
             )
           )
         )
-      )
-    ),
-    fluidRow(column(
-      width = 12,
-      lien_afficher_cacher_div(
-        id_lien = ns("show_raw_data"),
-        label_lien = "Afficher les donn\u00e9es brutes",
-        id_div = ns("raw_data"),
-        contenu_div = tagList(
-          withSpinner(
-            DTOutput(ns("table_raw"))
+      ),
+      fluidRow(column(
+        width = 12,
+        lien_afficher_cacher_div(
+          id_lien = ns("show_raw_data"),
+          label_lien = "Afficher les donn\u00e9es brutes",
+          id_div = ns("raw_data"),
+          contenu_div = tagList(
+            withSpinner(
+              DTOutput(ns("table_raw"))
+            )
           )
         )
-      )
-    ))
+      ))
+    )
   )
 }
 
@@ -77,6 +85,10 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_l
     observe(updateSelectizeInput(session, "parkings_to_plot", choices = unique(r6$cleaned_data$nom), server = TRUE))
     # observeEvent(input$pause, browser())
 
+    observeEvent(input$show_hide_panel, {
+      toggle(id = "show_results", anim = TRUE)
+    })
+
     output$plot <- renderGirafe({
       input$maj
 
@@ -86,9 +98,11 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_l
 
       r6$aggregated_data_by_some_time_unit$nom[is.na(r6$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
 
-      gg <- r6$timeseries_plot_1_period(parkings_to_plot = isolate(unique(parkings_list()$ident[parkings_list()$nom %in% input$parkings_to_plot])),
-                                        timeStep = r6$timeStep,
-                                        app_theme = app_theme())
+      gg <- r6$timeseries_plot_1_period(
+        parkings_to_plot = isolate(unique(parkings_list()$ident[parkings_list()$nom %in% input$parkings_to_plot])),
+        timeStep = r6$timeStep,
+        app_theme = app_theme()
+      )
 
       x <- girafe(
         ggobj = gg, width_svg = 8, height_svg = 5,
