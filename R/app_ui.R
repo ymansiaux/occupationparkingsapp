@@ -56,11 +56,11 @@ golem_add_external_resources <- function() {
   add_resource_path(
     "www", app_sys("app/www")
   )
-
+  
   golem::use_internal_file(path = system.file("shiny/www", "datalab-logo-lightmode.png", package = "bdxmetroidentity"))
   golem::use_internal_file(path = system.file("shiny/www", "datalab-logo-darkmode.png", package = "bdxmetroidentity"))
-
-
+  
+  
   tags$head(
     favicon(),
     bundle_resources(

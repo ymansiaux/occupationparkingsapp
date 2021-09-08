@@ -22,12 +22,11 @@ Occupation <- R6::R6Class(
     #' @param rangeStep rangeStep
     #' @param timeStep timeStep
     #' @param plageHoraire plageHoraire
-    #' @param localisation_parking localisation_parking
-    #' @param parc_relais parc_relais
+    #' @param parkings_list liste des parkings analyses
     #' @return A new `Occupation` object.
     
-    initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, timeStep = NULL, plageHoraire = NULL, localisation_parking, parc_relais) {
-      super$initialize(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais)
+    initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, timeStep = NULL, plageHoraire = NULL, parkings_list = NULL) {
+      super$initialize(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, parkings_list)
     },
     
     #' @description

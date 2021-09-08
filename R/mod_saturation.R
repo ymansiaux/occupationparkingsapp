@@ -18,10 +18,10 @@ mod_saturation_ui <- function(id) {
           column(
             width = 12,
             radioButtons(ns("timestep"), "Unit\u00e9 de temps",
-              choices = c("Semaine", "Mois"),
-              inline = TRUE
+                         choices = c("Semaine", "Mois"),
+                         inline = TRUE
             ),
-
+            
             # Sélection d'une semaine
             hidden_div(
               id_div = ns("selection_timestep_week"),
@@ -34,7 +34,7 @@ mod_saturation_ui <- function(id) {
                 ),
               )
             ),
-
+            
             # Sélection d'un mois
             hidden_div(
               id_div = ns("selection_timestep_month"),
@@ -47,6 +47,23 @@ mod_saturation_ui <- function(id) {
                 )
               )
             ),
+            
+            checkboxInput(inputId = ns("select_custom_parkings_list"),
+                          label = "S\u00e9lectionner manuellement des parkings"),
+            
+            hidden_div(
+              id_div = ns("selection_custom_parkings_list"),
+              contenu_div = tagList(
+                selectizeInput(
+                  inputId = ns("custom_parkings_list"),
+                  label = "Parkings \u00e0 analyser",
+                  choices = NULL,
+                  multiple = TRUE,
+                  options = list(deselectBehavior = "top")
+                ),
+              )
+            ),
+            
             h4("D\u00e9finition de la saturation :"),
             sliderInput(inputId = ns("seuil_saturation"), "Seuil de saturation (%)", min = 0, max = 100, value = 90, step = 5),
             sliderInput(inputId = ns("nb_heures_journalieres_saturation"), "Nb heures / j de saturation", min = 0, max = 23, value = 3, step = 1),
@@ -74,16 +91,16 @@ mod_saturation_ui <- function(id) {
 #' saturation Server Functions
 #'
 #' @noRd
-mod_saturation_server <- function(id, app_theme) {
+mod_saturation_server <- function(id, app_theme, parkings_list) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
+    
     ids_list <- list(
       "Semaine" = "selection_timestep_week",
       "Mois" = "selection_timestep_month"
     )
-
-
+    
+    
     # En fonction de la fenetre temporelle selectionnee, on affiche le selecteur de date approprié et on masque les autres
     observeEvent(input$timestep, {
       # On recupere l'id à afficher
@@ -91,7 +108,7 @@ mod_saturation_server <- function(id, app_theme) {
       # On recupere les id à masquer
       hide_some_ids(ids = ids_list[!names(ids_list) == input$timestep])
     })
-
+    
     # si il manque un parametre on empeche l'utilisateur de lancer la requete
     observe({
       if (!isTruthy(input$selected_week)) {
@@ -100,53 +117,75 @@ mod_saturation_server <- function(id, app_theme) {
         enable("run_query")
       }
     })
-
-
+    
+    
+    observeEvent(input$select_custom_parkings_list, {
+      if (input$select_custom_parkings_list == TRUE) {
+        show("selection_custom_parkings_list")
+      } else {
+        hide("selection_custom_parkings_list")
+      }
+    })
+    
+    observe(updateSelectizeInput(session, "custom_parkings_list", choices = unique(parkings_list()$nom), server = TRUE))
+    
     
     # On cree la liste d'objets R6 Saturation
     list_of_Saturation <- list(
-      parc_relais = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, localisation_parking = NA, parc_relais = TRUE),
-      hypercentre = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, localisation_parking = "hypercentre", parc_relais = FALSE),
-      centre = Saturation$new(rangeStep = "hour",plageHoraire = 0:23, localisation_parking = "centre", parc_relais = FALSE),
-      peripherie = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, localisation_parking = "peripherie", parc_relais = FALSE)
+      parc_relais = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% NA & parkings$parc_relais == TRUE), "ident"]),
+      hypercentre = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "hypercentre" & parkings$parc_relais == FALSE), "ident"]),
+      centre = Saturation$new(rangeStep = "hour",plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "centre" & parkings$parc_relais == FALSE), "ident"]),
+      peripherie = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "peripherie" & parkings$parc_relais == FALSE), "ident"]),
+      selection_personnalisee = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = NULL)
+      
     )
     # On appelle memoise pour activer le cache sur les resultats
     list_of_Saturation <- lapply(list_of_Saturation, function(.l) {
       .l$download_data_memoise <- memoise(.l$download_data) 
       .l
     })
-
-
+    
+    
     observeEvent(input$run_query, {
       xtradata_parameters <- reactive(
         switch(input$timestep,
-          "Semaine" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_week),
-          "Mois" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_month)
+               "Semaine" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_week),
+               "Mois" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_month)
         )
       )
-
-      observe({
-        list_of_Saturation <- lapply(list_of_Saturation, function(.l) {
-          .l$rangeStart <- xtradata_parameters()$rangeStart
-          .l$rangeEnd <- xtradata_parameters()$rangeEnd
-          .l$timeStep <- input$timestep
-          .l
-        }) 
-      })
-
-
+      
+      if(isTruthy(input$custom_parkings_list)) {
+        if("selection_personnalisee" %in% names(list_of_Saturation)) {
+          list_of_Saturation$selection_personnalisee$parkings_list <- parkings_list()[nom %in% input$custom_parkings_list][["ident"]]
+        } else {
+          list_of_Saturation$selection_personnalisee = Occupation$new(parkings_list = parkings_list()[nom %in% input$custom_parkings_list][["ident"]])
+        }
+      } else { # si la selection est nulle on vire la R6 custom selection de la liste des classes R6
+        list_of_Saturation <- list_of_Saturation[names(list_of_Saturation) != "selection_personnalisee"]
+      }
+      
+      
+      list_of_Saturation <- lapply(list_of_Saturation, function(.l) {
+        .l$rangeStart <- xtradata_parameters()$rangeStart
+        .l$rangeEnd <- xtradata_parameters()$rangeEnd
+        .l$timeStep <- input$timestep
+        .l
+      }) 
+      
+      
+      
       imap(list_of_Saturation, function(.x, .y) {
         mod_saturation_appel_WS_server(paste0("saturation_appel_WS_ui_", .y), r6 = .x)
         mod_saturation_clean_server(paste0("saturation_clean_ui_", .y),
-          r6 = .x,
-          seuil_saturation = input$seuil_saturation,
-          nb_heures_journalieres_saturation = input$nb_heures_journalieres_saturation,
-          nb_jours_hebdo_saturation = input$nb_jours_hebdo_saturation
+                                    r6 = .x,
+                                    seuil_saturation = input$seuil_saturation,
+                                    nb_heures_journalieres_saturation = input$nb_heures_journalieres_saturation,
+                                    nb_jours_hebdo_saturation = input$nb_jours_hebdo_saturation
         )
-        mod_saturation_graphe_server(paste0("saturation_graphe_ui_", .y), r6 = .x, app_theme = app_theme)
+        mod_saturation_graphe_server(paste0("saturation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings_list)
       })
-
-
+      
+      
       output$my_Saturation_UI <- renderUI({
         lapply(names(list_of_Saturation), function(.y) {
           tagList(

@@ -72,19 +72,19 @@ mod_saturation_graphe_ui <- function(id, title) {
 #' saturation_graphe Server Functions
 #'
 #' @noRd
-mod_saturation_graphe_server <- function(id, r6, app_theme = app_theme) {
+mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
   moduleServer(id, function(input, output, session) {
     observeEvent(input$pause, browser())
 
     observe({
       updateSelectizeInput(session, "selected_satured_parking1",
-        choices = unique(parkings$nom[parkings$ident %in% r6$parkings_satures$ident]),
-        selected = unique(parkings$nom[parkings$ident %in% r6$parkings_satures$ident])[1],
+        choices = unique(parkings_list()$nom[parkings_list()$ident %in% r6$parkings_satures$ident]),
+        selected = unique(parkings_list()$nom[parkings_list()$ident %in% r6$parkings_satures$ident])[1],
         server = TRUE
       )
       updateSelectizeInput(session, "selected_satured_parking2",
-        choices = unique(parkings$nom[parkings$ident %in% r6$parkings_satures$ident]),
-        selected = unique(parkings$nom[parkings$ident %in% r6$parkings_satures$ident])[1],
+        choices = unique(parkings_list()$nom[parkings_list()$ident %in% r6$parkings_satures$ident]),
+        selected = unique(parkings_list()$nom[parkings_list()$ident %in% r6$parkings_satures$ident])[1],
         server = TRUE
       )
     })
@@ -112,7 +112,7 @@ mod_saturation_graphe_server <- function(id, r6, app_theme = app_theme) {
 
 
       gg <- r6$calendar_heatmap(
-        selected_parking = unique(parkings$ident[parkings$nom %in% input$selected_satured_parking1]),
+        selected_parking = unique(parkings_list()$ident[parkings_list()$nom %in% input$selected_satured_parking1]),
         app_theme = app_theme()
       )
 
@@ -133,7 +133,7 @@ mod_saturation_graphe_server <- function(id, r6, app_theme = app_theme) {
       )
 
       gg <- r6$calendar_heatmap(
-        selected_parking = unique(parkings$ident[parkings$nom %in% input$selected_satured_parking2]),
+        selected_parking = unique(parkings_list()$ident[parkings_list()$nom %in% input$selected_satured_parking2]),
         app_theme = app_theme()
       )
 

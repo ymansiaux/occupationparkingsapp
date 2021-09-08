@@ -48,8 +48,7 @@ Create a new saturation object.
   rangeStep = NULL,
   timeStep = NULL,
   plageHoraire = NULL,
-  localisation_parking,
-  parc_relais
+  parkings_list = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -66,9 +65,7 @@ Create a new saturation object.
 
 \item{\code{plageHoraire}}{plageHoraire}
 
-\item{\code{localisation_parking}}{localisation_parking}
-
-\item{\code{parc_relais}}{parc_relais}
+\item{\code{parkings_list}}{liste des parkings analyses}
 }
 \if{html}{\out{</div>}}
 }

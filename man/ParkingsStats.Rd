@@ -19,9 +19,7 @@ utilisee ensuite par classe Occupation et Saturation
 
 \item{\code{plageHoraire}}{plage horaire des donnees à recup}
 
-\item{\code{localisation_parking}}{Secteur de localisation du parking (hypercentre, centre, peripherie, NA pour les parc relais)}
-
-\item{\code{parc_relais}}{Parc relais ou non (boolean)}
+\item{\code{parkings_list}}{liste des parkings analyses}
 
 \item{\code{data_xtradata}}{Données issues de l'appel au WS via la fonction download_data}
 
@@ -52,8 +50,7 @@ Create a new occupation object.
   rangeStep = NULL,
   timeStep = NULL,
   plageHoraire = NULL,
-  localisation_parking,
-  parc_relais
+  parkings_list = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -70,9 +67,7 @@ Create a new occupation object.
 
 \item{\code{plageHoraire}}{plageHoraire}
 
-\item{\code{localisation_parking}}{localisation_parking}
-
-\item{\code{parc_relais}}{parc_relais}
+\item{\code{parkings_list}}{liste des parkings analyses}
 }
 \if{html}{\out{</div>}}
 }
@@ -91,8 +86,7 @@ Interroge le WS aggregate
   rangeEnd,
   rangeStep,
   plageHoraire,
-  localisation_parking,
-  parc_relais
+  parkings_list
 )}\if{html}{\out{</div>}}
 }
 
@@ -107,9 +101,7 @@ Interroge le WS aggregate
 
 \item{\code{plageHoraire}}{plage horaire d'interet pour les donnees (filtre sur xtradata)}
 
-\item{\code{localisation_parking}}{filtre la localisation}
-
-\item{\code{parc_relais}}{boolean de selection des parcs relais}
+\item{\code{parkings_list}}{liste des parkings analyses}
 }
 \if{html}{\out{</div>}}
 }
