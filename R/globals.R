@@ -9,5 +9,5 @@ parametres_output_DT <- list(
 utils::globalVariables(c(
   "debut_donnees", "mytimezone", ".", ".SD", "ident",
   "linetype", "nom", "taux_occupation", "time", "tooltip",
-  "parkings", "parametres_output_DT", "etat"
+  "parkings", "parametres_output_DT", "etat", "type", "lwd"
 ))

@@ -20,13 +20,8 @@ ParkingsStats <- R6::R6Class(
     #' @field plageHoraire plage horaire des donnees à recup
     plageHoraire = 0:23,
     
+    #' @field parkings_list liste des parkings analyses
     parkings_list = NULL,
-    
-    #' @field localisation_parking Secteur de localisation du parking (hypercentre, centre, peripherie, NA pour les parc relais)
-    localisation_parking = "",
-    
-    #' @field parc_relais Parc relais ou non (boolean)
-    parc_relais = "",
     
     #' @field data_xtradata Données issues de l'appel au WS via la fonction download_data
     data_xtradata = NULL,
@@ -44,8 +39,7 @@ ParkingsStats <- R6::R6Class(
     #' @param rangeStep rangeStep
     #' @param timeStep timeStep
     #' @param plageHoraire plageHoraire
-    #' @param localisation_parking localisation_parking
-    #' @param parc_relais parc_relais
+    #' @param parkings_list liste des parkings analyses
     #' @return A new `Occupation` object.
     
     initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, timeStep = NULL, plageHoraire = NULL, parkings_list = NULL) {
@@ -65,8 +59,7 @@ ParkingsStats <- R6::R6Class(
     #' @param rangeEnd rangeEnd xtradata aggregate
     #' @param rangeStep rangeStep xtradata aggregate
     #' @param plageHoraire plage horaire d'interet pour les donnees (filtre sur xtradata)
-    #' @param localisation_parking filtre la localisation
-    #' @param parc_relais boolean de selection des parcs relais
+    #' @param parkings_list liste des parkings analyses
     #' @import data.table
     #' @importFrom xtradata xtradata_requete_aggregate
     download_data = function(rangeStart, rangeEnd, rangeStep, plageHoraire, parkings_list) {

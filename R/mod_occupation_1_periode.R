@@ -99,7 +99,7 @@ mod_occupation_1_periode_ui <- function(id) {
         ),
         
         checkboxInput(inputId = ns("select_custom_parkings_list"),
-                      label = "Sélectionner manuellement des parkings"),
+                      label = "S\u00e9lectionner manuellement des parkings"),
         
         hidden_div(
           id_div = ns("selection_custom_parkings_list"),

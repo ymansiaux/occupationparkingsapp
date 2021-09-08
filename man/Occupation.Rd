@@ -67,9 +67,7 @@ Create a new occupation object.
 
 \item{\code{plageHoraire}}{plageHoraire}
 
-\item{\code{localisation_parking}}{localisation_parking}
-
-\item{\code{parc_relais}}{parc_relais}
+\item{\code{parkings_list}}{liste des parkings analyses}
 }
 \if{html}{\out{</div>}}
 }
