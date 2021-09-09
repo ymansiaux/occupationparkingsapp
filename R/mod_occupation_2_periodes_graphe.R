@@ -20,7 +20,7 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title) {
     fluidRow(
       span(
         h4(title),
-        actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info")
+        actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info", style = "margin: 0 0 5% 0")
       )
     ),
     div(
@@ -45,11 +45,15 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title) {
         )
       ),
       fluidRow(
+        tags$span(
+          actionButton(inputId = ns("show_plot_data"), label = "Afficher / masquer les donn\u00e9es du graphe", class = "btn btn-warning", style = "margin: 0 0 5% 0"),
+          actionButton(inputId = ns("show_raw_data"), label = "Afficher / masquer les donn\u00e9es de la requ\u00eate", class = "btn btn-warning", style = "margin: 0 0 5% 0")
+        )
+      ),
+      fluidRow(
         column(
           width = 12,
-          lien_afficher_cacher_div(
-            id_lien = ns("show_plot_data"),
-            label_lien = "Afficher les donn\u00e9es du graphe",
+          hidden_div(
             id_div = ns("plot_data"),
             contenu_div = tagList(
               withSpinner(
@@ -58,22 +62,25 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title) {
             )
           )
         )
-      ),
-      fluidRow(column(
+      )
+    ),
+    fluidRow(
+      column(
         width = 12,
-        lien_afficher_cacher_div(
-          id_lien = ns("show_raw_data"),
-          label_lien = "Afficher les donn\u00e9es brutes",
+        hidden_div(
           id_div = ns("raw_data"),
           contenu_div = tagList(
-            withSpinner(
-              DTOutput(ns("table_raw"))
+            tagList(
+              withSpinner(
+                DTOutput(ns("table_raw"))
+              )
             )
           )
         )
-      ))
+      )
     )
   )
+  
 }
 
 #' occupation_graphe Server Functions
@@ -83,20 +90,20 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
   moduleServer(id, function(input, output, session) {
     observe(updateSelectizeInput(session, "parkings_to_plot", choices = unique(c(r6_1$cleaned_data$nom, r6_2$cleaned_data$nom)), server = TRUE))
     observeEvent(input$pause, browser())
-
+    
     observeEvent(input$show_hide_panel, {
       toggle(id = "show_results", anim = TRUE)
     })
-
+    
     output$plot <- renderGirafe({
       input$maj
-
+      
       validate(
         need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), "Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate")
       )
       r6_1$aggregated_data_by_some_time_unit$nom[is.na(r6_1$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       r6_2$aggregated_data_by_some_time_unit$nom[is.na(r6_2$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
-
+      
       gg <- r6_1$timeseries_plot_2_periods(
         data_occupation_1 = r6_1,
         data_occupation_2 = r6_2,
@@ -104,7 +111,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
         parkings_to_plot = isolate(unique(parkings_list()$ident[parkings_list()$nom %in% input$parkings_to_plot])),
         app_theme = app_theme()
       )
-
+      
       x <- girafe(
         ggobj = gg, width_svg = 8, height_svg = 5,
         pointsize = 15,
@@ -115,26 +122,26 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
       )
       x
     })
-
-
+    
+    
     onclick(
       "show_plot_data",
       toggle(id = "plot_data", anim = TRUE)
     )
-
+    
     onclick(
       "show_raw_data",
       toggle(id = "raw_data", anim = TRUE)
     )
-
-
+    
+    
     output$table_plot <- renderDT({
       input$maj
-
+      
       validate(
         need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), "Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate")
       )
-
+      
       r6_1$data_plot_2_periods %>%
         .[, `:=`(
           taux_occupation = round(taux_occupation, 1),
@@ -143,16 +150,16 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
         .[, tooltip := NULL] %>%
         .[, linetype := NULL] %>%
         datatable(.,
-          rownames = FALSE, caption = NULL,
-          extensions = "Buttons", options = parametres_output_DT
+                  rownames = FALSE, caption = NULL,
+                  extensions = "Buttons", options = parametres_output_DT
         )
     })
-
+    
     output$table_raw <- renderDT({
       validate(
         need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), "Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate")
       )
-
+      
       rbind(
         r6_1$cleaned_data %>%
           .[, `:=`(
@@ -167,8 +174,8 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
       ) %>%
         .[, etat := NULL] %>%
         datatable(.,
-          rownames = FALSE, caption = NULL,
-          extensions = "Buttons", options = parametres_output_DT
+                  rownames = FALSE, caption = NULL,
+                  extensions = "Buttons", options = parametres_output_DT
         )
     })
   })
