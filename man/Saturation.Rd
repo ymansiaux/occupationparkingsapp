@@ -6,22 +6,6 @@
 \description{
 va gérer la routine API / clean / plot / table / download
 }
-\examples{
-
-## ------------------------------------------------
-## Method `Saturation$filter_full_capacity_parkings`
-## ------------------------------------------------
-
-\dontrun{ temporal_aggregate("day")
-}
-
-## ------------------------------------------------
-## Method `Saturation$calendar_heatmap`
-## ------------------------------------------------
-
-\dontrun{ temporal_aggregate("day")
-}
-}
 \section{Super class}{
 \code{\link[occupationparkingsapp:ParkingsStats]{occupationparkingsapp::ParkingsStats}} -> \code{Saturation}
 }
@@ -38,6 +22,7 @@ d'occupation en nb d'heures par jour et nb de jours par semaine}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-new}{\code{Saturation$new()}}
 \item \href{#method-filter_full_capacity_parkings}{\code{Saturation$filter_full_capacity_parkings()}}
 \item \href{#method-calendar_heatmap}{\code{Saturation$calendar_heatmap()}}
 \item \href{#method-clone}{\code{Saturation$clone()}}
@@ -48,9 +33,45 @@ d'occupation en nb d'heures par jour et nb de jours par semaine}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="clean_output">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-clean_output}{\code{occupationparkingsapp::ParkingsStats$clean_output()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="download_data">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-download_data}{\code{occupationparkingsapp::ParkingsStats$download_data()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="occupationparkingsapp" data-topic="ParkingsStats" data-id="initialize">}\href{../../occupationparkingsapp/html/ParkingsStats.html#method-initialize}{\code{occupationparkingsapp::ParkingsStats$initialize()}}\out{</span>}
 }
 \out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+Create a new saturation object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Saturation$new(
+  rangeStart = NULL,
+  rangeEnd = NULL,
+  rangeStep = NULL,
+  timeStep = NULL,
+  plageHoraire = NULL,
+  parkings_list = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rangeStart}}{rangeStart}
+
+\item{\code{rangeEnd}}{rangeEnd}
+
+\item{\code{rangeStep}}{rangeStep}
+
+\item{\code{timeStep}}{timeStep}
+
+\item{\code{plageHoraire}}{plageHoraire}
+
+\item{\code{parkings_list}}{liste des parkings analyses}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A new `Saturation` object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-filter_full_capacity_parkings"></a>}}
@@ -78,15 +99,6 @@ par jour pendant au moins nb_jour_par_semaine_sature par semaine
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ temporal_aggregate("day")
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-calendar_heatmap"></a>}}
@@ -106,15 +118,6 @@ Realise une calendar heatmap des parkings les plus satures
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ temporal_aggregate("day")
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

@@ -6,36 +6,13 @@
 \description{
 va gérer la routine API / clean / plot / table / download
 }
-\examples{
-
-## ------------------------------------------------
-## Method `Occupation$mean_by_some_time_unit`
-## ------------------------------------------------
-
-\dontrun{ temporal_aggregate("day")
-}
-
-## ------------------------------------------------
-## Method `Occupation$timeseries_plot_1_period`
-## ------------------------------------------------
-
-\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
-}
-
-## ------------------------------------------------
-## Method `Occupation$timeseries_plot_2_periods`
-## ------------------------------------------------
-
-\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
-}
-}
 \section{Super class}{
 \code{\link[occupationparkingsapp:ParkingsStats]{occupationparkingsapp::ParkingsStats}} -> \code{Occupation}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{aggregated_data_by_some_time_unit}}{Données sur lesquelles on applique une fonction d'aggregation par unité de temps}
+\item{\code{aggregated_data_by_some_time_unit}}{Donnees sur lesquelles on applique une fonction d'aggregation par unité de temps}
 
 \item{\code{data_plot_1_period}}{donnée du graphique pour 1 seule période étudiée}
 
@@ -68,13 +45,12 @@ va gérer la routine API / clean / plot / table / download
 Create a new occupation object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Occupation$new(
-  rangeStart,
-  rangeEnd,
-  rangeStep,
-  timeStep,
-  plageHoraire,
-  localisation_parking,
-  parc_relais
+  rangeStart = NULL,
+  rangeEnd = NULL,
+  rangeStep = NULL,
+  timeStep = NULL,
+  plageHoraire = NULL,
+  parkings_list = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -91,9 +67,7 @@ Create a new occupation object.
 
 \item{\code{plageHoraire}}{plageHoraire}
 
-\item{\code{localisation_parking}}{localisation_parking}
-
-\item{\code{parc_relais}}{parc_relais}
+\item{\code{parkings_list}}{liste des parkings analyses}
 }
 \if{html}{\out{</div>}}
 }
@@ -120,15 +94,6 @@ Aggregation des données selon une fenetre temporelle
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ temporal_aggregate("day")
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-timeseries_plot_1_period"></a>}}
@@ -136,7 +101,7 @@ Aggregation des données selon une fenetre temporelle
 \subsection{Method \code{timeseries_plot_1_period()}}{
 Graphe de série temporelle
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_1_period(parkings_to_plot, app_theme)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_1_period(parkings_to_plot, timeStep, app_theme)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -144,19 +109,12 @@ Graphe de série temporelle
 \describe{
 \item{\code{parkings_to_plot}}{liste des parkings à afficher (parametre input shiny)}
 
+\item{\code{timeStep}}{pas de temps pour l'axe des x (heure, jour, wday, mois)}
+
 \item{\code{app_theme}}{theme de l'application (dark ou light)}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-timeseries_plot_2_periods"></a>}}
@@ -176,9 +134,9 @@ Graphe de série temporelle avec comparaison de 2 périodes
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data_occupation_1}}{données d'occupation de la période 1}
+\item{\code{data_occupation_1}}{donnees d'occupation de la période 1}
 
-\item{\code{data_occupation_2}}{données d'occupation de la période 2}
+\item{\code{data_occupation_2}}{donnees d'occupation de la période 2}
 
 \item{\code{timeStep}}{pas de temps pour l'axe des x (heure, jour, wday, mois)}
 
@@ -188,15 +146,6 @@ Graphe de série temporelle avec comparaison de 2 périodes
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
-}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

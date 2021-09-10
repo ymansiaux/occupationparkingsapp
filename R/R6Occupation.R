@@ -6,7 +6,7 @@ Occupation <- R6::R6Class(
   "Occupation",
   inherit = ParkingsStats,
   public = list(
-    #' @field aggregated_data_by_some_time_unit Données sur lesquelles on applique une fonction d'aggregation par unité de temps
+    #' @field aggregated_data_by_some_time_unit Donnees sur lesquelles on applique une fonction d'aggregation par unité de temps
     aggregated_data_by_some_time_unit = NULL,
 
     #' @field data_plot_1_period donnée du graphique pour 1 seule période étudiée
@@ -22,12 +22,11 @@ Occupation <- R6::R6Class(
     #' @param rangeStep rangeStep
     #' @param timeStep timeStep
     #' @param plageHoraire plageHoraire
-    #' @param localisation_parking localisation_parking
-    #' @param parc_relais parc_relais
+    #' @param parkings_list liste des parkings analyses
     #' @return A new `Occupation` object.
 
-    initialize = function(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais) {
-      super$initialize(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, localisation_parking, parc_relais)
+    initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, timeStep = NULL, plageHoraire = NULL, parkings_list = NULL) {
+      super$initialize(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, parkings_list)
     },
 
     #' @description
@@ -37,8 +36,7 @@ Occupation <- R6::R6Class(
     #' @param ... parametres additionels de floor_date
     #' @import data.table
     #' @importFrom lubridate floor_date
-    #' @examples \dontrun{ temporal_aggregate("day")
-    #' }
+
     mean_by_some_time_unit = function(time_unit, ...) {
       self$aggregated_data_by_some_time_unit <-
         rbind(
@@ -58,34 +56,37 @@ Occupation <- R6::R6Class(
     #' @description
     #' Graphe de série temporelle
     #' @param parkings_to_plot liste des parkings à afficher (parametre input shiny)
+    #' @param timeStep pas de temps pour l'axe des x (heure, jour, wday, mois)
     #' @param app_theme theme de l'application (dark ou light)
-    #' @importFrom ggplot2 ggplot aes geom_line scale_linetype_manual theme_minimal theme scale_color_manual
+    #' @importFrom ggplot2 ggplot aes geom_line scale_linetype_manual theme_minimal theme scale_color_manual scale_size_manual
     #' @importFrom ggiraph geom_line_interactive geom_point_interactive
     #' @importFrom glue glue_data
     #' @import data.table
     #' @importFrom bdxmetroidentity theme_bdxmetro scale_color_bdxmetro_discrete
     #'
-    #' @examples \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"))
-    #' }
-    timeseries_plot_1_period = function(parkings_to_plot, app_theme) {
+
+    timeseries_plot_1_period = function(parkings_to_plot, timeStep, app_theme) {
       self$data_plot_1_period <- self$aggregated_data_by_some_time_unit %>%
         copy() %>%
         .[ident %in% c(parkings_to_plot, "moyenne")] %>%
         .[, tooltip := as.character(
-          glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf('%.2f', taux_occupation)}")
+          glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf(\'%.2f\', taux_occupation)}")
         )] %>%
-        .[, linetype := fifelse(ident == "moyenne", "dotted", "solid")]
+        .[, linetype := fifelse(ident == "moyenne", "dotted", "solid")] %>%
+        .[, lwd := fifelse(ident == "moyenne", 1.5, 1)]
 
-      gg <- self$data_plot_1_period[ident %in% parkings_to_plot & ident != "moyenne"] %>%
-        ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group = nom, linetype = nom)) +
-        geom_line_interactive(aes(data_id = ident), lwd = 1) +
+      xlab <- switch(timeStep,
+        "Jour" = "Heure",
+        "Semaine" = "Jour",
+        "Mois" = "Jour",
+        "Ann\u00e9e" = "Mois"
+      )
+
+      gg <- self$data_plot_1_period %>%
+        ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group = nom, linetype = nom, size = nom)) +
+        geom_line_interactive(aes(data_id = ident)) +
         geom_point_interactive(aes(tooltip = tooltip, data_id = ident)) +
         theme_bdxmetro(app_theme) +
-        geom_line_interactive(
-          data = self$data_plot_1_period[ident == "moyenne"],
-          mapping = aes(x = time, y = taux_occupation, tooltip = tooltip, data_id = ident, group = nom, color = nom),
-          lwd = 1.5
-        ) +
         scale_linetype_manual(
           "Parking",
           values =
@@ -96,9 +97,19 @@ Occupation <- R6::R6Class(
               )
             )
         ) +
-        xlab("Heure") +
-        ylab("Taux d'occupation (%)") +
-        labs(color = "Parking", scale = "Parking") +
+        scale_size_manual(
+          "Parking",
+          values =
+            unlist(
+              with(
+                unique(self$data_plot_1_period[ident %in% c("moyenne", parkings_to_plot), c("nom", "lwd")]),
+                split(lwd, nom)
+              )
+            )
+        ) +
+        xlab(xlab) +
+        ylab("Taux d\'occupation (%)") +
+        labs(color = "Parking", size = "Parking", scale = "Parking") +
         scale_color_bdxmetro_discrete()
 
       gg
@@ -106,19 +117,18 @@ Occupation <- R6::R6Class(
 
     #' @description
     #' Graphe de série temporelle avec comparaison de 2 périodes
-    #' @param data_occupation_1 données d'occupation de la période 1
-    #' @param data_occupation_2 données d'occupation de la période 2
+    #' @param data_occupation_1 donnees d'occupation de la période 1
+    #' @param data_occupation_2 donnees d'occupation de la période 2
     #' @param timeStep pas de temps pour l'axe des x (heure, jour, wday, mois)
     #' @param parkings_to_plot liste des parkings à afficher (parametre input shiny)
     #' @param app_theme theme de l'application (dark ou light)
-    #' @importFrom ggplot2 ggplot aes geom_line scale_linetype_manual theme_minimal theme scale_color_manual
+    #' @importFrom ggplot2 ggplot aes geom_line scale_linetype_manual theme_minimal theme scale_color_manual scale_size_manual
     #' @importFrom ggiraph geom_line_interactive geom_point_interactive
     #' @importFrom glue glue_data
     #' @import data.table
-    #' @importFrom bdxmetroidentity theme_bdxmetro scale_color_bdxmetro_discrete
+    #' @importFrom bdxmetroidentity theme_bdxmetro scale_color_bdxmetro_discrete create_palette_bdxmetro
     #'
-    #' @examples \dontrun{ timeseries_plot(parkings_to_plot = c("A","B"), show_average = TRUE)
-    #' }
+
     timeseries_plot_2_periods = function(data_occupation_1, data_occupation_2, timeStep, parkings_to_plot, app_theme) {
       self$data_plot_2_periods <-
         rbind(
@@ -131,10 +141,12 @@ Occupation <- R6::R6Class(
             .[, nom := paste0(nom, "_periode2")]
         ) %>%
         .[, tooltip := as.character(
-          glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nTaux : {sprintf('%.2f', taux_occupation)}")
+          glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nTaux : {sprintf(\'%.2f\', taux_occupation)}")
         )] %>%
+        .[ident %in% c(parkings_to_plot, "moyenne")] %>%
         .[, linetype := fifelse(ident == "moyenne", "dotted", "solid")] %>%
-        .[ident %in% c(parkings_to_plot, "moyenne")]
+        .[, lwd := fifelse(ident == "moyenne", 1.5, 1)]
+
 
       # on va appliquer un format pour la date en fonction de l'unité de temps à appliquer (jour, semaine, mois, annee)
       # pour pouvoir aligner les 2 graphiques sur un axe des x identiques
@@ -161,16 +173,16 @@ Occupation <- R6::R6Class(
         xlab <- "Mois"
       }
 
-      gg <- self$data_plot_2_periods[ident %in% parkings_to_plot & ident != "moyenne"] %>%
-        ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group = nom, linetype = nom)) +
-        geom_line_interactive(aes(data_id = ident), lwd = 1) +
-        geom_point_interactive(aes(tooltip = tooltip, data_id = ident)) +
+      # if(length(parkings_to_plot) >3) browser()
+
+      mypal <- create_palette_bdxmetro("discrete")(length(unique(self$data_plot_2_periods$nom)))
+      names(mypal) <- unique(self$data_plot_2_periods$nom)
+
+      gg <- self$data_plot_2_periods %>%
+        ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group = nom, linetype = nom, size = nom)) +
+        geom_line_interactive(aes(data_id = nom)) +
+        geom_point_interactive(aes(tooltip = tooltip, data_id = nom)) +
         theme_bdxmetro(app_theme) +
-        geom_line_interactive(
-          data = self$data_plot_2_periods[ident == "moyenne"],
-          mapping = aes(x = time, y = taux_occupation, tooltip = tooltip, data_id = ident, group = nom, color = nom),
-          lwd = 1.5
-        ) +
         scale_linetype_manual(
           "Parking",
           values =
@@ -181,10 +193,22 @@ Occupation <- R6::R6Class(
               )
             )
         ) +
+        scale_size_manual(
+          "Parking",
+          values =
+            unlist(
+              with(
+                unique(self$data_plot_2_periods[ident %in% c("moyenne", parkings_to_plot), c("nom", "lwd")]),
+                split(lwd, nom)
+              )
+            )
+        ) +
+        scale_color_manual(
+          values = mypal
+        ) +
         xlab(xlab) +
-        ylab("Taux d'occupation (%)") +
-        labs(color = "Parking", scale = "Parking") +
-        scale_color_bdxmetro_discrete()
+        ylab("Taux d\'occupation (%)") +
+        labs(color = "Parking", size = "Parking", scale = "Parking")
 
       gg
     }

@@ -20,6 +20,3 @@ une liste de parametres
 \description{
 Calcule les parametres rangeStart, rangeEnd et rangeStep pour xtradata
 }
-\examples{
-occupation_compute_xtradata_request_parameters("Jour", "2021-04-01")
-}

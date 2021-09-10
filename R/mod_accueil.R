@@ -35,9 +35,9 @@ mod_accueil_ui <- function(id) {
     div("Ci-dessous des vid\u00e9os tuto pour prendre en main l\'application :"),
     tags$a(href = "https://www.loom.com/share/c5076fee3d654a46bcfb9cfe2314f1d7?sharedAppSource=personal_library", target = "_blank", "Pr\u00e9sentation de l\'appli"),
     br(),
-    tags$a(href = "https://www.loom.com/share/ecdd02d79c954ee199379c7e0dec5f7c?sharedAppSource=personal_library", target = "_blank", "Onglet Occupation - observer 1 p\u00e9riode"),
+    tags$a(href = "https://www.loom.com/share/ca777fde7545454bb025d571f4e49226", target = "_blank", "Onglet Occupation - observer 1 p\u00e9riode"),
     br(),
-    tags$a(href = "https://www.loom.com/share/e3a25466116c4efbbe511f23cdfd26c3?sharedAppSource=personal_library", target = "_blank", "Onglet Occupation - comparer 2 p\u00e9riodes"),
+    tags$a(href = "https://www.loom.com/share/fb13dd94385f431e8e1999fcf2afccd3", target = "_blank", "Onglet Occupation - comparer 2 p\u00e9riodes"),
     br(),
     tags$a(href = "https://www.loom.com/share/b457c0e8f8854ebd8c6ec1905153028b?sharedAppSource=personal_library", target = "_blank", "Onglet Saturation"),
     br()

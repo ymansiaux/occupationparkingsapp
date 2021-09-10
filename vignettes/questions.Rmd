@@ -86,5 +86,11 @@ Suite à ca on propose de modifier l'UI de la partie Occupation.
 1 sous-onglet : observer 1 période, 1 sous-onglet comparer 2 périodes
 
 
+# Réu 31/08/21 P. Mercé
+
+Necessité de l'ajout d'une fonctionnalité selection personnalisée
+On va repartir du petit widget deja fait pour la 1ere mouture de l'application
+
+
 
 

@@ -1,6 +1,6 @@
 Package: occupationparkingsapp
 Title: Occupations des parkings projet PMNSI 3264
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person('Yohann', 'Mansiaux', email = 'y.mansiaux@bordeaux-metropole.fr', role = c('cre', 'aut'))
 Description: Consultation des donnees parkings - appli + rapport.
 License: MIT + file LICENSE
@@ -15,6 +15,7 @@ Imports:
     golem,
     lubridate,
     magrittr,
+    memoise,
     pkgload,
     purrr,
     R6,
@@ -23,7 +24,8 @@ Imports:
     shinybusy,
     shinycssloaders,
     shinyjs,
-    xtradata
+    xtradata,
+    utils
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1

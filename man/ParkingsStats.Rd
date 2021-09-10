@@ -6,21 +6,6 @@
 \description{
 utilisee ensuite par classe Occupation et Saturation
 }
-\examples{
-
-## ------------------------------------------------
-## Method `ParkingsStats$download_data`
-## ------------------------------------------------
-
-\dontrun{}
-
-## ------------------------------------------------
-## Method `ParkingsStats$clean_output`
-## ------------------------------------------------
-
-\dontrun{ clean_output()
-}
-}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -34,13 +19,13 @@ utilisee ensuite par classe Occupation et Saturation
 
 \item{\code{plageHoraire}}{plage horaire des donnees à recup}
 
-\item{\code{localisation_parking}}{Secteur de localisation du parking (hypercentre, centre, peripherie, NA pour les parc relais)}
-
-\item{\code{parc_relais}}{Parc relais ou non (boolean)}
+\item{\code{parkings_list}}{liste des parkings analyses}
 
 \item{\code{data_xtradata}}{Données issues de l'appel au WS via la fonction download_data}
 
 \item{\code{cleaned_data}}{Données nettoyées}
+
+\item{\code{download_data_memoise}}{version optimisee (avec cache) de la fonction de telechargement sur xtradata}
 }
 \if{html}{\out{</div>}}
 }
@@ -60,13 +45,12 @@ utilisee ensuite par classe Occupation et Saturation
 Create a new occupation object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$new(
-  rangeStart,
-  rangeEnd,
-  rangeStep,
-  timeStep,
-  plageHoraire,
-  localisation_parking,
-  parc_relais
+  rangeStart = NULL,
+  rangeEnd = NULL,
+  rangeStep = NULL,
+  timeStep = NULL,
+  plageHoraire = NULL,
+  parkings_list = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -83,9 +67,7 @@ Create a new occupation object.
 
 \item{\code{plageHoraire}}{plageHoraire}
 
-\item{\code{localisation_parking}}{localisation_parking}
-
-\item{\code{parc_relais}}{parc_relais}
+\item{\code{parkings_list}}{liste des parkings analyses}
 }
 \if{html}{\out{</div>}}
 }
@@ -99,24 +81,30 @@ A new `Occupation` object.
 \subsection{Method \code{download_data()}}{
 Interroge le WS aggregate
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$download_data(rangeStep)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$download_data(
+  rangeStart,
+  rangeEnd,
+  rangeStep,
+  plageHoraire,
+  parkings_list
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{rangeStart}}{rangeStart xtradata aggregate}
+
+\item{\code{rangeEnd}}{rangeEnd xtradata aggregate}
+
 \item{\code{rangeStep}}{rangeStep xtradata aggregate}
+
+\item{\code{plageHoraire}}{plage horaire d'interet pour les donnees (filtre sur xtradata)}
+
+\item{\code{parkings_list}}{liste des parkings analyses}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{}
-}
-\if{html}{\out{</div>}}
-
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clean_output"></a>}}
@@ -126,15 +114,6 @@ Nettoyage de la sortie xtradata
 (application de lubridate et calcul du taux d'occup)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$clean_output()}\if{html}{\out{</div>}}
-}
-
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{ clean_output()
-}
-}
-\if{html}{\out{</div>}}
-
 }
 
 }
