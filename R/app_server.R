@@ -21,7 +21,7 @@ app_server <- function(input, output, session) {
   parkings_list <- xtradata_requete_features(
     key = "DATAZBOUBB",
     typename = "ST_PARK_P",
-    filter = list("connecte" = 1),
+    # filter = list("connecte" = 1),
     attributes = list("ident", "nom")
   ) %>%
     setDT() %>%

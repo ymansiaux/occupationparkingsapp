@@ -153,7 +153,9 @@ mod_saturation_server <- function(id, app_theme, parkings_list) {
         )
       )
 
+      # si on a sélectionné au moins 1 parking perso et que la case de selection est cochee
       if (isTruthy(input$custom_parkings_list) & input$select_custom_parkings_list == TRUE) {
+        # si l'objet R6 selection personnalisee existait deja dans la list_of_Saturation, on ecrase juste la selection de parkings perso, sinon cree l'objet
         if ("selection_personnalisee" %in% names(list_of_Saturation)) {
           list_of_Saturation$selection_personnalisee$parkings_list <- parkings_list()[nom %in% input$custom_parkings_list][["ident"]]
         } else {

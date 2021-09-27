@@ -43,7 +43,7 @@ mod_saturation_graphe_ui <- function(id, title) {
       fluidRow(
         column(
           width = 12,
-          hidden_div(id_div = ns("titi"),
+          hidden_div(id_div = ns("div_bouton_affichage_plot_data"),
                      contenu_div = 
                        tagList(actionButton(inputId = ns("show_plot_data"), label = "Afficher / masquer les donn\u00e9es du graphe", class = "btn btn-warning", style = "margin: 0 0 1em 0")
                        )
@@ -125,9 +125,9 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
       
       observe(
         if(nrow(r6$parkings_satures) >0) {
-          shinyjs::showElement("titi")
+          shinyjs::showElement("div_bouton_affichage_plot_data")
         } else {
-          shinyjs::hideElement("titi")
+          shinyjs::hideElement("div_bouton_affichage_plot_data")
         }
         
       )
