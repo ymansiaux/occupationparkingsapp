@@ -63,6 +63,9 @@ ParkingsStats <- R6::R6Class(
     #' @import data.table
     #' @importFrom xtradata xtradata_requete_aggregate
     download_data = function(rangeStart, rangeEnd, rangeStep, plageHoraire, parkings_list) {
+      
+      if(length(parkings_list) == 1) parkings_list <- list(parkings_list)
+      
       download <- try(xtradata_requete_aggregate(
         key = "DATAZBOUBB",
         typename = "ST_PARK_P",
@@ -74,7 +77,7 @@ ParkingsStats <- R6::R6Class(
           "ident" =
             list(
               "$in" =
-                parkings_list # parkings[which(parkings$localisation_parking %in% localisation_parking & parkings$parc_relais == parc_relais), "ident"]
+                parkings_list
             )
         ),
         attributes = list("gid", "time", "nom", "libres", "total", "etat", "ident"),
