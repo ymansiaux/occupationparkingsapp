@@ -5,9 +5,16 @@ account: y.mansiaux
 server: rstudio-connect.bordeaux-it.fr
 hostUrl: https://rstudio-connect.bordeaux-it.fr/__api__
 appId: 18
+<<<<<<< Updated upstream
 bundleId: 65
 url: https://rstudio-connect.bordeaux-it.fr/occupationparkingsapp/
 when: 1630309534.97606
 lastSyncTime: 1630309534.97608
+=======
+bundleId: 68
+url: https://rstudio-connect.bordeaux-it.fr/occupationparkingsapp/
+when: 1631271892.79995
+lastSyncTime: 1631271892.79998
+>>>>>>> Stashed changes
 asMultiple: FALSE
 asStatic: FALSE
