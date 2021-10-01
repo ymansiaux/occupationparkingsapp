@@ -163,7 +163,7 @@ Occupation <- R6::R6Class(
         xlab <- "Jour de la semaine"
       } else if (timeStep == "Mois") {
         self$data_plot_2_periods <- self$data_plot_2_periods %>%
-          .[, time := factor(day(time))]
+          .[, time := factor(lubridate::day(time))]
 
         xlab <- "Jour du mois"
       } else {
