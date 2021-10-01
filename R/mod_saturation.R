@@ -131,11 +131,11 @@ mod_saturation_server <- function(id, app_theme, parkings_list) {
 
     # On cree la liste d'objets R6 Saturation
     list_of_Saturation <- list(
-      selection_personnalisee = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = NULL),
-      parc_relais = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% NA & parkings$parc_relais == TRUE), "ident"]),
-      hypercentre = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "hypercentre" & parkings$parc_relais == FALSE), "ident"]),
-      centre = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "centre" & parkings$parc_relais == FALSE), "ident"]),
-      peripherie = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "peripherie" & parkings$parc_relais == FALSE), "ident"])
+      # selection_personnalisee = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = NULL),
+      # parc_relais = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% NA & parkings$parc_relais == TRUE), "ident"]),
+      hypercentre = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "hypercentre" & parkings$parc_relais == FALSE), "ident"])#,
+      # centre = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "centre" & parkings$parc_relais == FALSE), "ident"]),
+      # peripherie = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "peripherie" & parkings$parc_relais == FALSE), "ident"])
     )
 
     # On appelle memoise pour activer le cache sur les resultats
@@ -181,7 +181,8 @@ mod_saturation_server <- function(id, app_theme, parkings_list) {
           r6 = .x,
           seuil_saturation = input$seuil_saturation,
           nb_heures_journalieres_saturation = input$nb_heures_journalieres_saturation,
-          nb_jours_hebdo_saturation = input$nb_jours_hebdo_saturation
+          nb_jours_hebdo_saturation = input$nb_jours_hebdo_saturation,
+          parkings_list = parkings_list
         )
         mod_saturation_graphe_server(paste0("saturation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings_list)
       })

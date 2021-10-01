@@ -94,19 +94,21 @@ ParkingsStats <- R6::R6Class(
     #' @description
     #' Nettoyage de la sortie xtradata
     #' (application de lubridate et calcul du taux d'occup)
+    #' @param parkings_list liste des parkings (permet de recup les noms des pkgs)
     #' @import data.table
     #' @importFrom lubridate as_datetime
 
-    clean_output = function() {
+    clean_output = function(parkings_list) {
       self$cleaned_data <- self$data_xtradata %>%
         as.data.table() %>%
         .[, type := NULL] %>%
+        .[, nom := NULL] %>% 
         .[, `:=`(
           time = as_datetime(time, tz = mytimezone),
           libres = as.integer(ceiling(libres))
         )] %>%
         .[, taux_occupation := 100 * pmax(0, 1 - (libres / total))] %>%
-        # merge(., unique(parkings[, c("nom", "ident")]), by = "ident") %>%
+        merge(., unique(parkings_list()[, c("nom", "ident")]), by = "ident") %>%
         setcolorder(neworder = "time")
     }
   )

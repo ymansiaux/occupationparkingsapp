@@ -17,12 +17,12 @@ mod_occupation_clean_ui <- function(id) {
 #' occupation_clean Server Functions
 #'
 #' @noRd
-mod_occupation_clean_server <- function(id, r6) {
+mod_occupation_clean_server <- function(id, r6, parkings_list) {
   moduleServer(id, function(input, output, session) {
     # ns <- session$ns
     # observe(browser())
     observe({
-      r6$clean_output()
+      r6$clean_output(parkings_list)
       r6$mean_by_some_time_unit(time_unit = r6$rangeStep)
     })
   })

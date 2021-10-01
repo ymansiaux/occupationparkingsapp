@@ -113,9 +113,16 @@ Interroge le WS aggregate
 Nettoyage de la sortie xtradata
 (application de lubridate et calcul du taux d'occup)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$clean_output()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ParkingsStats$clean_output(parkings_list)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{parkings_list}}{liste des parkings (permet de recup les noms des pkgs)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

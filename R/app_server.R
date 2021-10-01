@@ -29,10 +29,13 @@ app_server <- function(input, output, session) {
     .[order(nom)]
   
   parkings_list <- unique(
-    rbind(
-      parkings_list,
-      parkings[,c("ident","nom")]
-    )
+    as.data.table(
+      rbind(
+        parkings_list,
+        parkings[,c("ident","nom")]
+      )
+    ),
+    by = "ident"
   )
   
   

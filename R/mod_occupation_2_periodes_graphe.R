@@ -17,6 +17,7 @@
 mod_occupation_2_periodes_graphe_ui <- function(id, title) {
   ns <- NS(id)
   tagList(
+    # actionButton(inputId = ns("pause"), "Pause"),
     fluidRow(
       span(
         h4(title),

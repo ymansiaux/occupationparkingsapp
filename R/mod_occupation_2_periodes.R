@@ -315,7 +315,7 @@ mod_occupation_2_periodes_server <- function(id, app_theme, parkings_list) {
       # le module de nettoyage de l'output, et le module de création du graphique
       imap(c(list_of_Occupation1, list_of_Occupation2), function(.x, .y) {
         mod_occupation_appel_WS_server(paste0("occupation_2_periodes_appel_WS_ui_", .y), r6 = .x)
-        mod_occupation_clean_server(paste0("occupation_2_periodes_clean_ui_", .y), r6 = .x)
+        mod_occupation_clean_server(paste0("occupation_2_periodes_clean_ui_", .y), r6 = .x, parkings_list = parkings_list)
       })
 
       pmap(list(list_of_Occupation1, list_of_Occupation2, names(list_of_Occupation1)), function(.x, .y, .z) {

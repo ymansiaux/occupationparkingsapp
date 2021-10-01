@@ -268,7 +268,7 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
       # le module de nettoyage de l'output, et le module de création du graphique
       imap(list_of_Occupation, function(.x, .y) {
         mod_occupation_appel_WS_server(paste0("occupation_appel_WS_ui_", .y), r6 = .x)
-        mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x)
+        mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x, parkings_list = parkings_list)
         mod_occupation_1_periode_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings_list)
       })
 
