@@ -181,7 +181,8 @@ mod_saturation_server <- function(id, app_theme, parkings_list) {
           r6 = .x,
           seuil_saturation = input$seuil_saturation,
           nb_heures_journalieres_saturation = input$nb_heures_journalieres_saturation,
-          nb_jours_hebdo_saturation = input$nb_jours_hebdo_saturation
+          nb_jours_hebdo_saturation = input$nb_jours_hebdo_saturation,
+          parkings_list = parkings_list
         )
         mod_saturation_graphe_server(paste0("saturation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings_list)
       })

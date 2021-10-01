@@ -1,5 +1,5 @@
 mytimezone <- "Europe/Paris"
-debut_donnees <- as.Date("2020-03-01")
+debut_donnees <- as.Date("2020-04-01")
 
 parametres_output_DT <- list(
   buttons = list(list(extend = "excel", title = NULL)),

@@ -17,12 +17,12 @@ mod_saturation_clean_ui <- function(id) {
 #' saturation_clean Server Functions
 #'
 #' @noRd
-mod_saturation_clean_server <- function(id, r6, seuil_saturation, nb_heures_journalieres_saturation, nb_jours_hebdo_saturation) {
+mod_saturation_clean_server <- function(id, r6, seuil_saturation, nb_heures_journalieres_saturation, nb_jours_hebdo_saturation, parkings_list) {
   moduleServer(id, function(input, output, session) {
     # ns <- session$ns
     observe({
       if (isTruthy(r6$data_xtradata)) {
-        r6$clean_output()
+        r6$clean_output(parkings_list)
         r6$filter_full_capacity_parkings(seuil_saturation, nb_heures_journalieres_saturation, nb_jours_hebdo_saturation)
       }
     })
