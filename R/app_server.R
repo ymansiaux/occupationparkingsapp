@@ -19,7 +19,7 @@ app_server <- function(input, output, session) {
   
   # MAJ de la liste des parkings au demarrage
   parkings_list <- xtradata_requete_features(
-    key = "DATAZBOUBB",
+    key = Sys.getenv("XTRADATA_KEY"),
     typename = "ST_PARK_P",
     filter = list("connecte" = 1),
     attributes = list("ident", "nom")

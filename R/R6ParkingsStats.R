@@ -67,7 +67,7 @@ ParkingsStats <- R6::R6Class(
       if(length(parkings_list) == 1) parkings_list <- list(parkings_list)
       
       download <- try(xtradata_requete_aggregate(
-        key = "DATAZBOUBB",
+        key = Sys.getenv("XTRADATA_KEY"),
         typename = "ST_PARK_P",
         rangeStart = rangeStart,
         rangeEnd = rangeEnd,

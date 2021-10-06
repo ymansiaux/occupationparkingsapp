@@ -1,0 +1,13 @@
+name: occupationparkingspptest2
+title: occupationparkingspptest
+username: y.mansiaux
+account: y.mansiaux
+server: rstudio-connect.bordeaux-it.fr
+hostUrl: https://rstudio-connect.bordeaux-it.fr/__api__
+appId: 26
+bundleId: 76
+url: https://rstudio-connect.bordeaux-it.fr/content/26/
+when: 1633357847.31351
+lastSyncTime: 1633357847.31352
+asMultiple: FALSE
+asStatic: FALSE
