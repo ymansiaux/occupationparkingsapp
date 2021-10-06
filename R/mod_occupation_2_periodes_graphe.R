@@ -13,6 +13,7 @@
 #' @importFrom shinybm hidden_div lien_afficher_cacher_div
 #' @importFrom shinyjs show hide onclick toggle
 #' @importFrom shinycssloaders withSpinner
+#' @importFrom grDevices dev.off tiff
 
 mod_occupation_2_periodes_graphe_ui <- function(id, title) {
   ns <- NS(id)
@@ -42,7 +43,12 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title) {
             multiple = TRUE,
             options = list(maxItems = 5, placeholder = "Choisir au max 5 pkgs", deselectBehavior = "top")
           ),
-          actionButton(inputId = ns("maj"), "MAJ graphes et tableaux")
+          tags$div(
+            actionButton(inputId = ns("maj"), "MAJ graphes et tableaux", style = "margin: 0 0 5% 0")
+          ),
+          tags$div(
+            downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
+          )
         )
       ),
       fluidRow(
@@ -96,12 +102,16 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
       toggle(id = "show_results", anim = TRUE)
     })
     
-    output$plot <- renderGirafe({
+    
+    ### GRAPHE
+    
+    # Creation d'une reactive pour le graphique
+    graphique <- reactive({
+      
+      req(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata))
+      
       input$maj
       
-      validate(
-        need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), "Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate")
-      )
       r6_1$aggregated_data_by_some_time_unit$nom[is.na(r6_1$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       r6_2$aggregated_data_by_some_time_unit$nom[is.na(r6_2$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       
@@ -113,18 +123,42 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
         app_theme = app_theme()
       )
       
+      gg
+      
+    })
+    
+    # Affichage du graphe
+    output$plot <- renderGirafe({
+      
+      validate(
+        need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), "Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate")
+      )
+      
       x <- girafe(
-        ggobj = gg, width_svg = 8, height_svg = 5,
+        ggobj = graphique(), width_svg = 8, height_svg = 5,
         pointsize = 15,
         options = list(
           opts_hover_inv(css = "opacity:0.1;"),
-          opts_hover(css = "stroke-width:2;")
+          opts_hover(css = "stroke-width:2;"),
+          opts_toolbar(saveaspng = FALSE)
         )
       )
       x
     })
     
+    # Telechargement du graphe
+    output$down <- downloadHandler(
+      filename =  function() {
+        "graphique.tiff"
+      },
+      content = function(file) {
+        tiff(file, units="in", width=8, height=5, res=300)
+        print(graphique())
+        dev.off() 
+      } 
+    )
     
+    ### TABLEAU
     onclick(
       "show_plot_data",
       toggle(id = "plot_data", anim = TRUE)
