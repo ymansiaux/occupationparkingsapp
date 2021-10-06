@@ -22,7 +22,7 @@ mod_occupation_1_periode_ui <- function(id) {
         width = 2,
         # actionButton(ns("pause"), "Pause"),
         radioButtons(ns("timestep"), "Unit\u00e9 de temps",
-          choices = c("Jour", "Semaine", "Mois", "Ann\u00e9e"),
+          choices = c("Jour", "Semaine", "Mois"),#, "Ann\u00e9e"),
           inline = TRUE
         ),
 

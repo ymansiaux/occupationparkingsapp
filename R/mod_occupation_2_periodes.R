@@ -20,7 +20,7 @@ mod_occupation_2_periodes_ui <- function(id) {
       sidebarPanel(
         width = 2,
         radioButtons(ns("timestep"), "Unit\u00e9 de temps",
-          choices = c("Jour", "Semaine", "Mois", "Ann\u00e9e"),
+          choices = c("Jour", "Semaine", "Mois"),#, "Ann\u00e9e"),
           inline = TRUE
         ),
 
