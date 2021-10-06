@@ -1,5 +1,5 @@
 library(testthat)
-# a <- xtradata_requete_aggregate(key = "DATAZBOUBB", typename = "ST_PARK_P", rangeStart = res$rangeStart, rangeEnd = res$rangeEnd, rangeStep = res$rangeStep, filter = list("ident"="CUBPK88"))
+# a <- xtradata_requete_aggregate(key = Sys.getenv("XTRADATA_KEY"), typename = "ST_PARK_P", rangeStart = res$rangeStart, rangeEnd = res$rangeEnd, rangeStep = res$rangeStep, filter = list("ident"="CUBPK88"))
 # tail(sort(a$time))
 
 test_that("Test du jour suivant OK", {

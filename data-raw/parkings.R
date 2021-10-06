@@ -37,7 +37,7 @@ library(dplyr)
 library(xtradata)
 
 parkings_relais <- xtradata_requete_features(
-  key = "DATAZBOUBB",
+  key = Sys.getenv("XTRADATA_KEY"),
   typename = "ST_PARK_P",
   crs = "epsg:4326",
   filter = list("ta_titul" = 0),
@@ -67,7 +67,7 @@ parkings <- bind_rows(
 )
 
 noms_des_parkings <- xtradata_requete_features(
-  key = "DATAZBOUBB",
+  key = Sys.getenv("XTRADATA_KEY"),
   typename = "ST_PARK_P",
   crs = "epsg:4326",
   attributes = list("ident", "nom")
