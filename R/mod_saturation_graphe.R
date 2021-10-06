@@ -30,6 +30,9 @@ mod_saturation_graphe_ui <- function(id, title) {
           selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
           withSpinner(
             girafeOutput(ns("plot"))
+          ),
+          tags$div(
+            downloadButton(outputId = ns("down"), label = "Télécharger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
           )
         ),
         column(
@@ -37,6 +40,9 @@ mod_saturation_graphe_ui <- function(id, title) {
           selectizeInput(ns("selected_satured_parking2"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
           withSpinner(
             girafeOutput(ns("plot2"))
+          ),
+          tags$div(
+            downloadButton(outputId = ns("down2"), label = "Télécharger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
           )
         )
       ),
@@ -112,11 +118,42 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
         girafe_sizing$width_svg <- 10
         girafe_sizing$height_svg <- 9
       } else {
-        girafe_sizing$width_svg <- 12
-        girafe_sizing$height_svg <- 6
+        girafe_sizing$width_svg <- 8
+        girafe_sizing$height_svg <- 5
       }
     })
     
+    
+    ### GRAPHE
+    
+    # Creation d'une reactive pour le graphique
+    graphique1 <- reactive({
+      req(isTruthy(r6$data_xtradata))
+      req(nrow(r6$parkings_satures) > 0)
+      
+      gg <- r6$calendar_heatmap(
+        selected_parking = unique(parkings_list()$ident[parkings_list()$nom %in% input$selected_satured_parking1]),
+        app_theme = app_theme()
+      )
+      
+      gg
+      
+    })
+    
+    graphique2 <- reactive({
+      req(isTruthy(r6$data_xtradata))
+      req(nrow(r6$parkings_satures) > 0)
+      
+      gg <- r6$calendar_heatmap(
+        selected_parking = unique(parkings_list()$ident[parkings_list()$nom %in% input$selected_satured_parking2]),
+        app_theme = app_theme()
+      )
+      
+      gg
+      
+    })
+    
+    # Affichage du graphe
     output$plot <- renderGirafe({
       validate(
         need(isTruthy(r6$data_xtradata), "Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate"),
@@ -132,20 +169,16 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
         
       )
       
-      gg <- r6$calendar_heatmap(
-        selected_parking = unique(parkings_list()$ident[parkings_list()$nom %in% input$selected_satured_parking1]),
-        app_theme = app_theme()
-      )
-      
-      
       x <- girafe(
-        ggobj = gg, width_svg = girafe_sizing$width_svg, height_svg = girafe_sizing$height_svg,
+        ggobj = graphique1(), width_svg = girafe_sizing$width_svg, height_svg = girafe_sizing$height_svg,
+        pointsize = 15,
         options = list(
           opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
         )
       )
       x
     })
+    
     
     output$plot2 <- renderGirafe({
       validate(
@@ -153,13 +186,9 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
         need(nrow(r6$parkings_satures) > 0, "Aucun parking ne remplit les crit\u00e8res d\u00e9finis")
       )
       
-      gg <- r6$calendar_heatmap(
-        selected_parking = unique(parkings_list()$ident[parkings_list()$nom %in% input$selected_satured_parking2]),
-        app_theme = app_theme()
-      )
-      
       x <- girafe(
-        ggobj = gg, width_svg = girafe_sizing$width_svg, height_svg = girafe_sizing$height_svg,
+        ggobj = graphique2(), width_svg = girafe_sizing$width_svg, height_svg = girafe_sizing$height_svg,
+        pointsize = 15,
         options = list(
           opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
         )
@@ -167,7 +196,31 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
       x
     })
     
+    # Telechargement du graphe
+    output$down <- downloadHandler(
+      filename =  function() {
+        "graphique.tiff"
+      },
+      content = function(file) {
+        tiff(file, units="in", width=8, height=5, res=300)
+        print(graphique1())
+        dev.off() 
+      } 
+    )
     
+    output$down2 <- downloadHandler(
+      filename =  function() {
+        "graphique.tiff"
+      },
+      content = function(file) {
+        tiff(file, units="in", width=8, height=5, res=300)
+        print(graphique2())
+        dev.off() 
+      } 
+    )
+    
+    
+    ### TABLEAU
     onclick(
       "show_plot_data",
       toggle(id = "plot_data", anim = TRUE)

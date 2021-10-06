@@ -42,7 +42,12 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
             multiple = TRUE,
             options = list(maxItems = 5, placeholder = "Choisir au max 5 pkgs", deselectBehavior = "top")
           ),
-          actionButton(inputId = ns("maj"), "MAJ graphes et tableaux")
+          tags$div(
+            actionButton(inputId = ns("maj"), "MAJ graphes et tableaux", style = "margin: 0 0 5% 0")
+          ),
+          tags$div(
+            downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
+          )
         )
       ),
       fluidRow(
@@ -95,12 +100,15 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_l
       toggle(id = "show_results", anim = TRUE)
     })
     
-    output$plot <- renderGirafe({
-      input$maj
+    
+    ### GRAPHE
+    
+    # Creation d'une reactive pour le graphique
+    graphique <- reactive({
       
-      validate(
-        need(isTruthy(r6$data_xtradata), "Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate")
-      )
+      req(isTruthy(r6$data_xtradata))
+      
+      input$maj
       
       r6$aggregated_data_by_some_time_unit$nom[is.na(r6$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       
@@ -110,17 +118,43 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_l
         app_theme = app_theme()
       )
       
+      gg
+      
+    })
+    
+    # Affichage du graphe
+    output$plot <- renderGirafe({
+      
+      validate(
+        need(isTruthy(r6$data_xtradata), "Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate")
+      )
+      
       x <- girafe(
-        ggobj = gg, width_svg = 8, height_svg = 5,
+        ggobj = graphique(), width_svg = 8, height_svg = 5,
         pointsize = 15,
         options = list(
           opts_hover_inv(css = "opacity:0.1;"),
-          opts_hover(css = "stroke-width:2;")
+          opts_hover(css = "stroke-width:2;"),
+          opts_toolbar(saveaspng = FALSE)
         )
       )
       x
     })
     
+    # Telechargement du graphe
+    output$down <- downloadHandler(
+      filename =  function() {
+        "graphique.tiff"
+      },
+      content = function(file) {
+        tiff(file, units="in", width=8, height=5, res=300)
+        print(graphique())
+        dev.off() 
+      } 
+    )
+    
+    
+    ### TABLEAU
     onclick(
       "show_plot_data",
       toggle(id = "plot_data", anim = TRUE)
