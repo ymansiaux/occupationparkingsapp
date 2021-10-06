@@ -13,6 +13,7 @@
 #' @importFrom shinybm hidden_div lien_afficher_cacher_div
 #' @importFrom shinyjs show hide onclick toggle
 #' @importFrom shinycssloaders withSpinner
+#' @importFrom grDevices dev.off tiff
 
 mod_occupation_2_periodes_graphe_ui <- function(id, title) {
   ns <- NS(id)
@@ -46,7 +47,7 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title) {
             actionButton(inputId = ns("maj"), "MAJ graphes et tableaux", style = "margin: 0 0 5% 0")
           ),
           tags$div(
-            downloadButton(outputId = ns("down"), label = "Télécharger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
+            downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
           )
         )
       ),

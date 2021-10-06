@@ -13,7 +13,8 @@
 #' @importFrom shinybm hidden_div lien_afficher_cacher_div
 #' @importFrom shinyjs show hide onclick toggle
 #' @importFrom shinycssloaders withSpinner
-#'
+#' @importFrom grDevices dev.off tiff
+
 mod_occupation_1_periode_graphe_ui <- function(id, title) {
   ns <- NS(id)
   tagList(

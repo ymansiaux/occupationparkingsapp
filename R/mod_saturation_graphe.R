@@ -12,6 +12,7 @@
 #' @importFrom shinycssloaders withSpinner
 #' @importFrom DT datatable
 #' @importFrom shinybm hidden_div
+#' @importFrom grDevices dev.off tiff
 
 mod_saturation_graphe_ui <- function(id, title) {
   ns <- NS(id)
@@ -32,7 +33,7 @@ mod_saturation_graphe_ui <- function(id, title) {
             girafeOutput(ns("plot"))
           ),
           tags$div(
-            downloadButton(outputId = ns("down"), label = "Télécharger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
+            downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
           )
         ),
         column(
@@ -42,7 +43,7 @@ mod_saturation_graphe_ui <- function(id, title) {
             girafeOutput(ns("plot2"))
           ),
           tags$div(
-            downloadButton(outputId = ns("down2"), label = "Télécharger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
+            downloadButton(outputId = ns("down2"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
           )
         )
       ),
