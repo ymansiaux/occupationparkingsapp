@@ -110,7 +110,7 @@ mod_saturation_server <- function(id, app_theme, parkings_list) {
 
     # si il manque un parametre on empeche l'utilisateur de lancer la requete
     observe({
-      if (!isTruthy(input$selected_week)) {
+      if ((input$timestep == "Semaine" & !isTruthy(input$selected_week)) | (input$timestep == "Mois" & !isTruthy(input$selected_month))) {
         disable("run_query")
       } else {
         enable("run_query")
