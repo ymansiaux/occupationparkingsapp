@@ -31,6 +31,7 @@ occupation_compute_xtradata_request_parameters <- function(selected_timestep, se
     rangeStart <- ymd(paste0(selected_date, "0101"))
     rangeEnd <- add_with_rollback(rangeStart, years(1), roll_to_first = TRUE)
     rangeEnd <- as_date(ifelse(rangeEnd > Sys.Date(), Sys.Date(), rangeEnd))
+    if(rangeStart == "2020-01-01") rangeStart <- as.Date("2020-04-01")
     rangeStep <- "month"
   }
 
