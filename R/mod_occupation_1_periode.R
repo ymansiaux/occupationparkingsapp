@@ -22,14 +22,12 @@ mod_occupation_1_periode_ui <- function(id) {
         width = 2,
         # actionButton(ns("pause"), "Pause"),
         radioButtons(ns("timestep"), "Unit\u00e9 de temps",
-          choices = c("Jour", "Semaine", "Mois", "Ann\u00e9e"),
-          inline = TRUE
+                     choices = c("Jour", "Semaine", "Mois"),#, "Ann\u00e9e"),
+                     inline = TRUE
         ),
-
-        # Plage horaires des donnees
-        hidden_div(
-          id_div = ns("selection_plage_horaire"),
-          contenu_div = tagList(
+        
+        div(
+          tagList(
             radioButtons(
               inputId = ns("plage_horaire"),
               label = "Plage horaire",
@@ -47,7 +45,7 @@ mod_occupation_1_periode_ui <- function(id) {
             )
           )
         ),
-
+        
         # Sélection d'un jour
         hidden_div(
           id_div = ns("selection_timestep_day"),
@@ -60,7 +58,7 @@ mod_occupation_1_periode_ui <- function(id) {
             )
           )
         ),
-
+        
         # Sélection d'une semaine
         hidden_div(
           id_div = ns("selection_timestep_week"),
@@ -73,7 +71,7 @@ mod_occupation_1_periode_ui <- function(id) {
             ),
           )
         ),
-
+        
         # Sélection d'un mois
         hidden_div(
           id_div = ns("selection_timestep_month"),
@@ -86,7 +84,7 @@ mod_occupation_1_periode_ui <- function(id) {
             )
           )
         ),
-
+        
         # Sélection d'une année
         hidden_div(
           id_div = ns("selection_timestep_year"),
@@ -137,16 +135,16 @@ mod_occupation_1_periode_ui <- function(id) {
 mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
+    
     observeEvent(input$pause, browser())
-
+    
     ids_list <- list(
       "Jour" = "selection_timestep_day",
       "Semaine" = "selection_timestep_week",
       "Mois" = "selection_timestep_month",
       "Ann\u00e9e" = "selection_timestep_year"
     )
-
+    
     # En fonction de la fenetre temporelle selectionnee, on affiche le selecteur de date approprié et on masque les autres
     observeEvent(input$timestep, {
       # On recupere l'id à afficher
@@ -154,7 +152,7 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
       # On recupere les id à masquer
       hide_some_ids(ids = ids_list[!names(ids_list) == input$timestep])
     })
-
+    
     # Si on a omis de sélectionner une journee / une semaine d'interet, le bouton lancer la requete est non cliquable
     observe({
       if (input$timestep == "Jour") {
@@ -176,15 +174,6 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
       }
     })
 
-    # La selection de la plage horaire est pour l'instant dispo uniquement au sein d'une journée (pas pour semaine, mois, annee)
-    observeEvent(input$timestep, {
-      if (input$timestep == "Jour") {
-        show("selection_plage_horaire")
-      } else {
-        hide("selection_plage_horaire")
-      }
-    })
-
     observeEvent(input$plage_horaire, {
       if (input$plage_horaire == "Personnalis\u00e9e") {
         show("plage_horaire_personnalisee")
@@ -192,7 +181,7 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
         hide("plage_horaire_personnalisee")
       }
     })
-
+    
     observeEvent(input$select_custom_parkings_list, {
       if (input$select_custom_parkings_list == TRUE) {
         show("selection_custom_parkings_list")
@@ -200,23 +189,17 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
         hide("selection_custom_parkings_list")
       }
     })
-
+    
     observe(updateSelectizeInput(session, "custom_parkings_list", choices = unique(parkings_list()$nom), server = TRUE))
-
-
+    
+    
     plageHoraire <- reactive(
-      if (input$timestep == "Jour") {
-        switch(input$plage_horaire,
-          "Journ\u00e9e (8h-20h)" = 8:20,
-          "Nuit (20h-8h)" = c(0:7, 21:23),
-          "Personnalis\u00e9e" = input$plage_horaire_perso[1]:input$plage_horaire_perso[2]
-        )
-        # La selection de la plage horaire est pour l'instant dispo uniquement au sein d'une journée (pas pour semaine, mois, annee)
-      } else {
-        0:23
-      }
+      switch(input$plage_horaire,
+             "Journ\u00e9e (8h-20h)" = 8:20,
+             "Personnalis\u00e9e" = input$plage_horaire_perso[1]:input$plage_horaire_perso[2]
+      )
     )
-
+    
     # On cree la liste d'objets R6 Occupation
     list_of_Occupation <- list(
       selection_personnalisee = Occupation$new(parkings_list = NULL),
@@ -230,19 +213,19 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
       .l$download_data_memoise <- memoise(.l$download_data)
       .l
     })
-
-
+    
+    
     observeEvent(input$run_query, {
       # On calcule les parametres rangeStart, rangeEnd, rangeStep pour xtradata en fonction des inputs de l'utilisateur
       xtradata_parameters <- reactive(
         switch(input$timestep,
-          "Jour" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_day),
-          "Semaine" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_week),
-          "Mois" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_month),
-          "Ann\u00e9e" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_year)
+               "Jour" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_day),
+               "Semaine" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_week),
+               "Mois" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_month),
+               "Ann\u00e9e" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_year)
         )
       )
-
+      
       # on verifie si la liste des parkings est non nulle, auquel cas soit on ecrase la liste de l'element selection_personnalisee, ou alors on recree une instance R6 si elle n'existe plus
       if (isTruthy(input$custom_parkings_list) & input$select_custom_parkings_list == TRUE) {
         if ("selection_personnalisee" %in% names(list_of_Occupation)) {
@@ -253,17 +236,17 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
       } else { # si la selection est nulle on vire la R6 custom selection de la liste des classes R6
         list_of_Occupation <- list_of_Occupation[names(list_of_Occupation) != "selection_personnalisee"]
       }
-
+      
       list_of_Occupation <- lapply(list_of_Occupation, function(.l) {
         .l$rangeStart <- xtradata_parameters()$rangeStart
         .l$rangeEnd <- xtradata_parameters()$rangeEnd
         .l$rangeStep <- xtradata_parameters()$rangeStep
-        .l$timeStep <- input$timestep
+        .l$aggregation_unit <- xtradata_parameters()$aggregation_unit
         .l$plageHoraire <- plageHoraire()
-
+        
         .l
       })
-
+      
       # On appelle sur la liste de classes R6, les modules d'appel au WS pour récup les données,
       # le module de nettoyage de l'output, et le module de création du graphique
       imap(list_of_Occupation, function(.x, .y) {
@@ -271,7 +254,7 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
         mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x, parkings_list = parkings_list)
         mod_occupation_1_periode_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings_list)
       })
-
+      
       output$my_Occupation_UI <- renderUI({
         lapply(names(list_of_Occupation), function(.y) {
           tagList(

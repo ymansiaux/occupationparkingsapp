@@ -46,7 +46,7 @@ Create a new saturation object.
   rangeStart = NULL,
   rangeEnd = NULL,
   rangeStep = NULL,
-  timeStep = NULL,
+  aggregation_unit = NULL,
   plageHoraire = NULL,
   parkings_list = NULL
 )}\if{html}{\out{</div>}}
@@ -61,7 +61,7 @@ Create a new saturation object.
 
 \item{\code{rangeStep}}{rangeStep}
 
-\item{\code{timeStep}}{timeStep}
+\item{\code{aggregation_unit}}{aggregation_unit}
 
 \item{\code{plageHoraire}}{plageHoraire}
 
