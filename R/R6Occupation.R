@@ -60,7 +60,7 @@ Occupation <- R6::R6Class(
     #' @param app_theme theme de l'application (dark ou light)
     #' @importFrom ggplot2 ggplot aes geom_line scale_linetype_manual theme_minimal theme scale_color_manual scale_size_manual
     #' @importFrom ggiraph geom_line_interactive geom_point_interactive
-    #' @importFrom glue glue_data
+    #' @importFrom glue glue_data glue
     #' @import data.table
     #' @importFrom bdxmetroidentity theme_bdxmetro scale_color_bdxmetro_discrete
     #'
@@ -81,6 +81,8 @@ Occupation <- R6::R6Class(
         "Mois" = "Jour",
         "Ann\u00e9e" = "Mois"
       )
+      
+      # browser()
 
       gg <- self$data_plot_1_period %>%
         ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group = nom, linetype = nom, size = nom)) +
@@ -109,7 +111,11 @@ Occupation <- R6::R6Class(
         ) +
         xlab(xlab) +
         ylab("Taux d\'occupation (%)") +
-        labs(color = "Parking", size = "Parking", scale = "Parking") +
+        labs(color = "Parking",
+             size = "Parking",
+             scale = "Parking",
+             subtitle = glue("Période étudiée : {min(self$data_plot_1_period$time)}-{max(self$data_plot_1_period$time)}"),
+             caption = glue("Période étudiée : {min(self$data_plot_1_period$time)}-{max(self$data_plot_1_period$time)}")) +
         scale_color_bdxmetro_discrete()
 
       gg
