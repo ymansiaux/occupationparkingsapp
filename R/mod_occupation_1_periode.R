@@ -241,7 +241,7 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
         .l$rangeStart <- xtradata_parameters()$rangeStart
         .l$rangeEnd <- xtradata_parameters()$rangeEnd
         .l$rangeStep <- xtradata_parameters()$rangeStep
-        .l$timeStep <- input$timestep
+        .l$aggregation_unit <- xtradata_parameters()$aggregation_unit
         .l$plageHoraire <- plageHoraire()
         
         .l

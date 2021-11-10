@@ -15,7 +15,7 @@ utilisee ensuite par classe Occupation et Saturation
 
 \item{\code{rangeStep}}{Pas d'aggregation pour requete xtradata}
 
-\item{\code{timeStep}}{Fenetre de temps de restitution des graphes (heure, jour, jour de la semaine, mois)}
+\item{\code{aggregation_unit}}{Unite de temps d'aggregation des donnees xtradata (notamment pour l'affichage dans les graphes)}
 
 \item{\code{plageHoraire}}{plage horaire des donnees à recup}
 
@@ -48,7 +48,7 @@ Create a new occupation object.
   rangeStart = NULL,
   rangeEnd = NULL,
   rangeStep = NULL,
-  timeStep = NULL,
+  aggregation_unit = NULL,
   plageHoraire = NULL,
   parkings_list = NULL
 )}\if{html}{\out{</div>}}
@@ -63,7 +63,7 @@ Create a new occupation object.
 
 \item{\code{rangeStep}}{rangeStep}
 
-\item{\code{timeStep}}{timeStep}
+\item{\code{aggregation_unit}}{aggregation_unit}
 
 \item{\code{plageHoraire}}{plageHoraire}
 

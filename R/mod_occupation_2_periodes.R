@@ -263,6 +263,7 @@ mod_occupation_2_periodes_server <- function(id, app_theme, parkings_list) {
         )
       )
       
+      
       # on verifie si la liste des parkings est non nulle, auquel cas soit on ecrase la liste de l'element selection_personnalisee, ou alors on recree une instance R6 si elle n'existe plus
       if (isTruthy(input$custom_parkings_list) & input$select_custom_parkings_list == TRUE) {
         if ("selection_personnalisee" %in% names(list_of_Occupation1)) {
@@ -281,7 +282,7 @@ mod_occupation_2_periodes_server <- function(id, app_theme, parkings_list) {
         .l$rangeStart <- xtradata_parameters$periode1$rangeStart
         .l$rangeEnd <- xtradata_parameters$periode1$rangeEnd
         .l$rangeStep <- xtradata_parameters$periode1$rangeStep
-        .l$timeStep <- input$timestep
+        .l$aggregation_unit <- xtradata_parameters$periode1$aggregation_unit
         .l$plageHoraire <- plageHoraire()
         .l
       })
@@ -290,7 +291,7 @@ mod_occupation_2_periodes_server <- function(id, app_theme, parkings_list) {
         .l$rangeStart <- xtradata_parameters$periode2$rangeStart
         .l$rangeEnd <- xtradata_parameters$periode2$rangeEnd
         .l$rangeStep <- xtradata_parameters$periode2$rangeStep
-        .l$timeStep <- input$timestep
+        .l$aggregation_unit <- xtradata_parameters$periode2$aggregation_unit
         .l$plageHoraire <- plageHoraire()
         .l
       })

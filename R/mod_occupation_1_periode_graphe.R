@@ -115,7 +115,7 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_l
       
       gg <- r6$timeseries_plot_1_period(
         parkings_to_plot = isolate(unique(parkings_list()$ident[parkings_list()$nom %in% input$parkings_to_plot])),
-        timeStep = r6$timeStep,
+        aggregation_unit = r6$aggregation_unit,
         app_theme = app_theme()
       )
       
