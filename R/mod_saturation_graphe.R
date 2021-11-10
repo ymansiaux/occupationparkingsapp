@@ -232,7 +232,7 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
       toggle(id = "raw_data", anim = TRUE)
     )
     
-    output$table_plot <- renderDT({
+    output$table_plot <- renderDT(server = FALSE, {
       validate(
         need(isTruthy(r6$data_xtradata), "Aucun tableau \u00e0 afficher - v\u00e9rifier la requ\u00eate")
       )
@@ -250,7 +250,7 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
         )
     })
     
-    output$table_raw <- renderDT({
+    output$table_raw <- renderDT(server = FALSE, {
       validate(
         need(isTruthy(r6$data_xtradata), "Aucun tableau \u00e0 afficher - v\u00e9rifier la requ\u00eate")
       )
