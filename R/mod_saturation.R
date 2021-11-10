@@ -169,7 +169,7 @@ mod_saturation_server <- function(id, app_theme, parkings_list) {
       list_of_Saturation <- lapply(list_of_Saturation, function(.l) {
         .l$rangeStart <- xtradata_parameters()$rangeStart
         .l$rangeEnd <- xtradata_parameters()$rangeEnd
-        .l$timeStep <- input$timestep
+        .l$aggregation_unit <- input$timestep
         .l
       })
 
