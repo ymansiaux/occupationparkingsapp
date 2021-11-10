@@ -23,7 +23,8 @@ mod_occupation_clean_server <- function(id, r6, parkings_list) {
     # observe(browser())
     observe({
       r6$clean_output(parkings_list)
-      r6$mean_by_some_time_unit(time_unit = r6$rangeStep)
+      #r6$mean_by_some_time_unit(time_unit = r6$rangeStep)
+      r6$mean_by_some_time_unit(time_unit = "day") ##### MODIFI !!!
     })
   })
 }
