@@ -114,7 +114,7 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
     girafe_sizing <- reactiveValues()
     
     observe({
-      if (r6$timeStep != "Semaine") {
+      if (r6$aggregation_unit != "Semaine") {
         # si on a un graphe restitué au mois
         girafe_sizing$width_svg <- 10
         girafe_sizing$height_svg <- 9
