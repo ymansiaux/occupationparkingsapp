@@ -184,6 +184,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
         )] %>%
         .[, tooltip := NULL] %>%
         .[, linetype := NULL] %>%
+        .[, lwd := NULL] %>%
         datatable(.,
                   rownames = FALSE, caption = NULL,
                   extensions = "Buttons", options = parametres_output_DT
