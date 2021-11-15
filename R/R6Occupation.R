@@ -184,7 +184,7 @@ Occupation <- R6::R6Class(
       }
       
       mypal <- create_palette_bdxmetro("discrete")(length(unique(self$data_plot_2_periods$nom)))
-      names(mypal) <- unique(self$data_plot_2_periods$nom)
+      names(mypal) <- sort(unique(self$data_plot_2_periods$nom))
       
 
       
