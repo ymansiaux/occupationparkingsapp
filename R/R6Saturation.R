@@ -19,13 +19,13 @@ Saturation <- R6::R6Class(
     #' @param rangeStart rangeStart
     #' @param rangeEnd rangeEnd
     #' @param rangeStep rangeStep
-    #' @param timeStep timeStep
+    #' @param aggregation_unit aggregation_unit
     #' @param plageHoraire plageHoraire
     #' @param parkings_list liste des parkings analyses
     #' @return A new `Saturation` object.
 
-    initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, timeStep = NULL, plageHoraire = NULL, parkings_list = NULL) {
-      super$initialize(rangeStart, rangeEnd, rangeStep, timeStep, plageHoraire, parkings_list)
+    initialize = function(rangeStart = NULL, rangeEnd = NULL, rangeStep = NULL, aggregation_unit = NULL, plageHoraire = NULL, parkings_list = NULL) {
+      super$initialize(rangeStart, rangeEnd, rangeStep, aggregation_unit, plageHoraire, parkings_list)
     },
 
     #' @description

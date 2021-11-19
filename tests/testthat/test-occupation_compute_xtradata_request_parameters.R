@@ -40,7 +40,7 @@ test_that("Test de l'année suivante OK", {
   res <- occupation_compute_xtradata_request_parameters("Année", day)
 
   expect_true(all(sapply(res, class) == c("Date", "Date", "character")))
-  expect_equal(res$rangeStart, as.Date("2020-01-01"))
+  expect_equal(res$rangeStart, as.Date("2020-04-01"))
 
   if (lubridate::year(Sys.Date()) == day) expect_equal(res$rangeEnd, Sys.Date())
   if (lubridate::year(Sys.Date()) != day) expect_equal(res$rangeEnd, as.Date("2021-01-01"))

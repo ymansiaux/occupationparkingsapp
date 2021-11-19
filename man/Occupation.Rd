@@ -48,7 +48,7 @@ Create a new occupation object.
   rangeStart = NULL,
   rangeEnd = NULL,
   rangeStep = NULL,
-  timeStep = NULL,
+  aggregation_unit = NULL,
   plageHoraire = NULL,
   parkings_list = NULL
 )}\if{html}{\out{</div>}}
@@ -63,7 +63,7 @@ Create a new occupation object.
 
 \item{\code{rangeStep}}{rangeStep}
 
-\item{\code{timeStep}}{timeStep}
+\item{\code{aggregation_unit}}{aggregation_unit}
 
 \item{\code{plageHoraire}}{plageHoraire}
 
@@ -101,7 +101,11 @@ Aggregation des données selon une fenetre temporelle
 \subsection{Method \code{timeseries_plot_1_period()}}{
 Graphe de série temporelle
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_1_period(parkings_to_plot, timeStep, app_theme)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_1_period(
+  parkings_to_plot,
+  aggregation_unit,
+  app_theme
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -109,7 +113,7 @@ Graphe de série temporelle
 \describe{
 \item{\code{parkings_to_plot}}{liste des parkings à afficher (parametre input shiny)}
 
-\item{\code{timeStep}}{pas de temps pour l'axe des x (heure, jour, wday, mois)}
+\item{\code{aggregation_unit}}{pas de temps pour l'axe des x (heure, jour, wday, mois)}
 
 \item{\code{app_theme}}{theme de l'application (dark ou light)}
 }
@@ -125,7 +129,7 @@ Graphe de série temporelle avec comparaison de 2 périodes
 \if{html}{\out{<div class="r">}}\preformatted{Occupation$timeseries_plot_2_periods(
   data_occupation_1,
   data_occupation_2,
-  timeStep,
+  aggregation_unit,
   parkings_to_plot,
   app_theme
 )}\if{html}{\out{</div>}}
@@ -138,7 +142,7 @@ Graphe de série temporelle avec comparaison de 2 périodes
 
 \item{\code{data_occupation_2}}{donnees d'occupation de la période 2}
 
-\item{\code{timeStep}}{pas de temps pour l'axe des x (heure, jour, wday, mois)}
+\item{\code{aggregation_unit}}{pas de temps pour l'axe des x (heure, jour, wday, mois)}
 
 \item{\code{parkings_to_plot}}{liste des parkings à afficher (parametre input shiny)}
 
