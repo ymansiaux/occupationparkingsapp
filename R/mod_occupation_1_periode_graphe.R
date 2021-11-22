@@ -32,7 +32,7 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
           withSpinner(
             girafeOutput(ns("plot"))
           )
-          # ,actionButton(inputId = ns("pause"), "pause")
+          ,actionButton(inputId = ns("pause"), "pause")
         ),
         column(
           width = 4,
@@ -95,7 +95,7 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
 mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_list) {
   moduleServer(id, function(input, output, session) {
     observe(updateSelectizeInput(session, "parkings_to_plot", choices = unique(r6$cleaned_data$nom), server = TRUE))
-    # observeEvent(input$pause, browser())
+    observeEvent(input$pause, browser())
     
     observeEvent(input$show_hide_panel, {
       toggle(id = "show_results", anim = TRUE)

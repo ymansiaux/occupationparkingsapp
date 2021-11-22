@@ -73,22 +73,28 @@ Occupation <- R6::R6Class(
           glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf(\'%.2f\', taux_occupation)}")
         )] %>%
         .[, linetype := fifelse(ident == "moyenne", "dotted", "solid")] %>%
-        .[, lwd := fifelse(ident == "moyenne", 1.5, 1)]
+        .[, lwd := fifelse(ident == "moyenne", 1.5, 1)]  %>% 
+        .[ident == "moyenne", nom := paste(nom, "secteur")] #%>% 
+      # .[ident == "moyenne", ident := paste(ident, "secteur")]
       
       xlab <- switch(aggregation_unit,
-                     "Jour" = "Heure",
-                     "Semaine" = "Jour",
-                     "Mois" = "Jour",
-                     "Ann\u00e9e" = "Mois"
-      )
+                     "hour" = "Heure",
+                     "day" = "Jour")
+      
+      date_labels_format <- switch(aggregation_unit,
+                                   "hour" = "%R",
+                                   "day" = "%a %d")
+      
+      legend_name <- "Occupation parking"
+      
       
       gg <- self$data_plot_1_period %>%
         ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group = nom, linetype = nom, size = nom)) +
         geom_line_interactive(aes(data_id = ident)) +
         geom_point_interactive(aes(tooltip = tooltip, data_id = ident)) +
+        scale_x_datetime(date_labels = date_labels_format) +
         theme_bdxmetro(app_theme) +
         scale_linetype_manual(
-          "Parking",
           values =
             unlist(
               with(
@@ -98,7 +104,6 @@ Occupation <- R6::R6Class(
             )
         ) +
         scale_size_manual(
-          "Parking",
           values =
             unlist(
               with(
@@ -109,9 +114,10 @@ Occupation <- R6::R6Class(
         ) +
         xlab(xlab) +
         ylab("Taux d\'occupation (%)") +
-        labs(color = "Parking",
-             size = "Parking",
-             scale = "Parking",
+        labs(color = legend_name,
+             size = legend_name,
+             linetype = legend_name,
+             scale = legend_name,
              caption = glue("Période étudiée : {min(self$data_plot_1_period$time)} - {max(self$data_plot_1_period$time)}")) +
         scale_color_bdxmetro_discrete() +
         theme(plot.caption = element_text(face="bold.italic", hjust = 0))
@@ -139,10 +145,12 @@ Occupation <- R6::R6Class(
           # on rajoute le suffixe _periode1 ou _periode2 pour distinguer les 2 dans la legende du graphe
           data_occupation_1$aggregated_data_by_some_time_unit %>%
             copy() %>%
-            .[, nom := paste0(nom, "_periode1")],
+            .[ident == "moyenne", nom := paste(nom, "secteur_periode1")] %>% 
+            .[ident != "moyenne", nom := paste0(nom, "_periode1")],
           data_occupation_2$aggregated_data_by_some_time_unit %>%
             copy() %>%
-            .[, nom := paste0(nom, "_periode2")]
+            .[ident == "moyenne", nom := paste(nom, "secteur_periode2")] %>% 
+            .[ident != "moyenne", nom := paste0(nom, "_periode2")]
         ) %>%
         .[, tooltip := as.character(
           glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nTaux : {sprintf(\'%.2f\', taux_occupation)}")
@@ -186,7 +194,8 @@ Occupation <- R6::R6Class(
       mypal <- create_palette_bdxmetro("discrete")(length(unique(self$data_plot_2_periods$nom)))
       names(mypal) <- sort(unique(self$data_plot_2_periods$nom))
       
-
+      legend_name <- "Occupation parking"
+      
       
       gg <- self$data_plot_2_periods %>%
         ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group = nom, linetype = nom, size = nom)) +
@@ -194,7 +203,6 @@ Occupation <- R6::R6Class(
         geom_point_interactive(aes(tooltip = tooltip, data_id = nom)) +
         theme_bdxmetro(app_theme) +
         scale_linetype_manual(
-          "Parking",
           values =
             unlist(
               with(
@@ -204,7 +212,6 @@ Occupation <- R6::R6Class(
             )
         ) +
         scale_size_manual(
-          "Parking",
           values =
             unlist(
               with(
@@ -218,9 +225,10 @@ Occupation <- R6::R6Class(
         ) +
         xlab(xlab) +
         ylab("Taux d\'occupation (%)") +
-        labs(color = "Parking", 
-             size = "Parking", 
-             scale = "Parking",
+        labs(color = legend_name,
+             size = legend_name,
+             linetype = legend_name,
+             scale = legend_name,
              caption = glue("Période 1 : {min(data_occupation_1$aggregated_data_by_some_time_unit$time)} - {max(data_occupation_1$aggregated_data_by_some_time_unit$time)}
                               Période 2 : {min(data_occupation_2$aggregated_data_by_some_time_unit$time)} - {max(data_occupation_2$aggregated_data_by_some_time_unit$time)}")
         ) +
