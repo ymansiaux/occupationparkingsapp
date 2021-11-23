@@ -17,17 +17,17 @@
 mod_saturation_graphe_ui <- function(id, title) {
   ns <- NS(id)
   tagList(
-    fluidRow(
-      sliderInput(ns("height"), "Height", min = 0, max = 20, value = 7),
-      sliderInput(ns("width"), "Width", min = 0, max = 20, value = 10),
-      sliderInput(ns("pointsize"), "Pointsize", min = 0, max = 20, value = 10)
-    ),
+    # fluidRow(
+    #   sliderInput(ns("height"), "Height", min = 0, max = 20, value = 7),
+    #   sliderInput(ns("width"), "Width", min = 0, max = 20, value = 10),
+    #   sliderInput(ns("pointsize"), "Pointsize", min = 0, max = 20, value = 10)
+    # ),
     fluidRow(
       span(
         h4(title),
         actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info", style = "margin: 0 0 5% 0"),
         # actionButton(ns("pause"),"Pause"),
-        )
+      )
     ),
     div(
       id = ns("show_results"),
@@ -123,10 +123,10 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
       if (r6$aggregation_unit != "Semaine") {
         # si on a un graphe restitué au mois
         girafe_sizing$width_svg <- 10
-        girafe_sizing$height_svg <- 9
+        girafe_sizing$height_svg <- 7
       } else {
-        girafe_sizing$width_svg <- 8
-        girafe_sizing$height_svg <- 5
+        girafe_sizing$width_svg <- 10
+        girafe_sizing$height_svg <- 7
       }
     })
     
@@ -177,8 +177,7 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
       )
       
       x <- girafe(
-        ggobj = graphique1(), width_svg = input$width, height_svg = input$height, pointsize = input$pointsize,#girafe_sizing$width_svg, height_svg = girafe_sizing$height_svg,
-        # pointsize = 15,
+        ggobj = graphique1(), width_svg = girafe_sizing$width_svg, height_svg = girafe_sizing$height_svg,
         options = list(
           opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
         )
@@ -194,8 +193,7 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
       )
       
       x <- girafe(
-        ggobj = graphique2(), width_svg = input$width, height_svg = input$height, pointsize = input$pointsize,#girafe_sizing$width_svg, height_svg = girafe_sizing$height_svg,
-        # pointsize = 15,
+        ggobj = graphique2(), width_svg = girafe_sizing$width_svg, height_svg = girafe_sizing$height_svg,
         options = list(
           opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
         )
