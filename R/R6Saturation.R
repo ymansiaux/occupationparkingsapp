@@ -64,7 +64,8 @@ Saturation <- R6::R6Class(
     #' @import data.table
     #' @importFrom ggplot2 ggplot ggtitle aes geom_tile scale_fill_distiller scale_y_continuous scale_x_date facet_wrap theme_minimal theme unit element_blank coord_equal element_text
     #' @importFrom ggiraph geom_tile_interactive
-    #' @importFrom glue glue_data
+    #' @importFrom glue glue_data glue
+    #' @importFrom ggtext element_markdown
     #' @import ggiraph
     #' @import ggplot2
     #' @importFrom bdxmetroidentity theme_bdxmetro
@@ -76,9 +77,6 @@ Saturation <- R6::R6Class(
         .[, `:=`(hours = lubridate::hour(time), date = as_date(time))] %>%
         .[, tooltip := glue_data(.SD, "Date : {as.character(time)}\nTaux : {sprintf('%.2f', taux_occupation)}")]
 
-      library(ggtext)
-      library(glue)
-      
       periode_etudiee <- glue("{format(min(self$data_plot$time), format = '%d/%m/%y')}-{format(max(self$data_plot$time), format = '%d/%m/%y')}")
       legend_label <- glue("**Saturation**<br>{unique(self$data_plot[ident %in% selected_parking, 'nom'])}<br><br>**Période**<br>{periode_etudiee}<br><br>**Taux d'occupation %**")
       
@@ -93,11 +91,11 @@ Saturation <- R6::R6Class(
                                                      barheight = unit(.75, "lines"))) +
         scale_x_continuous(breaks = 0:23) +
         scale_y_date(date_labels = "%a %d/%m", breaks = "2 days", expand = c(0, 0)) +
-        theme_bdxmetro(app_theme, axis_text_size = 11, axis_title_size = 11) +
+        theme_bdxmetro(app_theme, axis_text_size = 15, axis_title_size = 15) +
         theme(
           legend.position = "right",
           legend.direction = "horizontal",
-          legend.title = element_markdown(),
+          legend.title = element_markdown(size = 13),
           panel.grid = element_blank(),
           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
           axis.text.y = element_text(hjust = 1)
