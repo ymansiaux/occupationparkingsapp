@@ -77,7 +77,7 @@ A new `Saturation` object.
 \if{html}{\out{<a id="method-filter_full_capacity_parkings"></a>}}
 \if{latex}{\out{\hypertarget{method-filter_full_capacity_parkings}{}}}
 \subsection{Method \code{filter_full_capacity_parkings()}}{
-On garde les parkings satures. Càd les parkings avec un taux d'occupation
+On garde les parkings satures. Cad les parkings avec un taux d'occupation
 superieur à seuil_taux_occupation pendant au moins nb_heures_par_jour_satures
 par jour pendant au moins nb_jour_par_semaine_sature par semaine
 \subsection{Usage}{

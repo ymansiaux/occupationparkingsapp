@@ -1,4 +1,5 @@
 usethis::use_build_ignore("dev_history.R")
+usethis::use_build_ignore("renv_setup.R")
 usethis::use_build_ignore("deploy_to_RSPM.R")
 usethis::use_build_ignore("vignettes/occupationparkingsapp")
 usethis::use_build_ignore("vignettes/questions")
@@ -28,3 +29,7 @@ pkgload::load_all()
 golem::sanity_check()
 
 golem::run_dev()
+
+prefixer::show_nonascii_file()
+
+
