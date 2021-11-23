@@ -17,6 +17,8 @@ app_server <- function(input, output, session) {
   
   observe(closeWaiter_logoDatalab(golem::app_prod()))
   
+  data("parkings")
+  
   # MAJ de la liste des parkings au demarrage
   parkings_list <- xtradata_requete_features(
     key = Sys.getenv("XTRADATA_KEY"),

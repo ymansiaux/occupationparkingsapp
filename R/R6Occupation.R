@@ -81,7 +81,7 @@ Occupation <- R6::R6Class(
       xlab <- switch(aggregation_unit,
                      "hour" = "Heure",
                      "day" = "Jour")
-      print(self$plageHoraire)
+      
       date_labels_format <- switch(aggregation_unit,
                                    "hour" = "%R",
                                    "day" = "%a %d")

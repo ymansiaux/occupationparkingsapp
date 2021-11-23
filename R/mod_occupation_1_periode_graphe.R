@@ -32,7 +32,7 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
           withSpinner(
             girafeOutput(ns("plot"))
           )
-          ,actionButton(inputId = ns("pause"), "pause")
+          # ,actionButton(inputId = ns("pause"), "pause")
         ),
         column(
           width = 4,
