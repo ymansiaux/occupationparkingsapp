@@ -60,7 +60,9 @@ Occupation <- R6::R6Class(
     #' @param app_theme theme de l'application (dark ou light)
     #' @importFrom ggplot2 ggplot aes geom_line scale_linetype_manual theme_minimal theme scale_color_manual scale_size_manual
     #' @importFrom ggiraph geom_line_interactive geom_point_interactive
+    #' @importFrom lubridate hours as_date
     #' @importFrom glue glue_data glue
+    #' @importFrom ggtext element_markdown
     #' @import data.table
     #' @importFrom bdxmetroidentity theme_bdxmetro scale_color_bdxmetro_discrete
     #'
@@ -73,22 +75,39 @@ Occupation <- R6::R6Class(
           glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nVal : {sprintf(\'%.2f\', taux_occupation)}")
         )] %>%
         .[, linetype := fifelse(ident == "moyenne", "dotted", "solid")] %>%
-        .[, lwd := fifelse(ident == "moyenne", 1.5, 1)]
+        .[, lwd := fifelse(ident == "moyenne", 1.5, 1)]  %>% 
+        .[ident == "moyenne", nom := paste(nom, "secteur")] 
       
       xlab <- switch(aggregation_unit,
-                     "Jour" = "Heure",
-                     "Semaine" = "Jour",
-                     "Mois" = "Jour",
-                     "Ann\u00e9e" = "Mois"
+                     "hour" = "Heure",
+                     "day" = "Jour")
+      print(self$plageHoraire)
+      date_labels_format <- switch(aggregation_unit,
+                                   "hour" = "%R",
+                                   "day" = "%a %d")
+      date_labels_format_legend <- switch(aggregation_unit,
+                                          "hour" = c("%d/%m/%y "),
+                                          "day" = c("%d/%m/%y ")
       )
+      
+      periode_etudiee <- switch(aggregation_unit,
+                                "hour" = glue("{format(min(as_date(self$data_plot_1_period$time)), format = date_labels_format_legend[1])} \\
+                              ({min(self$plageHoraire)}:00-{max(self$plageHoraire)}:00)"),
+                                "day" = glue("{format(min(as_date(self$data_plot_1_period$time)), format = date_labels_format_legend[1])} \\
+                                - {format(max(as_date(self$data_plot_1_period$time)), format = date_labels_format_legend[1])} \\
+                              ({min(self$plageHoraire)}:00-{max(self$plageHoraire)}:00)")
+      )
+      
+      legend_label <- glue("**Occupation parking**<br><br>**Période**<br>{periode_etudiee}")
+      
       
       gg <- self$data_plot_1_period %>%
         ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group = nom, linetype = nom, size = nom)) +
         geom_line_interactive(aes(data_id = ident)) +
         geom_point_interactive(aes(tooltip = tooltip, data_id = ident)) +
+        scale_x_datetime(date_labels = date_labels_format) +
         theme_bdxmetro(app_theme) +
         scale_linetype_manual(
-          "Parking",
           values =
             unlist(
               with(
@@ -98,7 +117,6 @@ Occupation <- R6::R6Class(
             )
         ) +
         scale_size_manual(
-          "Parking",
           values =
             unlist(
               with(
@@ -109,12 +127,12 @@ Occupation <- R6::R6Class(
         ) +
         xlab(xlab) +
         ylab("Taux d\'occupation (%)") +
-        labs(color = "Parking",
-             size = "Parking",
-             scale = "Parking",
-             caption = glue("Période étudiée : {min(self$data_plot_1_period$time)} - {max(self$data_plot_1_period$time)}")) +
+        labs(color = legend_label,
+             size = legend_label,
+             linetype = legend_label,
+             scale = legend_label) +
         scale_color_bdxmetro_discrete() +
-        theme(plot.caption = element_text(face="bold.italic", hjust = 0))
+        theme(legend.title = element_markdown())
       
       gg
     },
@@ -139,10 +157,12 @@ Occupation <- R6::R6Class(
           # on rajoute le suffixe _periode1 ou _periode2 pour distinguer les 2 dans la legende du graphe
           data_occupation_1$aggregated_data_by_some_time_unit %>%
             copy() %>%
-            .[, nom := paste0(nom, "_periode1")],
+            .[ident == "moyenne", nom := paste(nom, "secteur_periode1")] %>% 
+            .[ident != "moyenne", nom := paste0(nom, "_periode1")],
           data_occupation_2$aggregated_data_by_some_time_unit %>%
             copy() %>%
-            .[, nom := paste0(nom, "_periode2")]
+            .[ident == "moyenne", nom := paste(nom, "secteur_periode2")] %>% 
+            .[ident != "moyenne", nom := paste0(nom, "_periode2")]
         ) %>%
         .[, tooltip := as.character(
           glue_data(.SD, "Date : {as.character(time)}\nnom : {nom}\nTaux : {sprintf(\'%.2f\', taux_occupation)}")
@@ -155,38 +175,56 @@ Occupation <- R6::R6Class(
       # pour pouvoir aligner les 2 graphiques sur un axe des x identiques
       # ex si données journalières du 15/07 et du 25/07, ggplot ne peut pas les aligner en fonction de l'heure par défaut
       if (aggregation_unit == "hour") {
-        
         self$data_plot_2_periods <- self$data_plot_2_periods %>%
           .[, time := strftime(time, "%H:%M")]
-        
         xlab <- "Heure"
         
-      } else if (aggregation_unit == "day"  & length(unique(as.Date(self$data_plot_2_periods$time))) %in% 7:14) {
-        
+      } else if (aggregation_unit == "day"  & length(unique(as.Date(self$data_plot_2_periods$time))) %in% 7:14) { # etude à la semaine
         self$data_plot_2_periods <- self$data_plot_2_periods %>%
           .[, time := factor(lubridate::wday(time, label = TRUE, week_start = 1))]
-        
         xlab <- "Jour de la semaine"
         
       } else if (aggregation_unit == "day") {
-        
         self$data_plot_2_periods <- self$data_plot_2_periods %>%
           .[, time := factor(lubridate::day(time))]
-        
         xlab <- "Jour du mois"
         
       } else {
-        
         self$data_plot_2_periods <- self$data_plot_2_periods %>%
           .[, time := factor(lubridate::month(time, label = TRUE, abbr = FALSE))]
-        
         xlab <- "Mois"
       }
       
       mypal <- create_palette_bdxmetro("discrete")(length(unique(self$data_plot_2_periods$nom)))
       names(mypal) <- sort(unique(self$data_plot_2_periods$nom))
       
-
+      date_labels_format_legend <- switch(aggregation_unit,
+                                          "hour" = c("%d/%m/%y "),
+                                          "day" = c("%d/%m/%y ")
+      )
+      # browser()
+      periode_etudiee1 <- switch(aggregation_unit,
+                                "hour" = glue("{format(min(as_date(data_occupation_1$aggregated_data_by_some_time_unit$time)), format = date_labels_format_legend[1])} \\
+                              ({min(data_occupation_1$plageHoraire)}:00-{max(data_occupation_1$plageHoraire)}:00)"),
+                                "day" = glue("{format(min(as_date(data_occupation_1$aggregated_data_by_some_time_unit$time)), format = date_labels_format_legend[1])} \\
+                                - {format(max(as_date(data_occupation_1$aggregated_data_by_some_time_unit$time)), format = date_labels_format_legend[1])} \\
+                              ({min(data_occupation_1$plageHoraire)}:00-{max(data_occupation_1$plageHoraire)}:00)")
+                                
+      )
+      
+      periode_etudiee2 <- switch(aggregation_unit,
+                                 "hour" = glue("{format(min(as_date(data_occupation_2$aggregated_data_by_some_time_unit$time)), format = date_labels_format_legend[1])} \\
+                              ({min(data_occupation_2$plageHoraire)}:00-{max(data_occupation_2$plageHoraire)}:00)"),
+                                 "day" = glue("{format(min(as_date(data_occupation_2$aggregated_data_by_some_time_unit$time)), format = date_labels_format_legend[1])} \\
+                                - {format(max(as_date(data_occupation_2$aggregated_data_by_some_time_unit$time)), format = date_labels_format_legend[1])} \\
+                              ({min(data_occupation_2$plageHoraire)}:00-{max(data_occupation_2$plageHoraire)}:00)")
+                                 
+      )
+      
+      
+      legend_label <- glue("**Occupation parking**<br><br>**Période 1**<br>{periode_etudiee1}<br><br>**Période 2**<br>{periode_etudiee2}")
+      
+      
       
       gg <- self$data_plot_2_periods %>%
         ggplot(data = ., mapping = aes(x = time, y = taux_occupation, color = nom, group = nom, linetype = nom, size = nom)) +
@@ -194,7 +232,6 @@ Occupation <- R6::R6Class(
         geom_point_interactive(aes(tooltip = tooltip, data_id = nom)) +
         theme_bdxmetro(app_theme) +
         scale_linetype_manual(
-          "Parking",
           values =
             unlist(
               with(
@@ -204,7 +241,6 @@ Occupation <- R6::R6Class(
             )
         ) +
         scale_size_manual(
-          "Parking",
           values =
             unlist(
               with(
@@ -218,13 +254,12 @@ Occupation <- R6::R6Class(
         ) +
         xlab(xlab) +
         ylab("Taux d\'occupation (%)") +
-        labs(color = "Parking", 
-             size = "Parking", 
-             scale = "Parking",
-             caption = glue("Période 1 : {min(data_occupation_1$aggregated_data_by_some_time_unit$time)} - {max(data_occupation_1$aggregated_data_by_some_time_unit$time)}
-                              Période 2 : {min(data_occupation_2$aggregated_data_by_some_time_unit$time)} - {max(data_occupation_2$aggregated_data_by_some_time_unit$time)}")
+        labs(color = legend_label,
+             size = legend_label,
+             linetype = legend_label,
+             scale = legend_label
         ) +
-        theme(plot.caption = element_text(face="bold.italic", hjust = 0))
+        theme(legend.title = element_markdown())
       
       gg
       
