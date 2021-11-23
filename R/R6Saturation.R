@@ -76,22 +76,38 @@ Saturation <- R6::R6Class(
         .[, `:=`(hours = lubridate::hour(time), date = as_date(time))] %>%
         .[, tooltip := glue_data(.SD, "Date : {as.character(time)}\nTaux : {sprintf('%.2f', taux_occupation)}")]
 
+      library(ggtext)
+      library(glue)
+      
+      periode_etudiee <- glue("{format(min(self$data_plot$time), format = '%d/%m/%y')}-{format(max(self$data_plot$time), format = '%d/%m/%y')}")
+      legend_label <- glue("**Saturation**<br>{unique(self$data_plot[ident %in% selected_parking, 'nom'])}<br><br>**Période**<br>{periode_etudiee}<br><br>**Taux d'occupation %**")
+      
       gg <- self$data_plot[ident %in% selected_parking] %>%
         ggplot(., aes(y = date, x = hours, tooltip = tooltip)) +
         geom_tile_interactive(aes(fill = taux_occupation), colour = "white") +
-        scale_fill_distiller(palette = "Spectral", direction = -1, limits = c(0, 100)) +
+        scale_fill_distiller(palette = "Spectral", 
+                             direction = -1, 
+                             limits = c(0, 100),
+                             guide = guide_colourbar(title.position = "top",
+                                                     text.hjust = .5,
+                                                     barheight = unit(.75, "lines"))) +
         scale_x_continuous(breaks = 0:23) +
-        scale_y_date(date_labels = "%d/%m", breaks = "3 days", expand = c(0, 0)) +
-        theme_bdxmetro(app_theme, axis_text_size = 15, axis_title_size = 15) +
+        scale_y_date(date_labels = "%a %d/%m", breaks = "2 days", expand = c(0, 0)) +
+        theme_bdxmetro(app_theme, axis_text_size = 11, axis_title_size = 11) +
         theme(
-          legend.position = "bottom",
-          text = element_text(size = 16),
+          legend.position = "right",
+          legend.direction = "horizontal",
+          legend.title = element_markdown(),
           panel.grid = element_blank(),
-          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
+          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+          axis.text.y = element_text(hjust = 1)
         ) +
-        xlab("Heure")
-
+        xlab("Heure") +
+        ylab("") +
+        labs(fill = legend_label)
+      
       gg
+      
     }
   )
 )

@@ -20,7 +20,8 @@ mod_saturation_graphe_ui <- function(id, title) {
     fluidRow(
       span(
         h4(title),
-        actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info", style = "margin: 0 0 5% 0")
+        actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info", style = "margin: 0 0 5% 0"),
+        actionButton(ns("pause"),"Pause")
       )
     ),
     div(
