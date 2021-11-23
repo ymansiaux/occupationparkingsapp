@@ -29,7 +29,7 @@ Saturation <- R6::R6Class(
     },
 
     #' @description
-    #' On garde les parkings satures. Càd les parkings avec un taux d'occupation
+    #' On garde les parkings satures. Cad les parkings avec un taux d'occupation
     #' superieur à seuil_taux_occupation pendant au moins nb_heures_par_jour_satures
     #' par jour pendant au moins nb_jour_par_semaine_sature par semaine
     #' @param seuil_taux_occupation seuil pour considerer un parking comme sature
@@ -75,10 +75,10 @@ Saturation <- R6::R6Class(
         copy() %>%
         .[ident %in% unique(self$parkings_satures$ident)] %>%
         .[, `:=`(hours = lubridate::hour(time), date = as_date(time))] %>%
-        .[, tooltip := glue_data(.SD, "Date : {as.character(time)}\nTaux : {sprintf('%.2f', taux_occupation)}")]
+        .[, tooltip := glue_data(.SD, "Date : {as.character(time)}\nTaux : {sprintf(\'%.2f\', taux_occupation)}")]
 
-      periode_etudiee <- glue("{format(min(self$data_plot$time), format = '%d/%m/%y')}-{format(max(self$data_plot$time), format = '%d/%m/%y')}")
-      legend_label <- glue("**Saturation**<br>{unique(self$data_plot[ident %in% selected_parking, 'nom'])}<br><br>**Période**<br>{periode_etudiee}<br><br>**Taux d'occupation %**")
+      periode_etudiee <- glue("{format(min(self$data_plot$time), format = \'%d/%m/%y\')}-{format(max(self$data_plot$time), format = \'%d/%m/%y\')}")
+      legend_label <- glue("**Saturation**<br>{unique(self$data_plot[ident %in% selected_parking, \'nom\'])}<br><br>**P\u00e9riode**<br>{periode_etudiee}<br><br>**Taux d\'occupation %**")
       
       gg <- self$data_plot[ident %in% selected_parking] %>%
         ggplot(., aes(y = date, x = hours, tooltip = tooltip)) +

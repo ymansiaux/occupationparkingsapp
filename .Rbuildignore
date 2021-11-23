@@ -21,3 +21,4 @@ deploy_to_RSPM.R
 ^R/_disable_autoload\.R$
 ^Dockerfile$
 ^\.dockerignore$
+^renv_setup\.R$

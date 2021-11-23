@@ -98,7 +98,7 @@ Occupation <- R6::R6Class(
                               ({min(self$plageHoraire)}:00-{max(self$plageHoraire)}:00)")
       )
       
-      legend_label <- glue("**Occupation parking**<br><br>**Période**<br>{periode_etudiee}")
+      legend_label <- glue("**Occupation parking**<br><br>**P\u00e9riode**<br>{periode_etudiee}")
       
       
       gg <- self$data_plot_1_period %>%
@@ -222,7 +222,7 @@ Occupation <- R6::R6Class(
       )
       
       
-      legend_label <- glue("**Occupation parking**<br><br>**Période 1**<br>{periode_etudiee1}<br><br>**Période 2**<br>{periode_etudiee2}")
+      legend_label <- glue("**Occupation parking**<br><br>**P\u00e9riode 1**<br>{periode_etudiee1}<br><br>**P\u00e9riode 2**<br>{periode_etudiee2}")
       
       
       
