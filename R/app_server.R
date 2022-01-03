@@ -40,7 +40,6 @@ app_server <- function(input, output, session) {
     by = "ident"
   )
   
-  
   # Appel des modules #
   mod_occupation_1_periode_server("occupation_ui_1", app_theme = reactive(rv$theme), parkings_list = reactive(parkings_list))
   mod_occupation_2_periodes_server("occupation_ui_2", app_theme = reactive(rv$theme), parkings_list = reactive(parkings_list))

@@ -17,19 +17,29 @@ mod_accueil_ui <- function(id) {
     br(),
     div("Les parkings \u00e9tudi\u00e9s sont group\u00e9s en 4 secteurs : Parc Relais, Hypercentre, Centre et P\u00e9riph\u00e9rie"),
     br(),
-
+    
     ## Afficher masquer la liste des parkings
-    lien_afficher_cacher_div(
-      id_lien = ns("show_parkings_list"),
-      label_lien = "Cliquer pour afficher les parkings \u00e9tudi\u00e9s",
-      id_div = ns("parkings_list"),
-      contenu_div = tagList(
-        br(),
-        DTOutput(ns("studied_parkings")),
-        br(),
-        br()
+    fluidRow(
+      tags$span(
+        actionButton(inputId = ns("show_parkings_list"), label = "Afficher / masquer les parkings \u00e9tudi\u00e9s", class = "btn btn-warning", style = "margin: 0 0 5% 0")
       )
     ),
+    
+    fluidRow(
+      column(
+        width = 12,
+        hidden_div(
+          id_div = ns("parkings_list"),
+          contenu_div = tagList(
+            withSpinner(
+              DTOutput(ns("studied_parkings"))
+            )
+          )
+        )
+      )
+    ),
+    
+    br(),
     div("Les donn\u00e9es sources sont issues du portail Open Data de Bordeaux M\u00e9tropole"),
     br(), br(),
     div("Ci-dessous des vid\u00e9os tuto pour prendre en main l\'application :"),
@@ -50,17 +60,19 @@ mod_accueil_ui <- function(id) {
 mod_accueil_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
+    
     # observe(browser())
-
+    
     output$studied_parkings <- renderDT(server = FALSE, {
       pkg <- parkings[, c("localisation_parking", "ident", "nom")]
       pkg[is.na(pkg$localisation_parking), "localisation_parking"] <- "parc relais"
       colnames(pkg) <- c("localisation", "identifiant", "nom")
-
-      datatable(pkg)
+      
+      datatable(pkg,
+                rownames = FALSE, caption = NULL,
+                extensions = "Buttons", options = parametres_output_DT)
     })
-
+    
     onclick(
       "show_parkings_list",
       toggle(id = "parkings_list", anim = TRUE)
