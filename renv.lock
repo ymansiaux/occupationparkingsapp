@@ -424,6 +424,20 @@
       "Repository": "RSPM",
       "Hash": "4d243a9c10b00589889fe32314ffd902"
     },
+    "geojsonsf": {
+      "Package": "geojsonsf",
+      "Version": "2.0.1",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "8bf70c1328f68761115943b68e565dc6"
+    },
+    "geometries": {
+      "Package": "geometries",
+      "Version": "0.2.0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "be29054e97e756ade56d13a89c6d5243"
+    },
     "gert": {
       "Package": "gert",
       "Version": "1.3.0",
@@ -603,6 +617,13 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "5aab57a3bd297eee1c1d862735972182"
+    },
+    "jsonify": {
+      "Package": "jsonify",
+      "Version": "1.2.1",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "f435875f0eb7de52ade944ed82ee9089"
     },
     "jsonlite": {
       "Package": "jsonlite",
@@ -891,6 +912,13 @@
       "Repository": "RSPM",
       "Hash": "d9dd45d86b5a23984ed50d5c35724702"
     },
+    "rapidjsonr": {
+      "Package": "rapidjsonr",
+      "Version": "1.2.0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "88b9f48c93d17cdb811b54079a6a414f"
+    },
     "rappdirs": {
       "Package": "rappdirs",
       "Version": "0.3.3",
@@ -1044,6 +1072,13 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "308013098befe37484df72c39cf90d6e"
+    },
+    "sfheaders": {
+      "Package": "sfheaders",
+      "Version": "0.4.0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "c1bd5fbd6bed3c16a20df15d9bc20c55"
     },
     "shiny": {
       "Package": "shiny",
@@ -1307,10 +1342,11 @@
     },
     "xtradata": {
       "Package": "xtradata",
-      "Version": "0.3.1",
+      "Version": "0.4.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "4483a1de4edb05fa633121397be30037"
+      "Repository": "RSPM",
+      "RemoteSha": "67638c96e27cdd675a09cbcc3a942f5887b0d9c3",
+      "Hash": "39bfeb8bb863fdb8e02e4c9ecab3ee16"
     },
     "xts": {
       "Package": "xts",
