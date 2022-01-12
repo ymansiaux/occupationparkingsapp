@@ -13,83 +13,79 @@
 #' @importFrom DT datatable
 #' @importFrom shinybm hidden_div
 #' @importFrom grDevices dev.off tiff
+#' @importFrom shinyjs hidden hide show
 
 mod_saturation_graphe_ui <- function(id, title) {
   ns <- NS(id)
   tagList(
-    # fluidRow(
-    #   sliderInput(ns("height"), "Height", min = 0, max = 20, value = 7),
-    #   sliderInput(ns("width"), "Width", min = 0, max = 20, value = 10),
-    #   sliderInput(ns("pointsize"), "Pointsize", min = 0, max = 20, value = 10)
-    # ),
     fluidRow(
       span(
         h4(title),
         actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info", style = "margin: 0 0 5% 0"),
-        # actionButton(ns("pause"),"Pause"),
       )
     ),
-    div(
-      id = ns("show_results"),
-      fluidRow(
-        column(
-          width = 6,
-          selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
-          withSpinner(
-            girafeOutput(ns("plot"))
+    hidden(
+      div(
+        id = ns("show_results"),
+        fluidRow(
+          column(
+            width = 6,
+            selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
+            withSpinner(
+              girafeOutput(ns("plot"))
+            ),
+            tags$div(
+              downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
+            )
           ),
-          tags$div(
-            downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
-          )
-        ),
-        column(
-          width = 6,
-          selectizeInput(ns("selected_satured_parking2"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
-          withSpinner(
-            girafeOutput(ns("plot2"))
-          ),
-          tags$div(
-            downloadButton(outputId = ns("down2"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
-          )
-        )
-      ),
-      fluidRow(
-        column(
-          width = 12,
-          hidden_div(id_div = ns("div_bouton_affichage_plot_data"),
-                     contenu_div = 
-                       tagList(actionButton(inputId = ns("show_plot_data"), label = "Afficher / masquer les donn\u00e9es du graphe", class = "btn btn-warning", style = "margin: 0 0 1em 0")
-                       )
-          ),
-          hidden_div(
-            id_div = ns("plot_data"),
-            contenu_div = tagList(
-              withSpinner(
-                DTOutput(ns("table_plot"))
-              )
+          column(
+            width = 6,
+            selectizeInput(ns("selected_satured_parking2"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
+            withSpinner(
+              girafeOutput(ns("plot2"))
+            ),
+            tags$div(
+              downloadButton(outputId = ns("down2"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
             )
           )
         ),
-      ),
-      #),
-      fluidRow(
-        column(
-          width = 12,
-          actionButton(inputId = ns("show_raw_data"), label = "Afficher / masquer les donn\u00e9es de la requ\u00eate", class = "btn btn-warning", style = "margin: 0 0 1em 0"),
-          hidden_div(
-            id_div = ns("raw_data"),
-            contenu_div = tagList(
-              tagList(
+        fluidRow(
+          column(
+            width = 12,
+            hidden_div(id_div = ns("div_bouton_affichage_plot_data"),
+                       contenu_div = 
+                         tagList(actionButton(inputId = ns("show_plot_data"), label = "Afficher / masquer les donn\u00e9es du graphe", class = "btn btn-warning", style = "margin: 0 0 1em 0")
+                         )
+            ),
+            hidden_div(
+              id_div = ns("plot_data"),
+              contenu_div = tagList(
                 withSpinner(
-                  DTOutput(ns("table_raw"))
+                  DTOutput(ns("table_plot"))
+                )
+              )
+            )
+          ),
+        ),
+        fluidRow(
+          column(
+            width = 12,
+            actionButton(inputId = ns("show_raw_data"), label = "Afficher / masquer les donn\u00e9es de la requ\u00eate", class = "btn btn-warning", style = "margin: 0 0 1em 0"),
+            hidden_div(
+              id_div = ns("raw_data"),
+              contenu_div = tagList(
+                tagList(
+                  withSpinner(
+                    DTOutput(ns("table_raw"))
+                  )
                 )
               )
             )
           )
+          
         )
-        
       )
-    )
+    )   
   )
 }
 

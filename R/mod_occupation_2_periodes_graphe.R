@@ -11,7 +11,7 @@
 #' @importFrom DT DTOutput renderDT
 #' @importFrom ggiraph renderGirafe girafeOutput girafe  opts_hover_inv opts_sizing opts_hover
 #' @importFrom shinybm hidden_div lien_afficher_cacher_div
-#' @importFrom shinyjs show hide onclick toggle
+#' @importFrom shinyjs show hide onclick toggle hidden
 #' @importFrom shinycssloaders withSpinner
 #' @importFrom grDevices dev.off tiff
 
@@ -25,61 +25,63 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title) {
         actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info", style = "margin: 0 0 5% 0")
       )
     ),
-    div(
-      id = ns("show_results"),
-      fluidRow(
-        column(
-          width = 8,
-          withSpinner(
-            girafeOutput(ns("plot"))
+    hidden(
+      div(
+        id = ns("show_results"),
+        fluidRow(
+          column(
+            width = 8,
+            withSpinner(
+              girafeOutput(ns("plot"))
+            )
+          ),
+          column(
+            width = 4,
+            selectizeInput(
+              inputId = ns("parkings_to_plot"),
+              label = "Parkings \u00e0 afficher",
+              choices = NULL,
+              multiple = TRUE,
+              options = list(maxItems = 5, placeholder = "Choisir au max 5 pkgs", deselectBehavior = "top")
+            ),
+            tags$div(
+              actionButton(inputId = ns("maj"), "MAJ graphes et tableaux", style = "margin: 0 0 5% 0")
+            ),
+            tags$div(
+              downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
+            )
           )
         ),
-        column(
-          width = 4,
-          selectizeInput(
-            inputId = ns("parkings_to_plot"),
-            label = "Parkings \u00e0 afficher",
-            choices = NULL,
-            multiple = TRUE,
-            options = list(maxItems = 5, placeholder = "Choisir au max 5 pkgs", deselectBehavior = "top")
-          ),
-          tags$div(
-            actionButton(inputId = ns("maj"), "MAJ graphes et tableaux", style = "margin: 0 0 5% 0")
-          ),
-          tags$div(
-            downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
+        fluidRow(
+          tags$span(
+            actionButton(inputId = ns("show_plot_data"), label = "Afficher / masquer les donn\u00e9es du graphe", class = "btn btn-warning", style = "margin: 0 0 5% 0"),
+            actionButton(inputId = ns("show_raw_data"), label = "Afficher / masquer les donn\u00e9es de la requ\u00eate", class = "btn btn-warning", style = "margin: 0 0 5% 0")
           )
-        )
-      ),
-      fluidRow(
-        tags$span(
-          actionButton(inputId = ns("show_plot_data"), label = "Afficher / masquer les donn\u00e9es du graphe", class = "btn btn-warning", style = "margin: 0 0 5% 0"),
-          actionButton(inputId = ns("show_raw_data"), label = "Afficher / masquer les donn\u00e9es de la requ\u00eate", class = "btn btn-warning", style = "margin: 0 0 5% 0")
-        )
-      ),
-      fluidRow(
-        column(
-          width = 12,
-          hidden_div(
-            id_div = ns("plot_data"),
-            contenu_div = tagList(
-              withSpinner(
-                DTOutput(ns("table_plot"))
+        ),
+        fluidRow(
+          column(
+            width = 12,
+            hidden_div(
+              id_div = ns("plot_data"),
+              contenu_div = tagList(
+                withSpinner(
+                  DTOutput(ns("table_plot"))
+                )
               )
             )
           )
-        )
-      )
-    ),
-    fluidRow(
-      column(
-        width = 12,
-        hidden_div(
-          id_div = ns("raw_data"),
-          contenu_div = tagList(
-            tagList(
-              withSpinner(
-                DTOutput(ns("table_raw"))
+        ),
+        fluidRow(
+          column(
+            width = 12,
+            hidden_div(
+              id_div = ns("raw_data"),
+              contenu_div = tagList(
+                tagList(
+                  withSpinner(
+                    DTOutput(ns("table_raw"))
+                  )
+                )
               )
             )
           )
@@ -87,7 +89,6 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title) {
       )
     )
   )
-  
 }
 
 #' occupation_graphe Server Functions
