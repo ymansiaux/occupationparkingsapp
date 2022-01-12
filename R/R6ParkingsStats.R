@@ -66,6 +66,8 @@ ParkingsStats <- R6::R6Class(
       
       if(length(parkings_list) == 1) parkings_list <- list(parkings_list)
       
+      # print(class(parkings_list))
+      
       download <- try(xtradata_requete_aggregate(
         key = Sys.getenv("XTRADATA_KEY"),
         typename = "ST_PARK_P",
@@ -78,7 +80,11 @@ ParkingsStats <- R6::R6Class(
             list(
               "$in" =
                 parkings_list
-            )
+            ),
+           "etat"=
+             list(
+               "$in" = c("OUVERT", "LIBRE", "COMPLET")
+             )
         ),
         attributes = list("gid", "time", "nom", "libres", "total", "etat", "ident"),
         showURL = TRUE
