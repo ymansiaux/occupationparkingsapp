@@ -18,7 +18,7 @@ app_server <- function(input, output, session) {
   observe(closeWaiter_logoDatalab(golem::app_prod()))
   
   # MAJ de la liste des parkings au demarrage
- 
+  
   # Appel des modules #
   observeEvent(rv$parkings_list_is_updated, {
     if(rv$parkings_list_is_updated == TRUE) {
@@ -30,7 +30,7 @@ app_server <- function(input, output, session) {
     }
     
   })
-
+  
   
   ### PARTIE BDXMETROIDENTITY ###
   rv <- reactiveValues()
@@ -42,21 +42,19 @@ app_server <- function(input, output, session) {
                  init_cookie_theme(input$dark_mode)
                  
                  
-                  parkings_names <- 
-                     xtradata_requete_features(
-                       key = Sys.getenv("XTRADATA_KEY"),
-                       typename = "ST_PARK_P",
-                       attributes = list("ident", "nom")
-                     ) %>%
-                     setDT() %>%
-                     .[, type := NULL] %>%
-                     .[order(nom)]
-                   
-                   rv$parkings <- merge(parkings, parkings_names, by = "ident") %>% as.data.table()
-                   print(class(rv$parkings))
-                   print(head(as.data.table(rv$parkings)))
-                   rv$parkings_list_is_updated <- TRUE
-                   
+                 parkings_names <- 
+                   xtradata_requete_features(
+                     key = Sys.getenv("XTRADATA_KEY"),
+                     typename = "ST_PARK_P",
+                     attributes = list("ident", "nom")
+                   ) %>%
+                   setDT() %>%
+                   .[, type := NULL] %>%
+                   .[order(nom)]
+                 
+                 rv$parkings <- merge(parkings, parkings_names, by = "ident") %>% as.data.table()
+                 rv$parkings_list_is_updated <- TRUE
+                 
                },
                once = TRUE
   )

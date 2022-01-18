@@ -33,5 +33,7 @@ parkings <- rbind(
 utils::globalVariables(c(
   "debut_donnees", "mytimezone", ".", ".SD", "ident",
   "linetype", "nom", "taux_occupation", "time", "tooltip",
-  "parkings", "parametres_output_DT", "etat", "type", "lwd"
+  "parkings", "parametres_output_DT", "etat", "type", "lwd",
+  "head", "localisation_parking", "parc_relais"
+  
 ))
