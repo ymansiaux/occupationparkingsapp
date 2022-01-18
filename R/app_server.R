@@ -24,8 +24,8 @@ app_server <- function(input, output, session) {
     if(rv$parkings_list_is_updated == TRUE) {
       
       mod_occupation_1_periode_server("occupation_ui_1", app_theme = reactive(rv$theme), parkings = rv$parkings)
-      # mod_occupation_2_periodes_server("occupation_ui_2", app_theme = reactive(rv$theme), parkings = reactive(rv$parkings))
-      # mod_saturation_server("saturation_ui_1", app_theme = reactive(rv$theme), parkings = reactive(rv$parkings))
+      mod_occupation_2_periodes_server("occupation_ui_2", app_theme = reactive(rv$theme), parkings = rv$parkings)
+      mod_saturation_server("saturation_ui_1", app_theme = reactive(rv$theme), parkings = rv$parkings)
       mod_accueil_server("accueil_ui_1", parkings = reactive(rv$parkings))
     }
     

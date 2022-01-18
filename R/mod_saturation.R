@@ -90,7 +90,7 @@ mod_saturation_ui <- function(id) {
 #' saturation Server Functions
 #'
 #' @noRd
-mod_saturation_server <- function(id, app_theme, parkings_list) {
+mod_saturation_server <- function(id, app_theme, parkings) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -126,16 +126,16 @@ mod_saturation_server <- function(id, app_theme, parkings_list) {
       }
     })
 
-    observe(updateSelectizeInput(session, "custom_parkings_list", choices = unique(parkings_list()$nom), server = TRUE))
+    observe(updateSelectizeInput(session, "custom_parkings_list", choices = unique(parkings$nom), server = TRUE))
 
 
     # On cree la liste d'objets R6 Saturation
     list_of_Saturation <- list(
       selection_personnalisee = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = NULL),
-      parc_relais = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% NA & parkings$parc_relais == TRUE), "ident"]),
-      hypercentre = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "hypercentre" & parkings$parc_relais == FALSE), "ident"]),
-      centre = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "centre" & parkings$parc_relais == FALSE), "ident"]),
-      peripherie = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[which(parkings$localisation_parking %in% "peripherie" & parkings$parc_relais == FALSE), "ident"])
+      parc_relais = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[localisation_parking %in% NA & parkings$parc_relais == TRUE][["ident"]]),
+      hypercentre = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[localisation_parking %in% "hypercentre" & parkings$parc_relais == FALSE][["ident"]]),
+      centre = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[localisation_parking %in% "centre" & parkings$parc_relais == FALSE][["ident"]]),
+      peripherie = Saturation$new(rangeStep = "hour", plageHoraire = 0:23, parkings_list = parkings[localisation_parking %in% "peripherie" & parkings$parc_relais == FALSE][["ident"]])
     )
 
     # On appelle memoise pour activer le cache sur les resultats
@@ -157,9 +157,9 @@ mod_saturation_server <- function(id, app_theme, parkings_list) {
       if (isTruthy(input$custom_parkings_list) & input$select_custom_parkings_list == TRUE) {
         # si l'objet R6 selection personnalisee existait deja dans la list_of_Saturation, on ecrase juste la selection de parkings perso, sinon cree l'objet
         if ("selection_personnalisee" %in% names(list_of_Saturation)) {
-          list_of_Saturation$selection_personnalisee$parkings_list <- parkings_list()[nom %in% input$custom_parkings_list][["ident"]]
+          list_of_Saturation$selection_personnalisee$parkings_list <- parkings[nom %in% input$custom_parkings_list][["ident"]]
         } else {
-          list_of_Saturation$selection_personnalisee <- Occupation$new(parkings_list = parkings_list()[nom %in% input$custom_parkings_list][["ident"]])
+          list_of_Saturation$selection_personnalisee <- Occupation$new(parkings_list = parkings[nom %in% input$custom_parkings_list][["ident"]])
         }
       } else { # si la selection est nulle on vire la R6 custom selection de la liste des classes R6
         list_of_Saturation <- list_of_Saturation[names(list_of_Saturation) != "selection_personnalisee"]
@@ -182,9 +182,9 @@ mod_saturation_server <- function(id, app_theme, parkings_list) {
           seuil_saturation = input$seuil_saturation,
           nb_heures_journalieres_saturation = input$nb_heures_journalieres_saturation,
           nb_jours_hebdo_saturation = input$nb_jours_hebdo_saturation,
-          parkings_list = parkings_list
+          parkings_list = parkings
         )
-        mod_saturation_graphe_server(paste0("saturation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings_list)
+        mod_saturation_graphe_server(paste0("saturation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings)
       })
 
 
