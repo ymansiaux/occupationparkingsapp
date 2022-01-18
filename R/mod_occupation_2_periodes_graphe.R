@@ -120,7 +120,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
         data_occupation_1 = r6_1,
         data_occupation_2 = r6_2,
         aggregation_unit = r6_1$aggregation_unit,
-        parkings_to_plot = isolate(unique(parkings_list()$ident[parkings_list()$nom %in% input$parkings_to_plot])),
+        parkings_to_plot = isolate(unique(parkings_list$ident[parkings_list$nom %in% input$parkings_to_plot])),
         app_theme = app_theme()
       )
       

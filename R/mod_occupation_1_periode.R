@@ -132,11 +132,13 @@ mod_occupation_1_periode_ui <- function(id) {
 #' occupation Server Functions
 #'
 #' @noRd
-mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
+mod_occupation_1_periode_server <- function(id, app_theme, parkings) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     
     observeEvent(input$pause, browser())
+    
+    # observe(browser())
     
     ids_list <- list(
       "Jour" = "selection_timestep_day",
@@ -190,7 +192,7 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
       }
     })
     
-    observe(updateSelectizeInput(session, "custom_parkings_list", choices = unique(parkings_list()$nom), server = TRUE))
+    observe(updateSelectizeInput(session, "custom_parkings_list", choices = unique(parkings$nom), server = TRUE))
     
     
     plageHoraire <- reactive(
@@ -203,10 +205,10 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
     # On cree la liste d'objets R6 Occupation
     list_of_Occupation <- list(
       selection_personnalisee = Occupation$new(parkings_list = NULL),
-      parc_relais = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% NA & parkings$parc_relais == TRUE), "ident"]),
-      hypercentre = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "hypercentre" & parkings$parc_relais == FALSE), "ident"]),
-      centre = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "centre" & parkings$parc_relais == FALSE), "ident"]),
-      peripherie = Occupation$new(parkings_list = parkings[which(parkings$localisation_parking %in% "peripherie" & parkings$parc_relais == FALSE), "ident"])
+      parc_relais = Occupation$new(parkings_list = parkings[localisation_parking %in% NA & parc_relais == TRUE][["ident"]]),
+      hypercentre = Occupation$new(parkings_list = parkings[localisation_parking %in% "hypercentre" & parc_relais == FALSE][["ident"]]),
+      centre = Occupation$new(parkings_list = parkings[localisation_parking %in% "centre" & parc_relais == FALSE][["ident"]]),
+      peripherie = Occupation$new(parkings_list = parkings[localisation_parking %in% "peripherie" & parc_relais == FALSE][["ident"]])
     )
     # On appelle memoise pour activer le cache sur les resultats
     list_of_Occupation <- lapply(list_of_Occupation, function(.l) {
@@ -229,9 +231,9 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
       # on verifie si la liste des parkings est non nulle, auquel cas soit on ecrase la liste de l'element selection_personnalisee, ou alors on recree une instance R6 si elle n'existe plus
       if (isTruthy(input$custom_parkings_list) & input$select_custom_parkings_list == TRUE) {
         if ("selection_personnalisee" %in% names(list_of_Occupation)) {
-          list_of_Occupation$selection_personnalisee$parkings_list <- parkings_list()[nom %in% input$custom_parkings_list][["ident"]]
+          list_of_Occupation$selection_personnalisee$parkings_list <- parkings[nom %in% input$custom_parkings_list][["ident"]]
         } else {
-          list_of_Occupation$selection_personnalisee <- Occupation$new(parkings_list = parkings_list()[nom %in% input$custom_parkings_list][["ident"]])
+          list_of_Occupation$selection_personnalisee <- Occupation$new(parkings_list = parkings[nom %in% input$custom_parkings_list][["ident"]])
         }
       } else { # si la selection est nulle on vire la R6 custom selection de la liste des classes R6
         list_of_Occupation <- list_of_Occupation[names(list_of_Occupation) != "selection_personnalisee"]
@@ -251,8 +253,8 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings_list) {
       # le module de nettoyage de l'output, et le module de création du graphique
       imap(list_of_Occupation, function(.x, .y) {
         mod_occupation_appel_WS_server(paste0("occupation_appel_WS_ui_", .y), r6 = .x)
-        mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x, parkings_list = parkings_list)
-        mod_occupation_1_periode_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings_list)
+        mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x, parkings_list = parkings)
+        mod_occupation_1_periode_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings)
       })
       
       output$my_Occupation_UI <- renderUI({

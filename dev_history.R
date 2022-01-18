@@ -16,6 +16,7 @@ usethis::use_vignette("designApp")
 
 usethis::use_r("_disable_autoload")
 
+attachment::att_amend_desc()
 vignette <- FALSE
 devtools::check(document = TRUE, vignettes = vignette)
 devtools::build(vignettes = vignette)

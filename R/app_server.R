@@ -17,42 +17,44 @@ app_server <- function(input, output, session) {
   
   observe(closeWaiter_logoDatalab(golem::app_prod()))
   
-  data("parkings")
-  
   # MAJ de la liste des parkings au demarrage
-  parkings_list <- xtradata_requete_features(
-    key = Sys.getenv("XTRADATA_KEY"),
-    typename = "ST_PARK_P",
-    filter = list("connecte" = 1),
-    attributes = list("ident", "nom")
-  ) %>%
-    setDT() %>%
-    .[, type := NULL] %>%
-    .[order(nom)]
-  
-  parkings_list <- unique(
-    as.data.table(
-      rbind(
-        parkings_list,
-        parkings[,c("ident","nom")]
-      )
-    ),
-    by = "ident"
-  )
   
   # Appel des modules #
-  mod_occupation_1_periode_server("occupation_ui_1", app_theme = reactive(rv$theme), parkings_list = reactive(parkings_list))
-  mod_occupation_2_periodes_server("occupation_ui_2", app_theme = reactive(rv$theme), parkings_list = reactive(parkings_list))
-  mod_saturation_server("saturation_ui_1", app_theme = reactive(rv$theme), parkings_list = reactive(parkings_list))
-  mod_accueil_server("accueil_ui_1")
+  observeEvent(rv$parkings_list_is_updated, {
+    if(rv$parkings_list_is_updated == TRUE) {
+      
+      mod_occupation_1_periode_server("occupation_ui_1", app_theme = reactive(rv$theme), parkings = rv$parkings)
+      mod_occupation_2_periodes_server("occupation_ui_2", app_theme = reactive(rv$theme), parkings = rv$parkings)
+      mod_saturation_server("saturation_ui_1", app_theme = reactive(rv$theme), parkings = rv$parkings)
+      mod_accueil_server("accueil_ui_1", parkings = reactive(rv$parkings))
+    }
+    
+  })
+  
   
   ### PARTIE BDXMETROIDENTITY ###
   rv <- reactiveValues()
   rv$theme <- "light"
+  rv$parkings_list_is_updated <- FALSE
   
   observeEvent(session,
                {
                  init_cookie_theme(input$dark_mode)
+                 
+                 
+                 parkings_names <- 
+                   xtradata_requete_features(
+                     key = Sys.getenv("XTRADATA_KEY"),
+                     typename = "ST_PARK_P",
+                     attributes = list("ident", "nom")
+                   ) %>%
+                   setDT() %>%
+                   .[, type := NULL] %>%
+                   .[order(nom)]
+                 
+                 rv$parkings <- merge(parkings, parkings_names, by = "ident") %>% as.data.table()
+                 rv$parkings_list_is_updated <- TRUE
+                 
                },
                once = TRUE
   )

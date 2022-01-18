@@ -128,6 +128,13 @@
       "Repository": "RSPM",
       "Hash": "50c838a310445e954bc13f26f26a6ecf"
     },
+    "attachment": {
+      "Package": "attachment",
+      "Version": "0.2.4",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "c30d6fbe723eec254196ac30cf8776d1"
+    },
     "attempt": {
       "Package": "attempt",
       "Version": "0.3.1",
