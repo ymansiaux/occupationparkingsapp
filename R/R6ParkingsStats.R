@@ -115,7 +115,7 @@ ParkingsStats <- R6::R6Class(
         )] %>%
         # .[, taux_occupation := 100 * pmax(0, 1 - (libres / total))] %>%
         .[, taux_occupation := 100 * (1 - (libres / total))] %>%
-        merge(., unique(parkings_list()[, c("nom", "ident")]), by = "ident") %>%
+        merge(., unique(parkings_list[, c("nom", "ident")]), by = "ident") %>%
         setcolorder(neworder = "time")
     }
   )

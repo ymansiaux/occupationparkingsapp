@@ -57,14 +57,14 @@ mod_accueil_ui <- function(id) {
 #' accueil Server Functions
 #'
 #' @noRd
-mod_accueil_server <- function(id) {
+mod_accueil_server <- function(id, parkings) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     
     # observe(browser())
     
     output$studied_parkings <- renderDT(server = FALSE, {
-      pkg <- parkings[, c("localisation_parking", "ident", "nom")]
+      pkg <- parkings()[, c("localisation_parking", "ident", "nom")]
       pkg[is.na(pkg$localisation_parking), "localisation_parking"] <- "parc relais"
       colnames(pkg) <- c("localisation", "identifiant", "nom")
       
