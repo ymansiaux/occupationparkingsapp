@@ -88,6 +88,7 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
         )
       )
     )
+    
   )
 }
 
@@ -99,8 +100,22 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_l
     observe(updateSelectizeInput(session, "parkings_to_plot", choices = unique(r6$cleaned_data$nom), server = TRUE))
     observeEvent(input$pause, browser())
     
+    print(r6$parkings_list)
+    
+    hidden_sector <- reactiveValues(hidden = TRUE)
+    
     observeEvent(input$show_hide_panel, {
-      toggle(id = "show_results", anim = TRUE)
+      print(hidden_sector$hidden)
+      if(hidden_sector$hidden) {
+        show(id = "show_results", anim = TRUE)
+        hidden_sector$hidden <- FALSE
+        
+      }
+      else {
+        hide(id = "show_results", anim = TRUE)
+        hidden_sector$hidden <- TRUE
+        
+      }
     })
     
     

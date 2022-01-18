@@ -175,7 +175,7 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings) {
         enable("run_query")
       }
     })
-
+    
     observeEvent(input$plage_horaire, {
       if (input$plage_horaire == "Personnalis\u00e9e") {
         show("plage_horaire_personnalisee")
@@ -202,21 +202,6 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings) {
       )
     )
     
-    # On cree la liste d'objets R6 Occupation
-    list_of_Occupation <- list(
-      selection_personnalisee = Occupation$new(parkings_list = NULL),
-      parc_relais = Occupation$new(parkings_list = parkings[localisation_parking %in% NA & parc_relais == TRUE][["ident"]]),
-      hypercentre = Occupation$new(parkings_list = parkings[localisation_parking %in% "hypercentre" & parc_relais == FALSE][["ident"]]),
-      centre = Occupation$new(parkings_list = parkings[localisation_parking %in% "centre" & parc_relais == FALSE][["ident"]]),
-      peripherie = Occupation$new(parkings_list = parkings[localisation_parking %in% "peripherie" & parc_relais == FALSE][["ident"]])
-    )
-    # On appelle memoise pour activer le cache sur les resultats
-    list_of_Occupation <- lapply(list_of_Occupation, function(.l) {
-      .l$download_data_memoise <- memoise(.l$download_data)
-      .l
-    })
-    
-    
     observeEvent(input$run_query, {
       # On calcule les parametres rangeStart, rangeEnd, rangeStep pour xtradata en fonction des inputs de l'utilisateur
       xtradata_parameters <- reactive(
@@ -228,16 +213,38 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings) {
         )
       )
       
-      # on verifie si la liste des parkings est non nulle, auquel cas soit on ecrase la liste de l'element selection_personnalisee, ou alors on recree une instance R6 si elle n'existe plus
+      
+      # On cree la liste d'objets R6 Occupation
+      list_of_Occupation <- list(
+        parc_relais = Occupation$new(parkings_list = parkings[localisation_parking %in% NA & parc_relais == TRUE][["ident"]]),
+        hypercentre = Occupation$new(parkings_list = parkings[localisation_parking %in% "hypercentre" & parc_relais == FALSE][["ident"]]),
+        centre = Occupation$new(parkings_list = parkings[localisation_parking %in% "centre" & parc_relais == FALSE][["ident"]]),
+        peripherie = Occupation$new(parkings_list = parkings[localisation_parking %in% "peripherie" & parc_relais == FALSE][["ident"]])
+      )
       if (isTruthy(input$custom_parkings_list) & input$select_custom_parkings_list == TRUE) {
-        if ("selection_personnalisee" %in% names(list_of_Occupation)) {
-          list_of_Occupation$selection_personnalisee$parkings_list <- parkings[nom %in% input$custom_parkings_list][["ident"]]
-        } else {
-          list_of_Occupation$selection_personnalisee <- Occupation$new(parkings_list = parkings[nom %in% input$custom_parkings_list][["ident"]])
-        }
-      } else { # si la selection est nulle on vire la R6 custom selection de la liste des classes R6
-        list_of_Occupation <- list_of_Occupation[names(list_of_Occupation) != "selection_personnalisee"]
+        list_of_Occupation <- c(list_of_Occupation, 
+                                Occupation$new(parkings_list = parkings[nom %in% input$custom_parkings_list][["ident"]]))
+        names(list_of_Occupation)[length(list_of_Occupation)] <- "selection_personnalisee"
       }
+      
+      
+      # On appelle memoise pour activer le cache sur les resultats
+      list_of_Occupation <- lapply(list_of_Occupation, function(.l) {
+        .l$download_data_memoise <- memoise(.l$download_data)
+        .l
+      })
+      
+      
+      # on verifie si la liste des parkings est non nulle, auquel cas soit on ecrase la liste de l'element selection_personnalisee, ou alors on recree une instance R6 si elle n'existe plus
+      # if (isTruthy(input$custom_parkings_list) & input$select_custom_parkings_list == TRUE) {
+      #   if ("selection_personnalisee" %in% names(list_of_Occupation)) {
+      #     list_of_Occupation$selection_personnalisee$parkings_list <- parkings[nom %in% input$custom_parkings_list][["ident"]]
+      #   } else {
+      #     list_of_Occupation$selection_personnalisee <- Occupation$new(parkings_list = parkings[nom %in% input$custom_parkings_list][["ident"]])
+      #   }
+      # } else { # si la selection est nulle on vire la R6 custom selection de la liste des classes R6
+      #   list_of_Occupation <- list_of_Occupation[names(list_of_Occupation) != "selection_personnalisee"]
+      # }
       
       list_of_Occupation <- lapply(list_of_Occupation, function(.l) {
         .l$rangeStart <- xtradata_parameters()$rangeStart
