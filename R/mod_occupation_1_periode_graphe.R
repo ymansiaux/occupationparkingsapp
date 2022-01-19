@@ -24,7 +24,7 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
         actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info", style = "margin: 0 0 5% 0")
       )
     ),
-    hidden(
+     hidden(
       div(
         id = ns("show_results"),
         fluidRow(
@@ -99,24 +99,27 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_l
   moduleServer(id, function(input, output, session) {
     observe(updateSelectizeInput(session, "parkings_to_plot", choices = unique(r6$cleaned_data$nom), server = TRUE))
     observeEvent(input$pause, browser())
+  
+    onclick(
+      "show_hide_panel",
+      toggle(id = "show_results", anim = TRUE)
+    )
     
-    print(r6$parkings_list)
-    
-    hidden_sector <- reactiveValues(hidden = TRUE)
-    
-    observeEvent(input$show_hide_panel, {
-      print(hidden_sector$hidden)
-      if(hidden_sector$hidden) {
-        show(id = "show_results", anim = TRUE)
-        hidden_sector$hidden <- FALSE
-        
-      }
-      else {
-        hide(id = "show_results", anim = TRUE)
-        hidden_sector$hidden <- TRUE
-        
-      }
-    })
+    # hidden_sector <- reactiveValues(hidden = TRUE)
+    # 
+    # observeEvent(input$show_hide_panel, {
+    #   print(hidden_sector$hidden)
+    #   if(hidden_sector$hidden) {
+    #     show(id = "show_results", anim = TRUE)
+    #     hidden_sector$hidden <- FALSE
+    #     
+    #   }
+    #   else {
+    #     hide(id = "show_results", anim = TRUE)
+    #     hidden_sector$hidden <- TRUE
+    #     
+    #   }
+    # })
     
     
     ### GRAPHE
