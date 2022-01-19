@@ -1,0 +1,13 @@
+name: statiostats
+title: statioStats
+username: y.mansiaux
+account: y.mansiaux
+server: rstudio-connect.bordeaux-it.fr
+hostUrl: https://rstudio-connect.bordeaux-it.fr/__api__
+appId: 43
+bundleId: 125
+url: https://rstudio-connect.bordeaux-it.fr/statioStats/
+when: 1642583132.43785
+lastSyncTime: 1642583132.43786
+asMultiple: FALSE
+asStatic: FALSE
