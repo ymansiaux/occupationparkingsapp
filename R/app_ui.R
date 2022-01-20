@@ -19,7 +19,7 @@ app_ui <- function(request) {
     add_busy_spinner(spin = "fading-circle", color = "#ff4d3e", height = "150px", width = "150px"),
     fluidPage(
       navbarpage_bdx(
-        title = "Parkings",
+        title = "StatioStats",
         collapsible = TRUE,
         tabPanel(
           "Accueil",

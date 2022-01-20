@@ -13,6 +13,7 @@
 #' @importFrom DT datatable
 #' @importFrom shinybm hidden_div
 #' @importFrom grDevices dev.off tiff
+#' @importFrom shinyjs hidden hide show
 
 mod_saturation_graphe_ui <- function(id, title) {
   ns <- NS(id)
@@ -20,70 +21,71 @@ mod_saturation_graphe_ui <- function(id, title) {
     fluidRow(
       span(
         h4(title),
-        actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info", style = "margin: 0 0 5% 0")
+        actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info", style = "margin: 0 0 5% 0"),
       )
     ),
-    div(
-      id = ns("show_results"),
-      fluidRow(
-        column(
-          width = 6,
-          selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
-          withSpinner(
-            girafeOutput(ns("plot"))
+    hidden(
+      div(
+        id = ns("show_results"),
+        fluidRow(
+          column(
+            width = 6,
+            selectizeInput(ns("selected_satured_parking1"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
+            withSpinner(
+              girafeOutput(ns("plot"))
+            ),
+            tags$div(
+              downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
+            )
           ),
-          tags$div(
-            downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
-          )
-        ),
-        column(
-          width = 6,
-          selectizeInput(ns("selected_satured_parking2"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
-          withSpinner(
-            girafeOutput(ns("plot2"))
-          ),
-          tags$div(
-            downloadButton(outputId = ns("down2"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
-          )
-        )
-      ),
-      fluidRow(
-        column(
-          width = 12,
-          hidden_div(id_div = ns("div_bouton_affichage_plot_data"),
-                     contenu_div = 
-                       tagList(actionButton(inputId = ns("show_plot_data"), label = "Afficher / masquer les donn\u00e9es du graphe", class = "btn btn-warning", style = "margin: 0 0 1em 0")
-                       )
-          ),
-          hidden_div(
-            id_div = ns("plot_data"),
-            contenu_div = tagList(
-              withSpinner(
-                DTOutput(ns("table_plot"))
-              )
+          column(
+            width = 6,
+            selectizeInput(ns("selected_satured_parking2"), label = "Choisir un parking \u00e0 afficher", choices = NULL),
+            withSpinner(
+              girafeOutput(ns("plot2"))
+            ),
+            tags$div(
+              downloadButton(outputId = ns("down2"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
             )
           )
         ),
-      ),
-      #),
-      fluidRow(
-        column(
-          width = 12,
-          actionButton(inputId = ns("show_raw_data"), label = "Afficher / masquer les donn\u00e9es de la requ\u00eate", class = "btn btn-warning", style = "margin: 0 0 1em 0"),
-          hidden_div(
-            id_div = ns("raw_data"),
-            contenu_div = tagList(
-              tagList(
+        fluidRow(
+          column(
+            width = 12,
+            hidden_div(id_div = ns("div_bouton_affichage_plot_data"),
+                       contenu_div = 
+                         tagList(actionButton(inputId = ns("show_plot_data"), label = "Afficher / masquer les donn\u00e9es du graphe", class = "btn btn-warning", style = "margin: 0 0 1em 0")
+                         )
+            ),
+            hidden_div(
+              id_div = ns("plot_data"),
+              contenu_div = tagList(
                 withSpinner(
-                  DTOutput(ns("table_raw"))
+                  DTOutput(ns("table_plot"))
+                )
+              )
+            )
+          ),
+        ),
+        fluidRow(
+          column(
+            width = 12,
+            actionButton(inputId = ns("show_raw_data"), label = "Afficher / masquer les donn\u00e9es de la requ\u00eate", class = "btn btn-warning", style = "margin: 0 0 1em 0"),
+            hidden_div(
+              id_div = ns("raw_data"),
+              contenu_div = tagList(
+                tagList(
+                  withSpinner(
+                    DTOutput(ns("table_raw"))
+                  )
                 )
               )
             )
           )
+          
         )
-        
       )
-    )
+    )   
   )
 }
 
@@ -94,19 +96,24 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
   moduleServer(id, function(input, output, session) {
     observeEvent(input$pause, browser())
     
-    observeEvent(input$show_hide_panel, {
+    # observeEvent(input$show_hide_panel, {
+    #   toggle(id = "show_results", anim = TRUE)
+    # })
+    # 
+    onclick(
+      "show_hide_panel",
       toggle(id = "show_results", anim = TRUE)
-    })
+    )
     
     observe({
       updateSelectizeInput(session, "selected_satured_parking1",
-                           choices = unique(parkings_list()$nom[parkings_list()$ident %in% r6$parkings_satures$ident]),
-                           selected = unique(parkings_list()$nom[parkings_list()$ident %in% r6$parkings_satures$ident])[1],
+                           choices = unique(parkings_list[ident %in% r6$parkings_satures$ident][["nom"]]),
+                           selected = unique(parkings_list[ident %in% r6$parkings_satures$ident][["nom"]])[1],
                            server = TRUE
       )
       updateSelectizeInput(session, "selected_satured_parking2",
-                           choices = unique(parkings_list()$nom[parkings_list()$ident %in% r6$parkings_satures$ident]),
-                           selected = unique(parkings_list()$nom[parkings_list()$ident %in% r6$parkings_satures$ident])[1],
+                           choices = unique(parkings_list[ident %in% r6$parkings_satures$ident][["nom"]]),
+                           selected = unique(parkings_list[ident %in% r6$parkings_satures$ident][["nom"]])[1],
                            server = TRUE
       )
     })
@@ -117,10 +124,10 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
       if (r6$aggregation_unit != "Semaine") {
         # si on a un graphe restitué au mois
         girafe_sizing$width_svg <- 10
-        girafe_sizing$height_svg <- 9
+        girafe_sizing$height_svg <- 7
       } else {
-        girafe_sizing$width_svg <- 8
-        girafe_sizing$height_svg <- 5
+        girafe_sizing$width_svg <- 10
+        girafe_sizing$height_svg <- 7
       }
     })
     
@@ -133,7 +140,7 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
       req(nrow(r6$parkings_satures) > 0)
       
       gg <- r6$calendar_heatmap(
-        selected_parking = unique(parkings_list()$ident[parkings_list()$nom %in% input$selected_satured_parking1]),
+        selected_parking = unique(parkings_list[nom %in% input$selected_satured_parking1][["ident"]]),
         app_theme = app_theme()
       )
       
@@ -146,7 +153,7 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
       req(nrow(r6$parkings_satures) > 0)
       
       gg <- r6$calendar_heatmap(
-        selected_parking = unique(parkings_list()$ident[parkings_list()$nom %in% input$selected_satured_parking2]),
+        selected_parking = unique(parkings_list[nom %in% input$selected_satured_parking2][["ident"]]),
         app_theme = app_theme()
       )
       
@@ -172,7 +179,6 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
       
       x <- girafe(
         ggobj = graphique1(), width_svg = girafe_sizing$width_svg, height_svg = girafe_sizing$height_svg,
-        pointsize = 15,
         options = list(
           opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
         )
@@ -189,7 +195,6 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
       
       x <- girafe(
         ggobj = graphique2(), width_svg = girafe_sizing$width_svg, height_svg = girafe_sizing$height_svg,
-        pointsize = 15,
         options = list(
           opts_hover(css = "fill:#1279BF;stroke:#1279BF;cursor:pointer;")
         )

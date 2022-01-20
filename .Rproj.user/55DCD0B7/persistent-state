@@ -1,5 +1,9 @@
 ="======"
+<<<<<<< HEAD
 activeClientUrl="https://rstudio.bordeaux-it.fr/s/fa2e4d28f61a9de55d277/"
+=======
+activeClientUrl="https://rstudio.bordeaux-it.fr/s/fa2e4d28f61a912fd20dc/"
+>>>>>>> dev
 build-last-errors="[]"
 build-last-errors-base-dir=""
 build-last-outputs="[]"
@@ -7,5 +11,9 @@ compile_pdf_state="{\"tab_visible\":false,\"running\":false,\"target_file\":\"\"
 files.monitored-path=""
 find-in-files-state="{\"handle\":\"\",\"input\":\"\",\"path\":\"\",\"regex\":false,\"ignoreCase\":false,\"results\":{\"file\":[],\"line\":[],\"lineValue\":[],\"matchOn\":[],\"matchOff\":[],\"replaceMatchOn\":[],\"replaceMatchOff\":[]},\"running\":false,\"replace\":false,\"preview\":false,\"gitFlag\":false,\"replacePattern\":\"\"}"
 imageDirtyState="1"
+<<<<<<< HEAD
 portToken="96f6158f46a4"
+=======
+portToken="34dec0a5c82e"
+>>>>>>> dev
 saveActionState="-1"

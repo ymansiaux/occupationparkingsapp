@@ -16,7 +16,7 @@ server <- function(input, output, session) {
     rangeStart = "2021-05-10",
     rangeEnd = "2021-05-11",
     rangeStep = "hour",
-    timeStep = "Jour",
+    aggregation_unit = "hour",
     plageHoraire = 0:23,
     parkings_list = sample_parc_relais
   )
@@ -32,8 +32,7 @@ server <- function(input, output, session) {
   parc_relais$clean_output(parkings_list)
   parc_relais$mean_by_some_time_unit(parc_relais$rangeStep)
   
-  gg <- parc_relais$timeseries_plot_1_period(parkings_to_plot = sample_parc_relais, timeStep = "hour", app_theme = "light")
-  
+  gg <- parc_relais$timeseries_plot_1_period(parkings_to_plot = sample_parc_relais, aggregation_unit = "hour", app_theme = "light")
 }
 
 test_that("R6 Class Occupation Works", {
@@ -66,7 +65,7 @@ server <- function(input, output, session) {
     rangeStart = "2021-06-28",
     rangeEnd = "2021-07-05",
     rangeStep = "hour",
-    timeStep = "Semaine",
+    aggregation_unit = "day",
     plageHoraire = 0:23,
     parkings_list = sample_parc_relais
   )
