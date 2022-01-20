@@ -5,9 +5,9 @@ account: y.mansiaux
 server: rstudio-connect.bordeaux-it.fr
 hostUrl: https://rstudio-connect.bordeaux-it.fr/__api__
 appId: 43
-bundleId: 125
+bundleId: 128
 url: https://rstudio-connect.bordeaux-it.fr/statioStats/
-when: 1642583132.43785
-lastSyncTime: 1642583132.43786
+when: 1642673167.3535
+lastSyncTime: 1642673167.35352
 asMultiple: FALSE
 asStatic: FALSE

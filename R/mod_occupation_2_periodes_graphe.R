@@ -99,10 +99,14 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
     observe(updateSelectizeInput(session, "parkings_to_plot", choices = unique(c(r6_1$cleaned_data$nom, r6_2$cleaned_data$nom)), server = TRUE))
     observeEvent(input$pause, browser())
     
-    observeEvent(input$show_hide_panel, {
-      toggle(id = "show_results", anim = TRUE)
-    })
+    # observeEvent(input$show_hide_panel, {
+    #   toggle(id = "show_results", anim = TRUE)
+    # })
     
+    onclick(
+      "show_hide_panel",
+      toggle(id = "show_results", anim = TRUE)
+    )
     
     ### GRAPHE
     

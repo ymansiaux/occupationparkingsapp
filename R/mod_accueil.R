@@ -45,6 +45,7 @@ mod_accueil_ui <- function(id) {
     div("Ci-dessous une vid\u00e9o tuto pour prendre en main l\'application :"),
     tags$a(href = "https://bdx.sharepoint.com/:v:/r/sites/MET-UVD/Documents%20partages/General/Vid%C3%A9os_Tutos/Datalab/Application_parkings/Video%20appli%20parking.avi?csf=1&web=1&e=Sebund", target = "_blank", "Pr\u00e9sentation de l\'appli"),
     br()
+    
   )
 }
 

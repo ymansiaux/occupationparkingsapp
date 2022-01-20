@@ -96,9 +96,14 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
   moduleServer(id, function(input, output, session) {
     observeEvent(input$pause, browser())
     
-    observeEvent(input$show_hide_panel, {
+    # observeEvent(input$show_hide_panel, {
+    #   toggle(id = "show_results", anim = TRUE)
+    # })
+    # 
+    onclick(
+      "show_hide_panel",
       toggle(id = "show_results", anim = TRUE)
-    })
+    )
     
     observe({
       updateSelectizeInput(session, "selected_satured_parking1",
