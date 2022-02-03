@@ -43,7 +43,7 @@ mod_accueil_ui <- function(id) {
     div("Les donn\u00e9es sources sont issues du portail Open Data de Bordeaux M\u00e9tropole"),
     br(), br(),
     div("Ci-dessous une vid\u00e9o tuto pour prendre en main l\'application :"),
-    tags$a(href = "https://bdx.sharepoint.com/:v:/r/sites/MET-UVD/Documents%20partages/General/Vid%C3%A9os_Tutos/Datalab/Application_parkings/Video%20appli%20parking.avi?csf=1&web=1&e=Sebund", target = "_blank", "Pr\u00e9sentation de l\'appli"),
+    tags$a(href = "https://drive.google.com/file/d/1xUfAOzzI7nNx5MB9rR7J3TZ3cojTiGX1/view?usp=sharing", target = "_blank", "Pr\u00e9sentation de l\'appli"),
     br()
     
   )
