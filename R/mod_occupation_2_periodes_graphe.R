@@ -175,7 +175,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
     )
     
     
-    output$table_plot <- renderDT({
+    output$table_plot <- renderDT(server = FALSE, {
       input$maj
       
       validate(
@@ -196,7 +196,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
         )
     })
     
-    output$table_raw <- renderDT({
+    output$table_raw <- renderDT(server = FALSE, {
       validate(
         need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), "Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate")
       )
