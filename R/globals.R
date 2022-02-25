@@ -9,12 +9,12 @@ parametres_output_DT <- list(
 parkings <- rbind(
   data.frame(
     "localisation_parking" = "hypercentre",
-    "ident" = c("CUBPK06", "CUBPK02", "CUBPK18", "CUBPK03", "CUBPK07", "CUBPK24", "CUBPK30", "CUBPK28", "CUBPK34", "CUBPK25", "CUBPK26", "CUBPK29", "CUBPK16", "CUBPK05", "CUBPK15"),
+    "ident" = c("CUBPK06", "CUBPK02", "CUBPK18", "CUBPK03", "CUBPK07", "CUBPK24", "CUBPK30", "CUBPK28", "CUBPK34", "CUBPK25", "CUBPK26", "CUBPK29", "CUBPK16", "CUBPK05", "CUBPK27", "CUBPK15"),
     "parc_relais" = FALSE
   ),
   data.frame(
     "localisation_parking" = "centre",
-    "ident" = c("CUBPK105", "CUBPK102", "CUBPK33", "CUBPK78", "CUBPK04", "CUBPK19", "CUBPK100", "CUBPK80", "CUBPK95", "CUBPK27", "CUBPK35", "CUBPK36", "CUBPK14"),
+    "ident" = c("CUBPK105", "CUBPK102", "CUBPK33", "CUBPK78", "CUBPK04", "CUBPK19", "CUBPK100", "CUBPK80", "CUBPK95", "CUBPK35", "CUBPK36", "CUBPK14"),
     "parc_relais" = FALSE
   ),
   data.frame(
