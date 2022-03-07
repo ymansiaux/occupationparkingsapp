@@ -14,7 +14,7 @@ parkings <- rbind(
   ),
   data.frame(
     "localisation_parking" = "centre",
-    "ident" = c("CUBPK105", "CUBPK102", "CUBPK33", "CUBPK78", "CUBPK04", "CUBPK19", "CUBPK100", "CUBPK80", "CUBPK95", "CUBPK27", "CUBPK35", "CUBPK36", "CUBPK14"),
+    "ident" = c("CUBPK105", "CUBPK102", "CUBPK33", "CUBPK78", "CUBPK04", "CUBPK19", "CUBPK100", "CUBPK80", "CUBPK95", "CUBPK27", "CUBPK35", "CUBPK36", "CUBPK14", "CUBPK81", "CUBPK94"),
     "parc_relais" = FALSE
   ),
   data.frame(
