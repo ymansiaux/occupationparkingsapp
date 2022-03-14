@@ -1,6 +1,6 @@
 Package: occupationparkingsapp
 Title: Occupations des parkings projet PMNSI 3264
-Version: 0.4.1
+Version: 0.4.2
 Authors@R: 
     person(given = "Yohann",
            family = "Mansiaux",
