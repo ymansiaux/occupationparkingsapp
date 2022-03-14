@@ -6,7 +6,6 @@ Authors@R:
            family = "Mansiaux",
            role = c("cre", "aut"),
            email = "y.mansiaux@bordeaux-metropole.fr")
->>>>>>> dev
 Description: Consultation des donnees parkings - appli + rapport.
 License: MIT + file LICENSE
 URL: https://git.scnbdx.fr/UVD/datalab/mobilite/occupationparkingspp.git
