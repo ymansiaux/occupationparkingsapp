@@ -86,7 +86,7 @@ Occupation <- R6::R6Class(
                                    "hour" = "%R",
                                    "day" = "%a %d")
       date_labels_format_legend <- switch(aggregation_unit,
-                                          "hour" = c("%d/%m/%y "),
+                                          "hour" = c("%A %d/%m/%y "),
                                           "day" = c("%d/%m/%y ")
       )
       
@@ -98,7 +98,7 @@ Occupation <- R6::R6Class(
                               ({min(self$plageHoraire)}:00-{max(self$plageHoraire)}:00)")
       )
       
-      legend_label <- glue("**Occupation parking**<br><br>**P\u00e9riode**<br>{periode_etudiee}")
+      legend_label <- glue("**Occupation**<br><br>**P\u00e9riode**<br>{periode_etudiee}")
       
       
       gg <- self$data_plot_1_period %>%
@@ -199,10 +199,10 @@ Occupation <- R6::R6Class(
       names(mypal) <- sort(unique(self$data_plot_2_periods$nom))
       
       date_labels_format_legend <- switch(aggregation_unit,
-                                          "hour" = c("%d/%m/%y "),
+                                          "hour" = c("%A %d/%m/%y "),
                                           "day" = c("%d/%m/%y ")
       )
-      # browser()
+      
       periode_etudiee1 <- switch(aggregation_unit,
                                 "hour" = glue("{format(min(as_date(data_occupation_1$aggregated_data_by_some_time_unit$time)), format = date_labels_format_legend[1])} \\
                               ({min(data_occupation_1$plageHoraire)}:00-{max(data_occupation_1$plageHoraire)}:00)"),
@@ -222,7 +222,7 @@ Occupation <- R6::R6Class(
       )
       
       
-      legend_label <- glue("**Occupation parking**<br><br>**P\u00e9riode 1**<br>{periode_etudiee1}<br><br>**P\u00e9riode 2**<br>{periode_etudiee2}")
+      legend_label <- glue("**Occupation**<br><br>**P\u00e9riode 1**<br>{periode_etudiee1}<br><br>**P\u00e9riode 2**<br>{periode_etudiee2}")
       
       
       
