@@ -42,7 +42,7 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
               label = "Parkings \u00e0 afficher",
               choices = NULL,
               multiple = TRUE,
-              options = list(deselectBehavior = "top") #maxItems = 5, placeholder = "Choisir au max 5 pkgs", 
+              options = list(deselectBehavior = "top", maxItems = 7, placeholder = "Choisir au max 7 pkgs") 
             ),
             tags$div(
               actionButton(inputId = ns("maj"), "MAJ graphes et tableaux", style = "margin: 0 0 5% 0")
