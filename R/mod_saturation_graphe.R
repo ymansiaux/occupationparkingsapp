@@ -12,7 +12,7 @@
 #' @importFrom shinycssloaders withSpinner
 #' @importFrom DT datatable
 #' @importFrom shinybm hidden_div
-#' @importFrom grDevices dev.off tiff
+#' @importFrom grDevices dev.off png
 #' @importFrom shinyjs hidden hide show
 
 mod_saturation_graphe_ui <- function(id, title) {
@@ -205,10 +205,10 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
     # Telechargement du graphe
     output$down <- downloadHandler(
       filename =  function() {
-        "graphique.tiff"
+        "graphique.png"
       },
       content = function(file) {
-        tiff(file, units="in", width=8, height=5, res=300)
+        png(file, units="in", width=8, height=5, res=300)
         print(graphique1())
         dev.off() 
       } 
@@ -216,10 +216,10 @@ mod_saturation_graphe_server <- function(id, r6, app_theme, parkings_list) {
     
     output$down2 <- downloadHandler(
       filename =  function() {
-        "graphique.tiff"
+        "graphique.png"
       },
       content = function(file) {
-        tiff(file, units="in", width=8, height=5, res=300)
+        png(file, units="in", width=8, height=5, res=300)
         print(graphique2())
         dev.off() 
       } 
