@@ -13,7 +13,7 @@
 #' @importFrom shinybm hidden_div lien_afficher_cacher_div
 #' @importFrom shinyjs show hide onclick toggle hidden
 #' @importFrom shinycssloaders withSpinner
-#' @importFrom grDevices dev.off tiff
+#' @importFrom grDevices dev.off png
 
 mod_occupation_2_periodes_graphe_ui <- function(id, title) {
   ns <- NS(id)
@@ -154,10 +154,10 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
     # Telechargement du graphe
     output$down <- downloadHandler(
       filename =  function() {
-        "graphique.tiff"
+        "graphique.png"
       },
       content = function(file) {
-        tiff(file, units="in", width=8, height=5, res=300)
+        png(file, units="in", width=8, height=5, res=300)
         print(graphique())
         dev.off() 
       } 
