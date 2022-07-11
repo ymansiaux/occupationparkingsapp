@@ -152,7 +152,7 @@ mod_occupation_2_periodes_ui <- function(id) {
 #' occupation Server Functions
 #'
 #' @noRd
-mod_occupation_2_periodes_server <- function(id, app_theme, parkings) {
+mod_occupation_2_periodes_server <- function(id, app_theme, parkings, list_of_Occupation1, list_of_Occupation2) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     
@@ -236,48 +236,6 @@ mod_occupation_2_periodes_server <- function(id, app_theme, parkings) {
                           "Ann\u00e9e" = occupation_compute_xtradata_request_parameters(selected_timestep = input$timestep, selected_date = input$selected_year2)
         )
       )
-      
-      # On cree la liste d'objets R6 Occupation
-      list_of_Occupation1 <- list(
-        parc_relais = Occupation$new(parkings_list = parkings[localisation_parking %in% NA & parc_relais == TRUE][["ident"]]),
-        hypercentre = Occupation$new(parkings_list = parkings[localisation_parking %in% "hypercentre" & parc_relais == FALSE][["ident"]]),
-        centre = Occupation$new(parkings_list = parkings[localisation_parking %in% "centre" & parc_relais == FALSE][["ident"]]),
-        peripherie = Occupation$new(parkings_list = parkings[localisation_parking %in% "peripherie" & parc_relais == FALSE][["ident"]])
-      )
-      list_of_Occupation2 <- list(
-        parc_relais2 = Occupation$new(parkings_list = parkings[localisation_parking %in% NA & parc_relais == TRUE][["ident"]]),
-        hypercentre2 = Occupation$new(parkings_list = parkings[localisation_parking %in% "hypercentre" & parc_relais == FALSE][["ident"]]),
-        centre2 = Occupation$new(parkings_list = parkings[localisation_parking %in% "centre" & parc_relais == FALSE][["ident"]]),
-        peripherie2 = Occupation$new(parkings_list = parkings[localisation_parking %in% "peripherie" & parc_relais == FALSE][["ident"]])
-      )
-      
-      
-      
-      # on verifie si la liste des parkings est non nulle, auquel cas soit on ecrase la liste de l'element selection_personnalisee, ou alors on recree une instance R6 si elle n'existe plus
-      if (isTruthy(input$custom_parkings_list) & input$select_custom_parkings_list == TRUE) {
-       
-        list_of_Occupation1 <- c(Occupation$new(parkings_list = parkings[nom %in% input$custom_parkings_list][["ident"]]),
-                                list_of_Occupation1
-        )
-        
-        list_of_Occupation2 <- c(Occupation$new(parkings_list = parkings[nom %in% input$custom_parkings_list][["ident"]]),
-                                 list_of_Occupation2
-        )
-        
-        names(list_of_Occupation1)[1] <- names(list_of_Occupation2)[1] <- "selection_personnalisee"
-        
-      }
-      
-      # On appelle memoise pour activer le cache sur les resultats
-      list_of_Occupation1 <- lapply(list_of_Occupation1, function(.l) {
-        .l$download_data_memoise <- memoise(.l$download_data)
-        .l
-      })
-      
-      list_of_Occupation2 <- lapply(list_of_Occupation2, function(.l) {
-        .l$download_data_memoise <- memoise(.l$download_data)
-        .l
-      })
       
       list_of_Occupation1 <- lapply(list_of_Occupation1, function(.l) {
         .l$rangeStart <- xtradata_parameters$periode1$rangeStart

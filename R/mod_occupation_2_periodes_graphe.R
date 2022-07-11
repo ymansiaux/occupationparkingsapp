@@ -96,12 +96,24 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title) {
 #' @noRd
 mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, parkings_list) {
   moduleServer(id, function(input, output, session) {
-    observe(updateSelectizeInput(session, "parkings_to_plot", choices = unique(c(r6_1$cleaned_data$nom, r6_2$cleaned_data$nom)), server = TRUE))
+    # observe(updateSelectizeInput(session, "parkings_to_plot", choices = unique(c(r6_1$cleaned_data$nom, r6_2$cleaned_data$nom)), server = TRUE))
     observeEvent(input$pause, browser())
-    
-    # observeEvent(input$show_hide_panel, {
-    #   toggle(id = "show_results", anim = TRUE)
-    # })
+
+    observe({
+      
+      if(is.null(r6_1$parkings_a_afficher_2_periodes)) {
+        updateSelectizeInput(session, "parkings_to_plot", 
+                             selected = NULL, 
+                             choices = unique(c(r6_1$cleaned_data$nom, r6_2$cleaned_data$nom)), 
+                             server = TRUE)
+      } else {
+        updateSelectizeInput(session, "parkings_to_plot", 
+                             selected = r6_1$parkings_a_afficher_2_periodes, 
+                             choices = unique(c(r6_1$cleaned_data$nom, r6_2$cleaned_data$nom)), 
+                             server = TRUE)
+        
+      }
+    })
     
     onclick(
       "show_hide_panel",
@@ -117,6 +129,8 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
       
       input$maj
       
+      r6_1$parkings_a_afficher_2_periodes <- r6_2$parkings_a_afficher_2_periodes <- input$parkings_to_plot
+      
       r6_1$aggregated_data_by_some_time_unit$nom[is.na(r6_1$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       r6_2$aggregated_data_by_some_time_unit$nom[is.na(r6_2$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
       
@@ -124,7 +138,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
         data_occupation_1 = r6_1,
         data_occupation_2 = r6_2,
         aggregation_unit = r6_1$aggregation_unit,
-        parkings_to_plot = isolate(unique(parkings_list$ident[parkings_list$nom %in% input$parkings_to_plot])),
+        parkings_to_plot = isolate(unique(parkings_list$ident[parkings_list$nom %in% r6_1$parkings_a_afficher_2_periodes])),
         app_theme = app_theme()
       )
       
