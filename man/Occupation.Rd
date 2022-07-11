@@ -16,6 +16,8 @@ va gérer la routine API / clean / plot / table / download
 
 \item{\code{data_plot_1_period}}{donnée du graphique pour 1 seule période étudiée}
 
+\item{\code{parkings_a_afficher_1_periode}}{liste personnalisee de parkings a afficher sur le graphe}
+
 \item{\code{data_plot_2_periods}}{donnée du graphique pour 2 période étudiées}
 }
 \if{html}{\out{</div>}}

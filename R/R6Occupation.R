@@ -12,6 +12,9 @@ Occupation <- R6::R6Class(
     #' @field data_plot_1_period donnée du graphique pour 1 seule période étudiée
     data_plot_1_period = NULL,
     
+    #' @field parkings_a_afficher_1_periode liste personnalisee de parkings a afficher sur le graphe
+    parkings_a_afficher_1_periode = NULL,
+    
     #' @field data_plot_2_periods donnée du graphique pour 2 période étudiées
     data_plot_2_periods = NULL,
     
