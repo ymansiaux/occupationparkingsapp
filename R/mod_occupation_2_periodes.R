@@ -255,24 +255,47 @@ mod_occupation_2_periodes_server <- function(id, app_theme, parkings, list_of_Oc
         .l
       })
       
+      
+      if (isTruthy(input$custom_parkings_list) & input$select_custom_parkings_list == TRUE) {
+        list_of_Occupation1$selection_personnalisee$parkings_list <- list_of_Occupation2$selection_personnalisee$parkings_list <- parkings[nom %in% input$custom_parkings_list][["ident"]]
+      }
+      
+      
       # On appelle sur la liste de classes R6, les modules d'appel au WS pour récup les données,
       # le module de nettoyage de l'output, et le module de création du graphique
       imap(c(list_of_Occupation1, list_of_Occupation2), function(.x, .y) {
-        mod_occupation_appel_WS_server(paste0("occupation_2_periodes_appel_WS_ui_", .y), r6 = .x)
-        mod_occupation_clean_server(paste0("occupation_2_periodes_clean_ui_", .y), r6 = .x, parkings_list = parkings)
+        
+        if(!is.null(.x$parkings_list)) {
+          
+          mod_occupation_appel_WS_server(paste0("occupation_2_periodes_appel_WS_ui_", .y), r6 = .x)
+          mod_occupation_clean_server(paste0("occupation_2_periodes_clean_ui_", .y), r6 = .x, parkings_list = parkings)
+          
+        }
+        
       })
       
       pmap(list(list_of_Occupation1, list_of_Occupation2, names(list_of_Occupation1)), function(.x, .y, .z) {
-        mod_occupation_2_periodes_graphe_server(paste0("occupation_2_periodes_graphe_ui_", .z), r6_1 = .x, r6_2 = .y, app_theme = app_theme, parkings_list = parkings)
+        
+        if(!is.null(.x$parkings_list)) {
+          
+          mod_occupation_2_periodes_graphe_server(paste0("occupation_2_periodes_graphe_ui_", .z), r6_1 = .x, r6_2 = .y, app_theme = app_theme, parkings_list = parkings)
+          
+        }
+        
       })
       
       # On output l'UI qui va contenir le graphique et les tableaux de résultats pour toutes les classes R6
       output$my_Occupation_UI <- renderUI({
         lapply(names(list_of_Occupation1), function(.y) {
-          tagList(
-            mod_occupation_2_periodes_graphe_ui(ns(paste0("occupation_2_periodes_graphe_ui_", .y)), title = camel(remove_underscore(.y))),
-            tags$br(), tags$br()
-          )
+          
+          if(!is.null(list_of_Occupation1[[.y]]$parkings_list)) {
+            
+            tagList(
+              mod_occupation_2_periodes_graphe_ui(ns(paste0("occupation_2_periodes_graphe_ui_", .y)), title = camel(remove_underscore(.y))),
+              tags$br(), tags$br()
+            )
+            
+          }
         })
       })
     })
