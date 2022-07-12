@@ -24,7 +24,7 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
         actionButton(inputId = ns("show_hide_panel"), label = "afficher / masquer le secteur", class = "btn btn-info", style = "margin: 0 0 5% 0")
       )
     ),
-     hidden(
+    hidden(
       div(
         id = ns("show_results"),
         fluidRow(
@@ -33,7 +33,7 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
             withSpinner(
               girafeOutput(ns("plot"))
             )
-            # ,actionButton(inputId = ns("pause"), "pause")
+            ,actionButton(inputId = ns("pause"), "pause")
           ),
           column(
             width = 4,
@@ -97,50 +97,48 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
 #' @noRd
 mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_list) {
   moduleServer(id, function(input, output, session) {
-    observe(updateSelectizeInput(session, "parkings_to_plot", choices = unique(r6$cleaned_data$nom), server = TRUE))
-    observeEvent(input$pause, browser())
-  
+    # observe(updateSelectizeInput(session, "parkings_to_plot", choices = unique(r6$cleaned_data$nom), server = TRUE))
+    
+    observe({
+      
+      if(is.null(r6$parkings_a_afficher_1_periode)) {
+        updateSelectizeInput(session, "parkings_to_plot", selected = NULL, choices = unique(r6$cleaned_data$nom), server = TRUE)
+      } else {
+        updateSelectizeInput(session, "parkings_to_plot", selected = r6$parkings_a_afficher_1_periode, choices = unique(r6$cleaned_data$nom), server = TRUE)
+        
+      }
+    })
+    
+    
+    
+    # observeEvent(input$pause, browser())
+    
     onclick(
       "show_hide_panel",
       toggle(id = "show_results", anim = TRUE)
     )
     
-    # hidden_sector <- reactiveValues(hidden = TRUE)
-    # 
-    # observeEvent(input$show_hide_panel, {
-    #   print(hidden_sector$hidden)
-    #   if(hidden_sector$hidden) {
-    #     show(id = "show_results", anim = TRUE)
-    #     hidden_sector$hidden <- FALSE
-    #     
-    #   }
-    #   else {
-    #     hide(id = "show_results", anim = TRUE)
-    #     hidden_sector$hidden <- TRUE
-    #     
-    #   }
-    # })
     
-    
-    ### GRAPHE
-    
-    # Creation d'une reactive pour le graphique
     graphique <- reactive({
-      
+
       req(isTruthy(r6$data_xtradata))
-      
-      input$maj
-      
+
+      # input$maj
+
+      observeEvent(input$pause, browser())
+
+      r6$parkings_a_afficher_1_periode <- input$parkings_to_plot
+
       r6$aggregated_data_by_some_time_unit$nom[is.na(r6$aggregated_data_by_some_time_unit$nom)] <- "moyenne"
-      
+
       gg <- r6$timeseries_plot_1_period(
-        parkings_to_plot = isolate(unique(parkings_list$ident[parkings_list$nom %in% input$parkings_to_plot])),
+        parkings_to_plot = isolate(unique(parkings_list$ident[parkings_list$nom %in% r6$parkings_a_afficher_1_periode])),
         aggregation_unit = r6$aggregation_unit,
         app_theme = app_theme()
       )
-      
+
       gg
-      
+
     })
     
     # Affichage du graphe
@@ -149,7 +147,7 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_l
       validate(
         need(isTruthy(r6$data_xtradata), "Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate")
       )
-      
+   
       x <- girafe(
         ggobj = graphique(), width_svg = 8, height_svg = 5,
         pointsize = 15,

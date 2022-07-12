@@ -744,6 +744,13 @@
       "Repository": "RSPM",
       "Hash": "26fa77e707223e1ce042b2b5d09993dc"
     },
+    "miniUI": {
+      "Package": "miniUI",
+      "Version": "0.1.1.1",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "fec5f52652d60615fdb3957b3d74324a"
+    },
     "munsell": {
       "Package": "munsell",
       "Version": "0.5.0",
@@ -862,6 +869,18 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "a555924add98c99d2f411e37e7d25e9f"
+    },
+    "prefixer": {
+      "Package": "prefixer",
+      "Version": "0.1.5.9000",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "prefixer",
+      "RemoteUsername": "dreamRs",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "e43f934fdb28647d232de3793bdd9ffd4b59f67b",
+      "Hash": "903588f428abbc74f30ff96cf1228f32"
     },
     "prettyunits": {
       "Package": "prettyunits",
@@ -1093,6 +1112,13 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "6e3b6ae7fe02b5859e4bb277f218b8ae"
+    },
+    "shinyWidgets": {
+      "Package": "shinyWidgets",
+      "Version": "0.7.0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Hash": "4c00b64347509091f39c01c52f8d9e4c"
     },
     "shinybm": {
       "Package": "shinybm",
