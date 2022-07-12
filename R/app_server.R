@@ -16,38 +16,7 @@ app_server <- function(input, output, session) {
   options(bitmapType = "cairo")
   
   observe(closeWaiter_logoDatalab(golem::app_prod()))
-  
-  # MAJ de la liste des parkings au demarrage
-  
-  # Appel des modules #
-  observeEvent(rv$parkings_list_is_updated, {
-    if(rv$parkings_list_is_updated == TRUE) {
-      
-      mod_occupation_1_periode_server("occupation_ui_1", app_theme = reactive(rv$theme), parkings = rv$parkings, list_of_Occupation = rv$list_of_Occupation_1periode)
-      mod_occupation_2_periodes_server("occupation_ui_2", app_theme = reactive(rv$theme), parkings = rv$parkings, 
-                                       list_of_Occupation1 = rv$list_of_Occupation_2periodes_1, list_of_Occupation2 = rv$list_of_Occupation_2periodes_2)
-      mod_saturation_server("saturation_ui_1", app_theme = reactive(rv$theme), parkings = rv$parkings)
-      mod_accueil_server("accueil_ui_1", parkings = reactive(rv$parkings))
-    }
-    
-  })
-  
-  
-  
-  # on verifie si la liste des parkings est non nulle, auquel cas soit on ecrase la liste de l'element selection_personnalisee, ou alors on recree une instance R6 si elle n'existe plus
-  # if (isTruthy(input$custom_parkings_list) & input$select_custom_parkings_list == TRUE) {
-  #   list_of_Occupation <- c(Occupation$new(parkings_list = parkings[nom %in% input$custom_parkings_list][["ident"]]),
-  #                           list_of_Occupation
-  #   )
-  #   names(list_of_Occupation)[1] <- "selection_personnalisee"
-  # }
-  
-  
-  
-  
-  
-  
-  ### PARTIE BDXMETROIDENTITY ###
+
   rv <- reactiveValues()
   rv$theme <- "light"
   rv$parkings_list_is_updated <- FALSE
@@ -126,10 +95,6 @@ app_server <- function(input, output, session) {
   )
   
   
-  
-  
-  
-  
   ##########################
   # Dark mode / Light mode #
   ##########################
@@ -155,4 +120,34 @@ app_server <- function(input, output, session) {
       tags$img(src = "www/datalab-logo-darkmode.png", width = "150px")
     }
   })
+  
+  
+  #####################
+  # Appel des modules #
+  #####################
+  
+  observeEvent(rv$parkings_list_is_updated, {
+    if(rv$parkings_list_is_updated == TRUE) {
+      
+      mod_occupation_1_periode_server("occupation_ui_1", 
+                                      app_theme = reactive(rv$theme), 
+                                      parkings = rv$parkings, 
+                                      list_of_Occupation = rv$list_of_Occupation_1periode)
+      
+      mod_occupation_2_periodes_server("occupation_ui_2", 
+                                       app_theme = reactive(rv$theme),
+                                       parkings = rv$parkings, 
+                                       list_of_Occupation1 = rv$list_of_Occupation_2periodes_1,
+                                       list_of_Occupation2 = rv$list_of_Occupation_2periodes_2)
+      
+      mod_saturation_server("saturation_ui_1",
+                            app_theme = reactive(rv$theme),
+                            parkings = rv$parkings)
+      
+      mod_accueil_server("accueil_ui_1",
+                         parkings = reactive(rv$parkings))
+    }
+    
+  })
+  
 }

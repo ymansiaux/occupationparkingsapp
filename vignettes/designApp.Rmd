@@ -51,6 +51,29 @@ Contient les fonctions :
 
 # Structure de l'app
 
+## globals.R
+
+Dans ce fichier on va notamment créer le df parkings, qui va lister les parkings choisis pour chaque secteur par P. Mercé.
+
+Sachant que les noms des parkings sont susceptibles de changer au cours du temps, on récupère les noms des parkings à chaque lancement de l'appli en appelant le WS xtradata.
+
+## app_server
+
+Au démarrage de l'appli on réalise plusieurs opérations :
+
+* gestion du dark / light mode
+
+* mise à jour des noms des parkings étudiés
+
+* création des objets R6 pour l'analyse de l'occupation sur 1 période et sur 2 périodes
+
+* les "list_of_Occupation" sont ensuite envoyées dans les modules correspondants. C'est au sein des modules qu'on va injecter certains paramètres, notamment ceux relatifs aux paramètres de la requête xtradata (période d'observation ...). Les paramètres ne changeant jamais (e.g. liste des parkings étudiés sur 1 secteur) ont été définis côté app_server.
+
+## app_ui
+
+Structure générale de l'appli et appel des fonctions ui des modules.
+
+
 ## Modules
 
 ### Accueil
