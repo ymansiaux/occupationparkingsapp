@@ -44,9 +44,9 @@ mod_occupation_2_periodes_graphe_ui <- function(id, title) {
               multiple = TRUE,
               options = list(deselectBehavior = "top", maxItems = 7, placeholder = "Choisir au max 7 pkgs") 
             ),
-            tags$div(
-              actionButton(inputId = ns("maj"), "MAJ graphes et tableaux", style = "margin: 0 0 5% 0")
-            ),
+            # tags$div(
+            #   actionButton(inputId = ns("maj"), "MAJ graphes et tableaux", style = "margin: 0 0 5% 0")
+            # ),
             tags$div(
               downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
             )
@@ -127,7 +127,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
       
       req(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata))
       
-      input$maj
+      # input$maj
       
       r6_1$parkings_a_afficher_2_periodes <- r6_2$parkings_a_afficher_2_periodes <- input$parkings_to_plot
       
@@ -190,7 +190,7 @@ mod_occupation_2_periodes_graphe_server <- function(id, r6_1, r6_2, app_theme, p
     
     
     output$table_plot <- renderDT(server = FALSE, {
-      input$maj
+      # input$maj
       
       validate(
         need(isTruthy(r6_1$data_xtradata) & isTruthy(r6_2$data_xtradata), "Aucun graphe \u00e0 afficher - v\u00e9rifier la requ\u00eate")

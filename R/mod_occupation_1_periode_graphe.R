@@ -44,9 +44,9 @@ mod_occupation_1_periode_graphe_ui <- function(id, title) {
               multiple = TRUE,
               options = list(deselectBehavior = "top", maxItems = 7, placeholder = "Choisir au max 7 pkgs") 
             ),
-            tags$div(
-              actionButton(inputId = ns("maj"), "MAJ graphes et tableaux", style = "margin: 0 0 5% 0")
-            ),
+            # tags$div(
+            #   actionButton(inputId = ns("maj"), "MAJ graphes et tableaux", style = "margin: 0 0 5% 0")
+            # ),
             tags$div(
               downloadButton(outputId = ns("down"), label = "T\u00e9l\u00e9charger le graphique", class = "btn btn-warning", style = "margin: 0 0 5% 0")
             )
@@ -187,7 +187,7 @@ mod_occupation_1_periode_graphe_server <- function(id, r6, app_theme, parkings_l
     
     
     output$table_plot <- renderDT(server = FALSE, {
-      input$maj
+      # input$maj
       
       validate(
         need(isTruthy(r6$data_xtradata), "Aucun tableau \u00e0 afficher - v\u00e9rifier la requ\u00eate")
