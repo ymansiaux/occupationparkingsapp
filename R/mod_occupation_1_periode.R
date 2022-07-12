@@ -132,7 +132,7 @@ mod_occupation_1_periode_ui <- function(id) {
 #' occupation Server Functions
 #'
 #' @noRd
-mod_occupation_1_periode_server <- function(id, app_theme, parkings) {
+mod_occupation_1_periode_server <- function(id, app_theme, parkings, list_of_Occupation) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     
@@ -214,27 +214,10 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings) {
       )
       
       
-      # On cree la liste d'objets R6 Occupation
-      list_of_Occupation <- list(
-        parc_relais = Occupation$new(parkings_list = parkings[localisation_parking %in% NA & parc_relais == TRUE][["ident"]]),
-        hypercentre = Occupation$new(parkings_list = parkings[localisation_parking %in% "hypercentre" & parc_relais == FALSE][["ident"]]),
-        centre = Occupation$new(parkings_list = parkings[localisation_parking %in% "centre" & parc_relais == FALSE][["ident"]]),
-        peripherie = Occupation$new(parkings_list = parkings[localisation_parking %in% "peripherie" & parc_relais == FALSE][["ident"]])
-      )
-      # on verifie si la liste des parkings est non nulle, auquel cas soit on ecrase la liste de l'element selection_personnalisee, ou alors on recree une instance R6 si elle n'existe plus
       if (isTruthy(input$custom_parkings_list) & input$select_custom_parkings_list == TRUE) {
-        list_of_Occupation <- c(Occupation$new(parkings_list = parkings[nom %in% input$custom_parkings_list][["ident"]]),
-                                list_of_Occupation
-        )
-        names(list_of_Occupation)[1] <- "selection_personnalisee"
+        list_of_Occupation$selection_personnalisee$parkings_list <- parkings[nom %in% input$custom_parkings_list][["ident"]]
       }
       
-      
-      # On appelle memoise pour activer le cache sur les resultats
-      list_of_Occupation <- lapply(list_of_Occupation, function(.l) {
-        .l$download_data_memoise <- memoise(.l$download_data)
-        .l
-      })
       
       
       list_of_Occupation <- lapply(list_of_Occupation, function(.l) {
@@ -250,17 +233,27 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings) {
       # On appelle sur la liste de classes R6, les modules d'appel au WS pour récup les données,
       # le module de nettoyage de l'output, et le module de création du graphique
       imap(list_of_Occupation, function(.x, .y) {
-        mod_occupation_appel_WS_server(paste0("occupation_appel_WS_ui_", .y), r6 = .x)
-        mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x, parkings_list = parkings)
-        mod_occupation_1_periode_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings)
+        
+        if(!is.null(.x$parkings_list)) {
+          
+          mod_occupation_appel_WS_server(paste0("occupation_appel_WS_ui_", .y), r6 = .x)
+          mod_occupation_clean_server(paste0("occupation_clean_ui_", .y), r6 = .x, parkings_list = parkings)
+          mod_occupation_1_periode_graphe_server(paste0("occupation_graphe_ui_", .y), r6 = .x, app_theme = app_theme, parkings_list = parkings)
+          
+        }
+        
       })
       
       output$my_Occupation_UI <- renderUI({
         lapply(names(list_of_Occupation), function(.y) {
-          tagList(
-            mod_occupation_1_periode_graphe_ui(ns(paste0("occupation_graphe_ui_", .y)), title = camel(remove_underscore(.y))),
-            tags$br()
-          )
+          
+          if(!is.null(list_of_Occupation[[.y]]$parkings_list)) {
+            
+            tagList(
+              mod_occupation_1_periode_graphe_ui(ns(paste0("occupation_graphe_ui_", .y)), title = camel(remove_underscore(.y))),
+              tags$br()
+            )
+          }
         })
       })
     })
@@ -270,4 +263,4 @@ mod_occupation_1_periode_server <- function(id, app_theme, parkings) {
 # mod_occupation_1_periode_ui("occupation_ui_1")
 
 ## To be copied in the server
-# mod_occupation_1_periode_server("occupation_ui_1")
+# mod_####occupation_1_periode_server("occupation_ui_1")

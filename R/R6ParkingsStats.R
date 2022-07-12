@@ -48,8 +48,6 @@ ParkingsStats <- R6::R6Class(
       self$rangeStep <- rangeStep
       self$aggregation_unit <- aggregation_unit
       self$plageHoraire <- plageHoraire
-      # self$localisation_parking <- localisation_parking
-      # self$parc_relais <- parc_relais
       self$parkings_list <- parkings_list
     },
 
@@ -113,7 +111,6 @@ ParkingsStats <- R6::R6Class(
           time = as_datetime(time, tz = mytimezone),
           libres = as.integer(ceiling(libres))
         )] %>%
-        # .[, taux_occupation := 100 * pmax(0, 1 - (libres / total))] %>%
         .[, taux_occupation := 100 * (1 - (libres / total))] %>%
         merge(., unique(parkings_list[, c("nom", "ident")]), by = "ident") %>%
         setcolorder(neworder = "time")
